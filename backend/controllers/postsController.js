@@ -1,4 +1,5 @@
 let postModel = require("../models/postsModel");
+let userModel = require("../models/userModal");
 
 let createPost = async (req, res) => {
 
@@ -113,7 +114,26 @@ let likeDislikePost = async (req, res) => {
 }
 
 let passComentsOnPost = async (req, res) => {
+
+    let description = req.body.desc;
     try {
+
+        if (!description) {
+            return res.status(400).send({
+                message:"please provide a comment ,it can't be blank"
+             })
+        }
+
+        let temp = {
+            id: req._id,
+            comment:description
+        }
+
+        let post = await postModel.findOne({ _id: req.params.postId });
+        post.comments.push(temp);
+        await post.save();
+
+        res.status(200).send({message:"comment added into this post"});
          
     } catch (err) {
         console.log(err);
@@ -123,6 +143,27 @@ let passComentsOnPost = async (req, res) => {
 
 let getTimelinePosts = async (req, res) => {
     try {
+
+        let myPosts = await postModel.find({
+            userId: req._id
+        }).sort({ createdAt:-1})
+
+        let temp = await userModel.findOne({ _id: req._id });
+        let arrayOfIds = temp.following;
+
+        let postFromFollowing = await postModel.find({
+            _id: {
+                  $in:arrayOfIds
+              }
+        }).sort({ createdAt: -1 })
+        
+        if (req.query.own) {
+            res.status(200).send(myPosts)
+        }
+        else {
+            res.status(200).send(myPosts.concat(postFromFollowing))
+        }
+
 
     } catch (err) {
         console.log(err);

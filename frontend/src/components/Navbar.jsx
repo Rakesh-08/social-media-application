@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom";
 import { Box, Stack, Badge } from "@mui/material";
 import Sidebar from "./Sidebar";
-import SearchBar from "./searchBar";
+import SearchBar from "./SearchBar";
 import HomeIcon from "@mui/icons-material/Home";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";;
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";

@@ -4,7 +4,7 @@ let mongoose = require('mongoose');
 let postSchema = new mongoose.Schema({
        
     userId: {
-        type: mongoose.SchemaType.ObjectId,
+        type: mongoose.SchemaTypes.ObjectId,
         required:true
     },
     imgPost: String,
