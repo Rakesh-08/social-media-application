@@ -25,9 +25,10 @@ function Sidebar({showSidebar,setShowSidebar}) {
                       gap:"2",
                       navLabel: {
                           home: "Home",
-                          newFriend: "Friends",
+                          newFriend: "Users",
                           notify: "Notifications",
-                          msg:"Messages"
+                        msg: "Messages",
+                          profile:"Profile",
                        }
                   }} NavigateTo={NavigateTo} />
                   <AuthBtns NavigateTo={NavigateTo} login={false} sidebar={true} />

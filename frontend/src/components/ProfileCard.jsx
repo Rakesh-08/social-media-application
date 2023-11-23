@@ -7,13 +7,15 @@ import { Card, CardMedia, CardContent } from "@mui/material"
 const ProfileCard = ({ data }) => {
   return (
     <Card
+      
       sx={{
         width:"100%",
         boxShadow: "none",
         borderRadius: "2em",
         marginBottom: "1em",
+        marginLeft:"0.2em",
       }}
-      // className={`${!data && "mobFirst"}`}
+     
     >
       <CardMedia
         image={

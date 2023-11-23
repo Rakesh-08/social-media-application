@@ -9,6 +9,7 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";;
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ReorderIcon from "@mui/icons-material/Reorder";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 
 const Navbar = () => {
@@ -103,6 +104,17 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
           <ChatBubbleOutlineIcon className="navIcons fs-2 p-1" />
         </Badge>
         {direction && <span className="mx-2 text-primary">{navLabel.msg}</span>}
+      </div>
+
+      <div className={`d-flex  m-${gap}`}>
+        {" "}
+        <AccountCircleIcon
+          onClick={() => NavigateTo("/profile")}
+          className="navIcons fs-2 p-1 "
+        />{" "}
+        {direction && (
+          <span className="mx-2 text-primary">{navLabel.profile}</span>
+        )}
       </div>
     </div>
   );
