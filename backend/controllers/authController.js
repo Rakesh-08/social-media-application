@@ -9,6 +9,22 @@ let signUp = async (req, res) => {
     let { username, firstName, lastName, password } = req.body;
 
     try { 
+
+        let totalUsers = await userModal.find({});
+
+        if (totalUsers.length > 15) {
+            return res.status(300).send({
+                message:"Sorry! this application has limited capacity and its reached its maximum"
+            })
+        }
+
+        let IsExistingUser = await userModal.findOne({ username: username });
+
+        if (IsExistingUser) {
+            return res.status(400).send({
+                message:"username aleady exist"
+            })
+        }
     let salt = await bcrypt.genSalt(8);
     let hashedPassword = await bcrypt.hashSync(password, salt);
    

@@ -1,30 +1,47 @@
 import { useState, useEffect } from 'react'
-import { useLocation } from "react-router-dom"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,useLocation,Navigate } from "react-router-dom";
 import './App.css'
+
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import rootReducer from './reducers';
+
+// components and pages
 import Navbar from "./components/Navbar"
 import Home from './pages/Home'
 import Profile from './pages/Profile';
 import Auth from './pages/Auth';
+import ErrorPage from "./pages/ErrorPage";
+import MessagesPage from "./pages/MessagesPage";
+import NotificationsPage from "./pages/NotificationsPage";
+import UsersPage from "./pages/UsersPage";
 import Footer from './components/Footer';
 
+
+
 function App() {
- 
+
+let token= localStorage.getItem("pgmToken");
+  
   return (
-    <div>
-      <BrowserRouter>
-        <LayoutForNonNavbar>
-          <Navbar />
-          {/* <Footer/> */}
-        </LayoutForNonNavbar>
-       
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
-          <Route path="/Auth/signup" element={<Auth />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <LayoutForNonNavbar>
+        <Navbar />
+        {/* <Footer/> */}
+      </LayoutForNonNavbar>
+
+      <Routes>
+        <Route path="/" element={token?<Navigate to="/profile"/>:<Navigate to="/Auth/login" />}></Route>
+        <Route path="/home" element={<Home />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/Auth/login" element={<Auth login={true} />}></Route>
+        <Route path="/Auth/signup" element={<Auth />}></Route>
+        <Route path="/Error" element={<ErrorPage />}></Route>
+        <Route path="/users" element={<UsersPage />}></Route>
+        <Route path="/notifications" element={<NotificationsPage />}></Route>
+        <Route path="/messages" element={<MessagesPage />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
@@ -33,7 +50,7 @@ export default App
 function LayoutForNonNavbar({ children }) {
   let [showNavbar, setShowNavbar] = useState(false);
   let location = useLocation();
-  let excludedRoutes = [ "/Error","/Auth/signup"];
+  let excludedRoutes = [ "/Error","/Auth/login","/Auth/signup"];
 
   useEffect(() => {
     if (excludedRoutes.includes(location.pathname)) {
@@ -44,7 +61,7 @@ function LayoutForNonNavbar({ children }) {
   }, [location]);
 
   return (
-    <div style={{position:"sticky",top:0,zIndex:99}} >
+    <div style={{position:"sticky",top:0,zIndex:99,background: "linear-gradient(80deg ,rgb(153, 144, 240),white ,purple )"}} >
       {showNavbar && children}
     </div>
   );

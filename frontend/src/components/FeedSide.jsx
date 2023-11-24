@@ -81,12 +81,7 @@ const FeedSide = ({profile}) => {
         <div>
           <ClearIcon className="" onClick={() => setImgUpload("")} />
           <img
-            style={{
-              width: "100%",
-              maxHeight: "20rem",
-              objectFit: "cover",
-              borderRadius: "2%",
-            }}
+           style={{ width: "100%", maxHeight: "20rem", borderRadius: "2%",objectFit:"contain" }}
             src={imgUpload}
             alt="postImg"
           />

@@ -13,6 +13,7 @@ const ProfileCard = ({ data }) => {
         boxShadow: "none",
         borderRadius: "2em",
         marginBottom: "1em",
+        marginTop: "0.3em",
         marginLeft:"0.2em",
       }}
      
@@ -32,7 +33,7 @@ const ProfileCard = ({ data }) => {
           height: data?.dim || 100,
           borderRadius: "50%",
           margin: "auto",
-          marginTop: "-10%",
+          marginTop: "-12%",
         }}
       ></CardMedia>
 

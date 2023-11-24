@@ -17,7 +17,7 @@ const SinglePost = ({ data }) => {
         <p><MoreVertIcon/></p>
        </div>
           <img
-        style={{ width: "100%", maxHeight: "20rem", borderRadius: "2%" }}
+        style={{ width: "100%", maxHeight: "20rem", borderRadius: "2%",objectFit:"cover" }}
         src={data.postPic}
         alt="postPic"
       />

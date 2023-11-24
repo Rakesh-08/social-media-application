@@ -1,7 +1,7 @@
 body{
   font-family:Robotto;
   box-sizing: border-box;
-  background: linear-gradient(30deg ,rgb(13, 168, 224),white );
+  background: linear-gradient(30deg ,rgb(153, 144, 240),white ,purple );
   overflow-x: hidden;
  
 }
@@ -72,8 +72,9 @@ body{
 }
 .signUpForm{
   display: grid;
-  grid-template: repeat(4,1fr)/1fr 1fr;
+  grid-template: repeat(3,1fr)/1fr 1fr;
   gap:5px;
+  
 }
 
 .updateModal{

@@ -5,7 +5,10 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import {AuthBtns,NavIconContainer } from "./Navbar"
 
 function Sidebar({showSidebar,setShowSidebar}) {
-    let NavigateTo = useNavigate();
+  let NavigateTo = useNavigate();
+  let closeSidebar = () => {
+    setShowSidebar(false)
+  }
      
   return (
     <div className="sidebar" >
@@ -16,7 +19,7 @@ function Sidebar({showSidebar,setShowSidebar}) {
               height: "fit-content",
               backgroundColor:"lightGray"
               
-      }} show={showSidebar} onHide={()=>setShowSidebar(false)} backdrop="static" placement="end">
+      }} show={showSidebar} onHide={closeSidebar} backdrop="static" placement="end">
         <Offcanvas.Header  closeButton>
            </Offcanvas.Header>
               <Offcanvas.Body>
@@ -28,8 +31,10 @@ function Sidebar({showSidebar,setShowSidebar}) {
                           newFriend: "Users",
                           notify: "Notifications",
                         msg: "Messages",
-                          profile:"Profile",
-                       }
+                        profile: "Profile",
+                          closeSidebar:closeSidebar
+                       },
+                       
                   }} NavigateTo={NavigateTo} />
                   <AuthBtns NavigateTo={NavigateTo} login={false} sidebar={true} />
         </Offcanvas.Body>

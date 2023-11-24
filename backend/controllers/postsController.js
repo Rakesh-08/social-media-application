@@ -3,11 +3,17 @@ let userModel = require("../models/userModal");
 
 let createPost = async (req, res) => {
 
-    let {imgPost,desc } = req.body;
+    let { imgPost, desc } = req.body;
     try {
+
+        if (!(imgPost || desc)) {
+            return res.status(400).send({
+                message:"your post can't be empty"
+            })
+        }
            
         let post = await postModel.create({
-            imgPost,desc
+            imgPost,desc,userId:req._id
         })
 
         res.status(200).send(post)
@@ -105,7 +111,7 @@ let likeDislikePost = async (req, res) => {
             await post.save();
             msg= "you liked the post"
         }
-      res.status(200).send(msg);
+        res.status(200).send({ message: msg });
 
     } catch (err) {
         console.log(err);
@@ -152,16 +158,19 @@ let getTimelinePosts = async (req, res) => {
         let arrayOfIds = temp.following;
 
         let postFromFollowing = await postModel.find({
-            _id: {
+            userId: {
                   $in:arrayOfIds
               }
         }).sort({ createdAt: -1 })
         
         if (req.query.own) {
             res.status(200).send(myPosts)
+            console.log("own")
         }
         else {
+            
             res.status(200).send(myPosts.concat(postFromFollowing))
+          
         }
 
 
@@ -170,6 +179,7 @@ let getTimelinePosts = async (req, res) => {
         res.status(500).send(err);
     }
 }
+
 
 module.exports = {
     createPost,

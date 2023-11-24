@@ -36,7 +36,7 @@ const FollowersCard = ({ profile,ListModal }) => {
           <User follower={follower} key={i} />
         ))}
         {!ListModal && <div className="d-flex justify-content-center">
-          <p onClick={() => setUsersModal(true)} className=" text-primary fw-bold m-1 pointer">
+          <p onClick={() => setUsersModal(true)} className=" text-secondary  m-1 pointer">
             show more
           </p></div>}
        
@@ -65,7 +65,7 @@ const User = ({ follower }) => {
             </div>
 
             <div className="m-1">
-              <button onClick={()=>setFollow(!follow)} className={`btn  ${follow ? "btn-outline-success ":"btn-success "}`}>{follow ? "Unfollow" : "Follow"}</button>
+              <button onClick={()=>setFollow(!follow)} className={`btn  ${follow ? "btn-outline border-success ":"btn-success "}`}>{follow ? "Unfollow" : "Follow"}</button>
               
             </div>
           </Box>

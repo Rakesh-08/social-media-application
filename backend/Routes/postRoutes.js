@@ -11,7 +11,7 @@ let {verifyToken }= require("../middlewares/authMiddleware")
 
 module.exports = (app) => {
     app.post("/post",verifyToken,createPost);
-    app.get("/post/:postId",verifyToken,getPostById);
+    app.get("/post/:postId",getPostById);
     app.put("/post/:postId",verifyToken,updatePost);
     app.delete("/post/:postId",verifyToken,deletePost);
     app.put("/post/:postId/likeDislike", verifyToken, likeDislikePost);

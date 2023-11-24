@@ -15,19 +15,16 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const Navbar = () => {
   let NavigateTo = useNavigate();
   let [showSidebar,setShowSidebar]=useState(false)
-  let login = false;
+ 
   return (
     <Stack
       direction="row"
       sx={{
-        borderBottom: "1px solid white",
         minHeight: "4em",
         width: "100%",
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: "lightblue",
-        zIndex: 988,
+        alignItems: "center", 
       }}
     >
       <Box px={1}>
@@ -36,7 +33,7 @@ const Navbar = () => {
           alt="logo"
           width={50}
           style={{ borderRadius: "49%", margin: " 0.2rem" }}
-          onClick={() => NavigateTo("/")}
+          onClick={() => NavigateTo("/home")}
         />
 
         <span className="appName ">Photo<b>Gram</b></span>
@@ -46,7 +43,7 @@ const Navbar = () => {
         <SearchBar />
       </Box>
       <NavIconContainer  NavigateTo={NavigateTo}/>
-      <AuthBtns NavigateTo={NavigateTo} login={login} />
+      <AuthBtns  NavigateTo={NavigateTo}  />
       <div className="mx-2 sidebar">
         <ReorderIcon onClick={() =>setShowSidebar(true)} />
        </div>
@@ -73,7 +70,7 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
       <div className={`d-flex  m-${gap}`}>
         {" "}
         <HomeIcon
-          onClick={() => NavigateTo("/")}
+          onClick={() => NavigateTo("/home")}
           className="navIcons fs-2 p-1 "
         />{" "}
         {direction && (
@@ -83,7 +80,10 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
 
       <div className={`d-flex  m-${gap}`}>
         {" "}
-        <GroupAddIcon className="navIcons fs-2 p-1" />
+        <GroupAddIcon
+          onClick={() => NavigateTo("/users")}
+          className="navIcons fs-2 p-1"
+        />
         {direction && (
           <span className="mx-2 text-primary">{navLabel.newFriend}</span>
         )}
@@ -92,7 +92,10 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
       <div className={`d-flex  m-${gap}`}>
         {" "}
         <Badge badgeContent={5} color="secondary">
-          <NotificationsActiveIcon className="navIcons fs-2 p-1" />
+          <NotificationsActiveIcon
+            onClick={() => NavigateTo("/notifications")}
+            className="navIcons fs-2 p-1"
+          />
         </Badge>{" "}
         {direction && (
           <span className="mx-2 text-primary">{navLabel.notify}</span>
@@ -101,7 +104,10 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
 
       <div className={`d-flex  m-${gap}`}>
         <Badge badgeContent="" variant="dot" color="primary">
-          <ChatBubbleOutlineIcon className="navIcons fs-2 p-1" />
+          <ChatBubbleOutlineIcon
+            onClick={() => NavigateTo("/messages")}
+            className="navIcons fs-2 p-1"
+          />
         </Badge>
         {direction && <span className="mx-2 text-primary">{navLabel.msg}</span>}
       </div>
@@ -120,20 +126,37 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
   );
 }
 
-let AuthBtns = ({NavigateTo,login,sidebar}) => {
+let AuthBtns = ({ NavigateTo, sidebar }) => {
+  
+  let login= localStorage.getItem("pgmToken")
   return (
     <div className={`p-2 ${!sidebar && "mobFirst"}`}>
       {login ? (
-        <button className="m-1 btn btn-danger">logout</button>
+        <button onClick={() => {
+          let confirmation = window.confirm("Are you sure you want to logOut?");
+          if (confirmation) {
+            localStorage.clear();
+            NavigateTo("/Auth/login")
+          }
+          
+        }} className="m-1 btn btn-danger">logout</button>
       ) : (
         <>
           <button
-            onClick={() => NavigateTo("/Auth/signup")}
+              onClick={() => {
+               
+                NavigateTo("/Auth/signup")
+              }}
             className="btn btn-primary m-1"
           >
             signup
           </button>
-          <button className="btn btn-warning m-1">Login</button>
+          <button
+            onClick={() => NavigateTo("/Auth/login")}
+            className="btn btn-warning m-1"
+          >
+            Login
+          </button>
         </>
       )}
     </div>

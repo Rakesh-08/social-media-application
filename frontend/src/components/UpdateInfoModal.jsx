@@ -9,9 +9,10 @@ const UpdateInfoModal = ({ updateModal, setUpdateModal }) => {
       onHide={() => setUpdateModal(false)}
       centered
       size="lg"
-    >
+      backdrop="static"
+    > 
       {" "}
-      <Modal.Header className="fw-bold fs-5 " closeButton>
+      <Modal.Header className="fw-bold fs-4 " closeButton>
         Your information
       </Modal.Header>
       <Modal.Body >
