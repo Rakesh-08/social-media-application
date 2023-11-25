@@ -210,7 +210,7 @@ const Auth = ({ login }) => {
                   }}
                 >
                   
-                  <button className="btn follow btn-warning">
+                  <button className="btn my-2 btn-warning">
                     
                     {!showSpinner && <span>{authToggle ? "submit" : "login"} </span>} 
                     { showSpinner&& <><span
