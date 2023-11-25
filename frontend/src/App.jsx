@@ -20,8 +20,7 @@ import Footer from './components/Footer';
 
 
 function App() {
-
-let token= localStorage.getItem("pgmToken");
+  
   
   return (
     <BrowserRouter>
@@ -31,7 +30,7 @@ let token= localStorage.getItem("pgmToken");
       </LayoutForNonNavbar>
 
       <Routes>
-        <Route path="/" element={token?<Navigate to="/profile"/>:<Navigate to="/Auth/login" />}></Route>
+        <Route path="/" element={localStorage.getItem("pgmToken")?<Navigate to="/profile"/>:<Navigate to="/Auth/login" />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/Auth/login" element={<Auth login={true} />}></Route>

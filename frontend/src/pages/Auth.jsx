@@ -16,7 +16,8 @@ const Auth = ({ login }) => {
   let [showPasswordError, setShowPasswordError] = useState(false);
   let [signupSuccessMsg, setSignupSuccessMsg] = useState(false);
   let [showSpinner,setShowSpinner] = useState(false);
- 
+  let [guestUser, setGuestUser] = useState(false);
+  
   let [authData, setAuthData] = useState(initForm);
   let NavigateTo = useNavigate();
 
@@ -63,6 +64,14 @@ const Auth = ({ login }) => {
       })
       
     } else {
+
+      // login as guest user 
+      if (guestUser) {
+       
+        NavigateTo("/home");
+        localStorage.clear();
+        return;
+      }
            // login function
       
       let authDetails = {
@@ -75,7 +84,7 @@ const Auth = ({ login }) => {
            localStorage.setItem("authInfo", JSON.stringify(res.data));
            localStorage.setItem("pgmToken",res.data.accessToken)
            setAuthData(initForm);
-           NavigateTo("/")
+           NavigateTo("/home")
          })
          .catch((err) => {
            console.log(err);
@@ -87,7 +96,7 @@ const Auth = ({ login }) => {
   };
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center ">
+    <div className="min-vh-100 d-flex align-items-center justify-content-center">
       <Stack
         direction="row"
         sx={{ justifyContent: "space-around", width: "100%", flexWrap: "wrap" }}
@@ -148,7 +157,7 @@ const Auth = ({ login }) => {
                 )}
 
                 <input
-                  required
+                  required={!guestUser}
                   className="form-control username "
                   type="text"
                   placeholder="Username"
@@ -157,7 +166,7 @@ const Auth = ({ login }) => {
                   onChange={(e) => onChangeInAuthInput(e)}
                 />
                 <input
-                  required
+                  required={!guestUser}
                   className="form-control"
                   type={authToggle ? "text" : "password"}
                   placeholder="Password"
@@ -165,6 +174,14 @@ const Auth = ({ login }) => {
                   value={authData.password}
                   onChange={(e) => onChangeInAuthInput(e)}
                 />
+
+                {!authToggle &&
+                  <div className="p-2">
+                    <span className="mx-2" >login as guest user</span>
+                    <input type="checkbox"
+                      onChange={(e) => setGuestUser(e.target.checked)}
+                    />
+                </div>}
 
                 {authToggle && (
                   <input
@@ -220,6 +237,11 @@ const Auth = ({ login }) => {
                       setAuthData(initForm);
                       setShowPasswordError(false);
                       setAuthToggle(!authToggle);
+                      if (authToggle) {
+                        NavigateTo("/Auth/login")
+                      } else {
+                        NavigateTo("/Auth/signup")
+                      }
                     }}
                     className="pointer"
                   >

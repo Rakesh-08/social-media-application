@@ -83,6 +83,10 @@ body{
   gap:5px;
 }
 
+.updateModal div{
+  margin:0.5em;
+}
+
 .form-control{
   background-color:rgb(211, 206, 206)
 }

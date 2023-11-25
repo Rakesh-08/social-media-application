@@ -1,7 +1,7 @@
 let mongoose = require("mongoose");
-let { DB_Name, DB_URL } = require("./config/dbConfig")
+require("dotenv").config();
 
-mongoose.connect(DB_URL);
+mongoose.connect(process.env.MongoDB_URI);
 let dbConnection = mongoose.connection;
 
 dbConnection.on("error", () => {
@@ -10,19 +10,21 @@ dbConnection.on("error", () => {
 
 dbConnection.once("open", () => {
     console.log("Connected to MongoDB");
- })
+})
+
+
 
 
 
 // express middleware configuration
 
-require("dotenv").config();
+
 let express = require("express");
 let expressApp = express();
 let bodyParser = require("body-parser");
 let cors = require("cors");
 
-expressApp.use(bodyParser.json({limit:'30mb'}))
+expressApp.use(bodyParser.json({ limit: '30mb' }))
 expressApp.use(bodyParser.urlencoded({ extended: true }));
 expressApp.use(cors());
 
@@ -35,7 +37,7 @@ require("./Routes/postRoutes")(expressApp);
 
 expressApp.listen(process.env.Port, () => {
 
-     console.log("server listening on port " + process.env.Port)
+    console.log("server listening on port " + process.env.Port)
 })
 
 

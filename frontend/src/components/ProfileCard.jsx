@@ -1,14 +1,26 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { Link } from "react-router-dom"
 import { Card, CardMedia, CardContent } from "@mui/material"
+import dummyUser from '../utils/dummyUser'
 
 
 
 const ProfileCard = ({ data }) => {
+
+  let [user, setUser] = useState({});
+  useEffect(() => {
+    if (localStorage.getItem("authInfo")) {
+         setUser( JSON.parse( localStorage.getItem("authInfo")));
+    } else {
+          setUser(dummyUser)
+     }
+  }, [localStorage.getItem("authInfo")]);
+  
+  
+
   return (
     <Card
-      
-      sx={{
+        sx={{
         width:"100%",
         boxShadow: "none",
         borderRadius: "2em",
@@ -19,14 +31,12 @@ const ProfileCard = ({ data }) => {
      
     >
       <CardMedia
-        image={
-          "https://img.pikbest.com/origin/09/20/32/51npIkbEsTAyu.jpg!w700wp"
-        }
+        image={user.coverPic||dummyUser.coverPic}
         alt={"coverPhoto"}
         sx={{ width: "100%", height: data?.coverPhotoHeight || 120 }}
       ></CardMedia>
       <CardMedia
-        image={"/profile Img.png"}
+        image={user.profilePic||dummyUser.profilePic}
         alt={"profileImg"}
         sx={{
           width: data?.dim || 100,
@@ -39,21 +49,21 @@ const ProfileCard = ({ data }) => {
 
       <CardContent sx={{ width:"100%", height: "fit-content" }}>
         <div className="text-center">
-          <h6 className="fw-bold">Rakesh Mandal</h6>
-          <h6>Software Developer</h6>
+          <h6 className="fw-bold">{user.firstName} {user.lastName}</h6>
+          <h6>{`${user.about || dummyUser.about}`}</h6>
           <hr />
           <div className="d-flex  justify-content-evenly  ">
             <div>
-              <h6 className="fw-bold">805</h6>
+              <h6 className="fw-bold">{user.followers?.length}</h6>
               <p className="mb-0">Followers</p>
             </div>
 
             <div>
-              <h6 className="fw-bold">188</h6> <p className="mb-0">Following</p>
+              <h6 className="fw-bold">{user.following?.length}</h6> <p className="mb-0">Following</p>
             </div>
             {data?.profile && (
               <div>
-                <h6 className="fw-bold">7</h6> <p className="mb-0">Posts</p>
+                <h6 className="fw-bold">{user.posts?.length}</h6> <p className="mb-0">Posts</p>
               </div>
             )}
           </div>

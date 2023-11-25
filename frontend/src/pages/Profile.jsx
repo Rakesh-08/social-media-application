@@ -3,6 +3,7 @@ import TrendingTags from '../components/TrendingTags';
 import FeedSide from "../components/FeedSide"
 import ProfileRightSide from '../components/ProfileRightSide';
 import ProfileCard from '../components/ProfileCard';
+import InfoDetails from '../components/InfoDetails';
 
 const Profile = () => {
   return (
@@ -14,7 +15,9 @@ const Profile = () => {
                   profile:true,
                   coverPhotoHeight: 220,
                   dim:130
-              }} />
+        }} />
+        
+          <InfoDetails width="90%"/>
                <FeedSide profile={true} />
           </div>
          

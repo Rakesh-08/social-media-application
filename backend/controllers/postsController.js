@@ -8,16 +8,20 @@ let createPost = async (req, res) => {
 
         if (!(imgPost || desc)) {
             return res.status(400).send({
-                message:"your post can't be empty"
+                message: "your post can't be empty"
             })
         }
-           
+
         let post = await postModel.create({
-            imgPost,desc,userId:req._id
+            imgPost, desc, userId: req._id
         })
 
+        let user = await userModel.findOne({ _id: req._id });
+        user.posts.push(post._id);
+         await user.save();
+
         res.status(200).send(post)
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send(err);
@@ -27,14 +31,14 @@ let createPost = async (req, res) => {
 let getPostById = async (req, res) => {
     try {
         let post = await postModel.findOne({
-            _id:req.params.postId
+            _id: req.params.postId
         })
 
         if (!post) {
             return res.status(404).send("NO post found with givenid");
         }
 
-         res.status(200).send(post)
+        res.status(200).send(post)
     } catch (err) {
         console.log(err);
         res.status(500).send(err);
@@ -49,7 +53,7 @@ let updatePost = async (req, res) => {
         }
 
         if (post.userId != req._id) {
-            return res.status(403).send({message:"you are not allowed to update someone else's post"})
+            return res.status(403).send({ message: "you are not allowed to update someone else's post" })
         }
 
         let updatedPost = await postModel.updateOne({
@@ -77,9 +81,13 @@ let deletePost = async (req, res) => {
         };
 
         await postModel.deleteOne({
-             _id:req.params.postId
+            _id: req.params.postId
         })
-        
+
+        let user = await userModel.findOne({ _id: req._id });
+        user.posts = user.posts.filter(id => id != req.params.postId);
+        await user.save();
+
         res.status(200).send({ message: "post deleted successfully" });
 
     } catch (err) {
@@ -102,14 +110,14 @@ let likeDislikePost = async (req, res) => {
 
         let msg;
 
-        if (post.likes.includes(req._id)) { 
+        if (post.likes.includes(req._id)) {
             post.likes = post.likes.filter(id => id != req._id);
             await post.save();
-            msg= "you disliked the post"
+            msg = "you disliked the post"
         } else {
             post.likes.push(req._id);
             await post.save();
-            msg= "you liked the post"
+            msg = "you liked the post"
         }
         res.status(200).send({ message: msg });
 
@@ -126,21 +134,21 @@ let passComentsOnPost = async (req, res) => {
 
         if (!description) {
             return res.status(400).send({
-                message:"please provide a comment ,it can't be blank"
-             })
+                message: "please provide a comment ,it can't be blank"
+            })
         }
 
         let temp = {
             id: req._id,
-            comment:description
+            comment: description
         }
 
         let post = await postModel.findOne({ _id: req.params.postId });
         post.comments.push(temp);
         await post.save();
 
-        res.status(200).send({message:"comment added into this post"});
-         
+        res.status(200).send({ message: "comment added into this post" });
+
     } catch (err) {
         console.log(err);
         res.status(500).send(err);
@@ -152,25 +160,25 @@ let getTimelinePosts = async (req, res) => {
 
         let myPosts = await postModel.find({
             userId: req._id
-        }).sort({ createdAt:-1})
+        }).sort({ createdAt: -1 })
 
         let temp = await userModel.findOne({ _id: req._id });
         let arrayOfIds = temp.following;
 
         let postFromFollowing = await postModel.find({
             userId: {
-                  $in:arrayOfIds
-              }
+                $in: arrayOfIds
+            }
         }).sort({ createdAt: -1 })
-        
+
         if (req.query.own) {
             res.status(200).send(myPosts)
             console.log("own")
         }
         else {
-            
+
             res.status(200).send(myPosts.concat(postFromFollowing))
-          
+
         }
 
 

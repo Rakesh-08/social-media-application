@@ -14,7 +14,7 @@ const SinglePost = ({ data }) => {
               <div className="d-flex align-items-center">< Avatar img={data.avatar} dim={40} />
               <span className="mx-2 ">@{data.username}</span>
         </div>
-        <p><MoreVertIcon/></p>
+        <p onClick={()=>alert("Working on some action buttons for the post")}><MoreVertIcon /></p>
        </div>
           <img
         style={{ width: "100%", maxHeight: "20rem", borderRadius: "2%",objectFit:"cover" }}

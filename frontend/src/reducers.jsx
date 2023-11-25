@@ -1,13 +1,26 @@
 import { combineReducers } from "redux"
 
-let authInit={}
+let initForm = {
+  firstName: "",
+  lastName: "",
+  staysIn: "",
+  about: "",
+  workAt: "",
+  Status: "",
+  contact: "",
+  profilePic: "",
+  coverPic: "",
+  confirmation: false,
+};
 
-let authReducers = (state=authInit, action) => {
+let authReducers = (state=initForm, action) => {
     
     switch (action.type) { 
    
-        case "authInfo":
-            return state;
+        case "updateInfo":
+            
+            let info = action.payload;
+            return {...state,...info};
         default:
             return state
         

@@ -1,4 +1,5 @@
 import React from 'react'
+import dummyUser from '../utils/dummyUser';
 
 const Avatar = ({img,dim}) => {
   return (
@@ -7,7 +8,7 @@ const Avatar = ({img,dim}) => {
         className="rounded-circle"
         width={dim}
         height={dim}
-        src={img}
+        src={img||dummyUser.profilePic}
         alt="avatar"
       />
     </div>

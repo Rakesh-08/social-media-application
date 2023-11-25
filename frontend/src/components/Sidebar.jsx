@@ -19,7 +19,7 @@ function Sidebar({showSidebar,setShowSidebar}) {
               height: "fit-content",
               backgroundColor:"lightGray"
               
-      }} show={showSidebar} onHide={closeSidebar} backdrop="static" placement="end">
+      }} show={showSidebar} onHide={closeSidebar} placement="end">
         <Offcanvas.Header  closeButton>
            </Offcanvas.Header>
               <Offcanvas.Body>
@@ -35,7 +35,7 @@ function Sidebar({showSidebar,setShowSidebar}) {
                           closeSidebar:closeSidebar
                        },
                        
-                  }} NavigateTo={NavigateTo} />
+                  }} setShowSidebar={setShowSidebar} NavigateTo={NavigateTo} />
                   <AuthBtns NavigateTo={NavigateTo} login={false} sidebar={true} />
         </Offcanvas.Body>
       </Offcanvas>

@@ -33,10 +33,8 @@ let updateUserById = async (req, res) => {
        
         };
 
-        
-
         let updatedUser = await userModal.findOneAndUpdate({
-            _id: req.params.userId
+            _id: req._id
         },req.body,{new:true})
         
 
@@ -47,14 +45,10 @@ let updateUserById = async (req, res) => {
         })
         };
     
-
-    
         {
             updatedUser.password = "";
-            
-    res.status(200).send(updatedUser)
-        
-        }
+             res.status(200).send(updatedUser)
+             }
 
    
     } catch (err) {

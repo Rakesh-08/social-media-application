@@ -36,7 +36,7 @@ const FollowersCard = ({ profile,ListModal }) => {
           <User follower={follower} key={i} />
         ))}
         {!ListModal && <div className="d-flex justify-content-center">
-          <p onClick={() => setUsersModal(true)} className=" text-secondary  m-1 pointer">
+          <p onClick={() => setUsersModal(true)} className="   m-1 pointer">
             show more
           </p></div>}
        

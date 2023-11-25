@@ -1,5 +1,5 @@
-import React,{useState} from "react";
-import { useNavigate } from "react-router-dom"
+import React,{useState,useEffect} from "react";
+import { useNavigate,useLocation } from "react-router-dom"
 import { Link } from "react-router-dom";
 import { Box, Stack, Badge } from "@mui/material";
 import Sidebar from "./Sidebar";
@@ -54,8 +54,15 @@ const Navbar = () => {
 
 export default Navbar;
 
-let NavIconContainer = ({ NavigateTo, sidebarData }) => {
-  
+let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
+  let location = useLocation();
+  let navAction = (path) => {
+    NavigateTo(path);
+    if (setShowSidebar) {
+       setShowSidebar(false)
+    }
+   
+ }
   let {direction,navLabel,gap}= sidebarData||{};
   return (
     <div
@@ -70,8 +77,12 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
       <div className={`d-flex  m-${gap}`}>
         {" "}
         <HomeIcon
-          onClick={() => NavigateTo("/home")}
-          className="navIcons fs-2 p-1 "
+          onClick={() => {
+           navAction("/home");
+          }}
+          className={`navIcons ${
+            location.pathname == "/home" && "bg-secondary rounded"
+          } fs-2 p-1`}
         />{" "}
         {direction && (
           <span className="mx-2 text-primary">{navLabel.home}</span>
@@ -81,8 +92,12 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
       <div className={`d-flex  m-${gap}`}>
         {" "}
         <GroupAddIcon
-          onClick={() => NavigateTo("/users")}
-          className="navIcons fs-2 p-1"
+          onClick={() => {
+            navAction("/users")
+          }}
+          className={`navIcons ${
+            location.pathname == "/users" && "bg-secondary rounded"
+          } fs-2 p-1`}
         />
         {direction && (
           <span className="mx-2 text-primary">{navLabel.newFriend}</span>
@@ -93,8 +108,12 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
         {" "}
         <Badge badgeContent={5} color="secondary">
           <NotificationsActiveIcon
-            onClick={() => NavigateTo("/notifications")}
-            className="navIcons fs-2 p-1"
+            onClick={() => {
+              navAction("/notifications")
+            }}
+            className={`navIcons ${
+              location.pathname == "/notifications" && "bg-secondary rounded"
+            } fs-2 p-1`}
           />
         </Badge>{" "}
         {direction && (
@@ -105,8 +124,12 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
       <div className={`d-flex  m-${gap}`}>
         <Badge badgeContent="" variant="dot" color="primary">
           <ChatBubbleOutlineIcon
-            onClick={() => NavigateTo("/messages")}
-            className="navIcons fs-2 p-1"
+            onClick={() => {
+              navAction("/messages")
+            }}
+            className={`navIcons ${
+              location.pathname == "/messages" && "bg-secondary rounded"
+            } fs-2 p-1`}
           />
         </Badge>
         {direction && <span className="mx-2 text-primary">{navLabel.msg}</span>}
@@ -115,8 +138,13 @@ let NavIconContainer = ({ NavigateTo, sidebarData }) => {
       <div className={`d-flex  m-${gap}`}>
         {" "}
         <AccountCircleIcon
-          onClick={() => NavigateTo("/profile")}
-          className="navIcons fs-2 p-1 "
+          onClick={() => {
+            navAction("/profile")
+          }
+          }
+          className={`navIcons ${
+            location.pathname == "/profile" && "bg-secondary rounded"
+          } fs-2 p-1`}
         />{" "}
         {direction && (
           <span className="mx-2 text-primary">{navLabel.profile}</span>
