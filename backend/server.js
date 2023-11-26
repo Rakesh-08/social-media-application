@@ -14,8 +14,6 @@ dbConnection.once("open", () => {
 
 
 
-
-
 // express middleware configuration
 
 
@@ -23,16 +21,21 @@ let express = require("express");
 let expressApp = express();
 let bodyParser = require("body-parser");
 let cors = require("cors");
+let path= require("path")
 
-expressApp.use(bodyParser.json({ limit: '30mb' }))
+expressApp.use(express.static(path.join(__dirname, "/public")));
+
+expressApp.use(bodyParser.json())
 expressApp.use(bodyParser.urlencoded({ extended: true }));
 expressApp.use(cors());
+
 
 
 // routes
 require("./Routes/userRoutes")(expressApp);
 require("./Routes/authRoutes")(expressApp);
 require("./Routes/postRoutes")(expressApp);
+
 
 
 expressApp.listen(process.env.Port, () => {

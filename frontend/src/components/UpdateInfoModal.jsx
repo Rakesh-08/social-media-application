@@ -1,7 +1,8 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUserDetails } from '../apiCalls/usersApi';
+import { deleteUser, updateUserDetails } from '../apiCalls/usersApi';
 
 
 
@@ -28,6 +29,7 @@ const UpdateInfoModal = ({ updateModal, setUpdateModal }) => {
 
     updateUserDetails(updateUser).then((res) => {
       setUpdateModal(false);
+      
       localStorage.setItem("authInfo",JSON.stringify(res.data))
     }).catch((err) =>
     {
@@ -167,3 +169,69 @@ const UpdateInfoModal = ({ updateModal, setUpdateModal }) => {
 }
 
 export default UpdateInfoModal
+
+
+const DeleteAccountModal = ({openDeleteModal,setOpenDeleteModal,username,userId }) => {
+     
+  let [showMsg, setShowMsg] = useState(false);
+  let NavigateTo = useNavigate();
+
+
+  let handleDeleteAccount = (e) => {
+    e.preventDefault();
+
+     if (!localStorage.getItem("pgmToken")) {
+       alert("Please login first to delete your account");
+       return;
+     }
+ 
+    if (e.target[0].value !== username) {
+      setShowMsg(true)
+        return
+    } 
+
+      deleteUser(userId)
+        .then((res) => {
+          console.log(res.data.message);
+          alert(res.data.message)
+          NavigateTo("/Auth/singup")
+        }).catch((err) => {
+          console.log(err);
+          alert(err.response.data.message)
+        })
+      
+    
+    
+  }
+  return (
+    <Modal
+      show={openDeleteModal}
+      onHide={() => setOpenDeleteModal(false)}
+      centered
+      backdrop="static"
+    >
+      <Modal.Body className="p-3">
+        <form onSubmit={handleDeleteAccount}>
+          <label>Enter your username to confirm </label>
+          <input className="form-control" type="text" />
+          {showMsg && <p className="text-danger">*username is incorrect</p>}
+
+          <div className="d-flex justify-content-end m-2">
+            <button type="submit" className="btn btn-outline-primary m-1">
+              confirm
+            </button>
+            <button
+              type="button"
+              onClick={() => setOpenDeleteModal(false)}
+              className="btn btn-outline-danger m-1"
+            >
+              cancel
+            </button>
+          </div>
+        </form>
+      </Modal.Body>
+    </Modal>
+  );
+}
+
+export { DeleteAccountModal };

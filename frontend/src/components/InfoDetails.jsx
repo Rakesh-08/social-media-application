@@ -1,14 +1,16 @@
 import React,{useState,useEffect} from 'react'
 import { Card } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit";
-import UpdateInfoModal from './UpdateInfoModal';
+import UpdateInfoModal, { DeleteAccountModal } from './UpdateInfoModal';
 import dummyUser from "../utils/dummyUser";
 import { useDispatch } from "react-redux";
+
 
 
 const InfoDetails = ({width}) => {
   let [updateModal, setUpdateModal] = useState(false)
   let [user, setUser] = useState({});
+  let [openDeleteModal, setOpenDeleteModal] = useState(false)
   let dispatch = useDispatch();
   
    useEffect(() => {
@@ -61,7 +63,7 @@ const InfoDetails = ({width}) => {
           <span>{user.contact}</span>
         </div>
         <div className="my-2" >
-          <span className="pointer text-danger border-bottom border-2 border-danger"> Delete Account</span>
+          <span onClick={()=>setOpenDeleteModal(true)} className="pointer text-danger border-bottom border-2 border-danger"> Delete Account</span>
           
         </div>
       </div>
@@ -69,6 +71,7 @@ const InfoDetails = ({width}) => {
         updateModal={updateModal}
         setUpdateModal={setUpdateModal}
       />
+      <DeleteAccountModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} username={user.username} userId={user._id} />
     </Card>
   );
 }

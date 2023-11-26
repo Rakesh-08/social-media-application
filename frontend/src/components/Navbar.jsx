@@ -161,7 +161,7 @@ let AuthBtns = ({ NavigateTo, sidebar }) => {
     <div className={`p-2 ${!sidebar && "mobFirst"}`}>
       {login ? (
         <button onClick={() => {
-          let confirmation = window.confirm("Are you sure you want to logOut?");
+          let confirmation = window.confirm("Are you sure you want to log Out?");
           if (confirmation) {
             localStorage.clear();
             NavigateTo("/Auth/login")

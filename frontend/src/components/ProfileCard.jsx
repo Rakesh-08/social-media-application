@@ -21,7 +21,7 @@ const ProfileCard = ({ data }) => {
   return (
     <Card
         sx={{
-        width:"100%",
+        width:"95%",
         boxShadow: "none",
         borderRadius: "2em",
         marginBottom: "1em",

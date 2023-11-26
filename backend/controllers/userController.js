@@ -22,12 +22,49 @@ let getUserById = async (req, res) => {
     }
 }
 
+let fetchUsers = async (req, res) => {
+    let { followers, following } = req.body;
+
+    try {
+        let users;
+        let query = [];
+
+        if (followers) {
+            query=followers
+        } else if(following) {
+            query=following
+        }
+
+        if (query?.length > 0) {
+            users = await userModal.find({
+                _id: {
+                  $in: query
+              }}) 
+        }
+         else {
+            users = await userModal.find({});
+    }
+    
+    if (users?.length < 1) {
+        return res.status(404).send({
+            message:"No users found"
+        })
+        }
+        
+        res.status(200).send(users)
+
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err)
+     }
+
+}
+
 let updateUserById = async (req, res) => {
     let { password } = req.body;
   
     try {
-        
-       
         if (password) {
             req.body.password =  await bcrypt.hashSync(password, 8)
        
@@ -139,5 +176,6 @@ module.exports = {
     updateUserById,
     deleteUser,
     followUser,
-    unfollowUser
+    unfollowUser,
+    fetchUsers
 }

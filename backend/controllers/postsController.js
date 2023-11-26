@@ -1,19 +1,26 @@
 let postModel = require("../models/postsModel");
 let userModel = require("../models/userModal");
 
+
 let createPost = async (req, res) => {
 
-    let { imgPost, desc } = req.body;
+
+    let desc = req.body.description;
+    let baseUrl = process.env.BASE_URL;
+    let path = req.file.filename;
+
     try {
 
-        if (!(imgPost || desc)) {
+        if (!(path || desc)) {
             return res.status(400).send({
                 message: "your post can't be empty"
             })
         }
 
         let post = await postModel.create({
-            imgPost, desc, userId: req._id
+            userId: req._id,
+              desc:desc,
+              imgPost:`${baseUrl}/public/posts/${path}`
         })
 
         let user = await userModel.findOne({ _id: req._id });

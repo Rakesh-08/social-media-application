@@ -48,7 +48,22 @@ const FollowersCard = ({ profile,ListModal }) => {
 }
 
 const User = ({ follower }) => {
-    let [follow, setFollow] = useState(false);
+  let [follow, setFollow] = useState(false);
+  
+  let followUnfollowAction = () => {
+    setFollow(!follow);
+
+    if (!localStorage.getItem("pgmToken")){
+         return;
+    };
+
+    // call the follow or unfollow action
+    if (follow) {
+         //unfollow action
+    } else {
+      // follow action
+     }
+  }
   return (
     <Box
             display="flex"
@@ -65,7 +80,7 @@ const User = ({ follower }) => {
             </div>
 
             <div className="m-1">
-              <button onClick={()=>setFollow(!follow)} className={`btn  ${follow ? "btn-outline border-success ":"btn-success "}`}>{follow ? "Unfollow" : "Follow"}</button>
+              <button onClick={followUnfollowAction} className={`btn  ${follow ? "btn-outline border-success ":"btn-success "}`}>{follow ? "Unfollow" : "Follow"}</button>
               
             </div>
           </Box>
