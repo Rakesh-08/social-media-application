@@ -1,30 +1,39 @@
-import React,{useState} from 'react'
-import followersList from "../utils/followersData";
+import React,{useState,useEffect} from 'react'
+// import followersList from "../utils/followersData";
 import { Card, Box,Typography } from "@mui/material";
 import Avatar from "./Avatar";
 import UsersListModal from './UsersListModal';
+import { fetchAllUsers, followUnfollowUser } from '../apiCalls/usersApi';
 
-const FollowersCard = ({ profile,ListModal }) => {
+
+
+const FollowersCard = ({sliced,heading,query }) => {
  
-  let [usersModal,setUsersModal]=useState(false)
-  
-  let list;
-  if (profile) {
-    list= followersList.slice(0, 4)
-  } else if (ListModal) {
-    list= followersList
-  } else {
-   list= followersList.slice(0, 2)
+  let [usersModal, setUsersModal] = useState(false)
+  let [users,setUsers]=useState([])
+ 
+  let userId = JSON.parse(localStorage.getItem("authInfo"))._id;
+  useEffect(() => {
+    getAllUsers();
+  },[query])
+   
+  let getAllUsers = () => {
+      
+    fetchAllUsers(query).then((res) => {
+      setUsers(res.data)
+      
+       }).catch((err) => {console.log(err)});
   }
-     
+ 
+
   return (
-    <div className={`mx-3 mobFirst1 `}>
+    <div className={`mx-3 ${sliced &&"mobFirst1"} `}>
       {" "}
       <Typography sx={{ fontWeight: "bold" }} my={2}>
-        
-          Who is following you
+        {heading}
       </Typography>
-      <Card
+
+      {users.length>0? <Card
         sx={{
           width: "100%",
           backgroundColor: "transparent",
@@ -32,37 +41,69 @@ const FollowersCard = ({ profile,ListModal }) => {
           padding: "1em",
         }}
       >
-        {list.map((follower, i) => (
-          <User follower={follower} key={i} />
-        ))}
-        {!ListModal && <div className="d-flex justify-content-center">
+        {users.slice(0, sliced).map((follower, i) => {
+
+          if (follower._id==userId) {
+             return 
+           }
+          return (<User user={follower} key={follower._id} query={query} userId={userId} />)
+        })}
+       
+       {sliced&&<div className="d-flex justify-content-center">
           <p onClick={() => setUsersModal(true)} className="   m-1 pointer">
             show more
-          </p></div>}
+          </p></div> } 
        
-      </Card>
+      </Card>:<p>You have not socialized with peoples, try to connect with peoples </p>}
+     
       <UsersListModal usersModal={usersModal} setUsersModal={setUsersModal} />
 
     </div>
   );
 }
 
-const User = ({ follower }) => {
+const User = ({ user,query,userId}) => {
   let [follow, setFollow] = useState(false);
-  
+ 
+ 
+  useEffect(() => {
+    if (user.followers.includes(userId)) {
+           setFollow(true)
+    }
+    
+  }, [query]);
+    
   let followUnfollowAction = () => {
-    setFollow(!follow);
 
     if (!localStorage.getItem("pgmToken")){
          return;
     };
 
-    // call the follow or unfollow action
     if (follow) {
-         //unfollow action
+         //unfollow action 
+       followUnfollowUser(user._id,"unfollow")
+         .then((res) => {
+           setFollow(!follow);
+           if (res.data.username) {
+             
+           localStorage.setItem("authInfo",JSON.stringify(res.data))
+           }
+         })
+         .catch((err) => {
+           console.log(err);
+         });
+        
     } else {
       // follow action
-     }
+      followUnfollowUser(user._id,"follow").then((res) => {
+        setFollow(!follow);
+         localStorage.setItem("authInfo", JSON.stringify(res.data));
+      }).catch(err => {
+        console.log(err);
+      })
+      
+    }
+
   }
   return (
     <Box
@@ -72,10 +113,10 @@ const User = ({ follower }) => {
            
           >
             <div className="m-1 d-flex ">
-              <Avatar img={follower.img} dim="45" />
+              <Avatar img={user.img} dim="45" />
               <div className="m-1 mx-2 d-flex flex-column ">
-                <span className="fw-bold"> {follower.name}</span>
-                <span>@{follower.username}</span>
+                <span className="fw-bold"> {user.name}</span>
+                <span>@{user.username}</span>
               </div>
             </div>
 

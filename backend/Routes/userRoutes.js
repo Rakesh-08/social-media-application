@@ -2,7 +2,7 @@ let {
     getUserById,
     updateUserById,
     deleteUser,
-    followUser,
+    followUnfollowUser,
     unfollowUser,
     fetchUsers
 } = require("../controllers/userController");
@@ -13,8 +13,7 @@ module.exports = (app) => {
     app.get("/user/:userId",verifyToken,getUserById);
     app.put("/user/:userId",verifyToken,updateUserById);
     app.delete("/user/:userId",verifyToken,deleteUser);
-    app.put("/user/:userId/follow",verifyToken,followUser);
-    app.put("/user/:userId/unfollow", verifyToken, unfollowUser);
+    app.put("/user/:userId/followUnfollow",verifyToken,followUnfollowUser);
     app.get("/users",verifyToken,fetchUsers)
     
 }

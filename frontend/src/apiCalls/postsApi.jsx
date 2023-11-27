@@ -22,9 +22,9 @@ let deletePost = async (id) => {
   return await axios.delete(apis.Base_Url + `/post/${id}`, token);
 };
 
-let getTimelinePost = async () => {
+let getTimelinePost = async (q) => {
 
-    return await axios.get(apis.Base_Url + apis.getTimelinePostApi,token);
+    return await axios.get(apis.Base_Url + apis.getTimelinePostApi+`?post=${q}`,token);
 }
 
 let likeDislike = async (id) => {
@@ -37,8 +37,5 @@ let commentOnPostApi = async (id) => {
     return await axios.put(apis.Base_Url + `/post/${id}/comment`, token);
 }
  
-let uploadPost = async (data) => {
-  return await axios.post(apis.Base_Url + "/post/uploadPost",data,token)
-}
 
-export {createPost, updatePost,deletePost,likeDislike,commentOnPostApi,uploadPost ,getTimelinePost };
+export {createPost, updatePost,deletePost,likeDislike,commentOnPostApi ,getTimelinePost };

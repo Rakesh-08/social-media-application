@@ -1,16 +1,16 @@
 import React,{useState,useEffect} from 'react'
 import { Link } from "react-router-dom"
 import { Card, CardMedia, CardContent } from "@mui/material"
-import dummyUser from '../utils/dummyUser'
-
+import dummyUser from '../utils/dummyUser';
 
 
 const ProfileCard = ({ data }) => {
 
   let [user, setUser] = useState({});
+  
   useEffect(() => {
     if (localStorage.getItem("authInfo")) {
-         setUser( JSON.parse( localStorage.getItem("authInfo")));
+        setUser( JSON.parse( localStorage.getItem("authInfo")));
     } else {
           setUser(dummyUser)
      }

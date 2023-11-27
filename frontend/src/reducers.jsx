@@ -1,4 +1,20 @@
 import { combineReducers } from "redux"
+import { getUser } from "./apiCalls/usersApi"
+
+let currentUser = () => {
+  let id = JSON.parse(localStorage.getItem("authInfo"))._id;
+  let result;
+
+  getUser(id)
+    .then((res) => {
+        result = res.data;
+        localStorage.setItem("authInfo", JSON.stringify(result));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return result;
+};
 
 let initForm = {
   firstName: "",
@@ -10,8 +26,11 @@ let initForm = {
   contact: "",
   profilePic: "",
   coverPic: "",
-  confirmation: false,
+    confirmation: false,
+  fetch:currentUser
 };
+
+
 
 let authReducers = (state=initForm, action) => {
     
@@ -20,7 +39,7 @@ let authReducers = (state=initForm, action) => {
         case "updateInfo":
             
             let info = action.payload;
-            return {...state,...info};
+            return { ...state, ...info };
         default:
             return state
         

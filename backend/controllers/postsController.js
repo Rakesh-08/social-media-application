@@ -4,28 +4,38 @@ let userModel = require("../models/userModal");
 
 let createPost = async (req, res) => {
 
-
     let desc = req.body.description;
     let baseUrl = process.env.BASE_URL;
-    let path = req.file.filename;
-
+   
     try {
-
-        if (!(path || desc)) {
+        if (!(req.file || desc)) {
             return res.status(400).send({
                 message: "your post can't be empty"
             })
         }
 
+        let url;
+
+        if (req.file) {
+             url=`${baseUrl}/posts/${req.file.filename}`
+        } else {
+            url=""
+        }
+
+
+        let user = await userModel.findOne({ _id: req._id });
+
         let post = await postModel.create({
             userId: req._id,
               desc:desc,
-              imgPost:`${baseUrl}/public/posts/${path}`
+            imgPost: url,
+              username: user.username,
+              profilePic:user.profilePic
         })
 
-        let user = await userModel.findOne({ _id: req._id });
+        
         user.posts.push(post._id);
-         await user.save();
+        await user.save();
 
         res.status(200).send(post)
 
@@ -178,9 +188,9 @@ let getTimelinePosts = async (req, res) => {
             }
         }).sort({ createdAt: -1 })
 
-        if (req.query.own) {
+        if (req.query.post=="own") {
             res.status(200).send(myPosts)
-            console.log("own")
+            
         }
         else {
 

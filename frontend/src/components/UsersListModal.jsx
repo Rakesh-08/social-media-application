@@ -10,9 +10,8 @@ const UsersListModal = ({ usersModal,setUsersModal }) => {
       centered
       scrollable={true}
     >
-          <Modal.Body>
-        <FollowersCard ListModal={true} />
-        
+      <Modal.Body>
+        <FollowersCard query="followers" heading="Your followers" />
       </Modal.Body>
     </Modal>
   );

@@ -23,37 +23,38 @@ let getUserById = async (req, res) => {
 }
 
 let fetchUsers = async (req, res) => {
-    let { followers, following } = req.body;
+    let { followers, following } = req.query
+             
 
     try {
         let users;
-        let query = [];
+        let query;
+
+        let user = await userModal.findOne({
+            _id:req._id
+        })
 
         if (followers) {
-            query=followers
-        } else if(following) {
-            query=following
-        }
+            query = user?.followers;
+        } else if (following) {
+            query = user?.following;
+        };
 
-        if (query?.length > 0) {
+
+
+
+        if (query) {
             users = await userModal.find({
                 _id: {
                   $in: query
-              }}) 
-        }
-         else {
-            users = await userModal.find({});
+                }
+ })}
+        else {
+             users = await userModal.find({});
     }
     
-    if (users?.length < 1) {
-        return res.status(404).send({
-            message:"No users found"
-        })
-        }
-        
         res.status(200).send(users)
-
-
+        
     } catch (err) {
         console.log(err);
         res.status(500).send(err)
@@ -93,6 +94,7 @@ let updateUserById = async (req, res) => {
         res.status(500).send( err )
     }
 }
+
 let deleteUser = async (req, res) => {
     try {
         await userModal.deleteOne({ _id: req.params.userId });
@@ -106,76 +108,66 @@ let deleteUser = async (req, res) => {
         res.status(500).send(err)
     }
 }
-let followUser = async (req, res) => {
-    let {userId} = req.params
+
+let followUnfollowUser = async (req, res) => {
+    let { userId } = req.params;
+    let { action } = req.query;
     try {
 
         if (userId == req._id) {
             return res.status(400).send({
-                message: "you can't follow your own account"
+                message: "you can't follow/unfollow your own account"
             })
         }
 
         let requester = await userModal.findOne({ _id: req._id });
         let referringTo = await userModal.findOne({ _id: userId });
-
-        if (requester.following.includes(userId)) {
-            return res.status(200).send({
-                 message:"you are already following him"
-             })
-        }
+       
+        if (action=="follow") {
+       
+            if (requester.following.includes(userId)) {
+                return res.status(200).send({
+                    message: "you are already following him"
+                })
+            }
         
-        requester.following.push(userId);
-        referringTo.followers.push(req._id);
-        await requester.save();
-        await referringTo.save();
+            requester.following.push(userId);
+            referringTo.followers.push(req._id);
+            await requester.save();
+            await referringTo.save();
 
-        res.status(200).send({message:"you are now following him"});
+        
+
+            res.status(200).send(requester)
+        } else {
+         
+
+            if (!requester.following.includes(userId)) {
+                return res.status(200).send({
+                    message: "you are not following him already"
+                })
+            }
+
+            requester.following = requester.following.filter(id => id != userId);
+            referringTo.followers = requester.followers.filter(id => id != req._id)
+            await requester.save();
+            await referringTo.save();
+            
+
+            res.status(200).send(requester);
+        }
 
     } catch (err) {
         console.log(err);
         res.status(500).send(err)
     }
 }
-let unfollowUser = async (req, res) => {
-    let { userId } = req.params
-    try {
 
-        if (userId == req._id) {
-            return res.status(400).send({
-                message: "you can't Unfollow your own account"
-            })
-        }
-
-        let requester = await userModal.findOne({ _id: req._id });
-        let referringTo = await userModal.findOne({ _id: userId });
-
-      
-
-        if (!requester.following.includes(userId)) {
-            return res.status(200).send({
-                message: "you are not following him already"
-            })
-        }
-
-        requester.following = requester.following.filter(id => id != userId);
-        referringTo.followers=requester.followers.filter(id =>id!=req._id)
-        await requester.save();
-        await referringTo.save();
-
-        res.status(200).send({ message: "you have unfollowed him" });
-
-    } catch (err) {
-        console.log(err);
-        res.status(500).send(err)
-    }
-}
 
 module.exports = {
     getUserById,
     updateUserById,
     deleteUser,
-    followUser,
-    unfollowUser,
+    followUnfollowUser,
     fetchUsers
 }

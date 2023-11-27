@@ -7,7 +7,7 @@ const ProfileRightSide = () => {
   return (
       <div>
          <InfoDetails/>
-      <FollowersCard profile={true} />
+      <FollowersCard query="followers" sliced={2} heading="who is following you" />
           
     </div>
   )

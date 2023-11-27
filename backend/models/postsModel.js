@@ -10,7 +10,9 @@ let postSchema = new mongoose.Schema({
     imgPost: String,
     likes: [],
     comments: [{}],
-    desc: String
+    desc: String,
+    username: String,
+    profilePic: String
 },
     { timestamps: true });
 

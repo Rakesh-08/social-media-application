@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Stack, Box, Card } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { loginCall, signupCall } from "../apiCalls/authApis";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 let initForm = {
   firstName: "",
@@ -17,6 +19,7 @@ const Auth = ({ login }) => {
   let [signupSuccessMsg, setSignupSuccessMsg] = useState(false);
   let [showSpinner,setShowSpinner] = useState(false);
   let [guestUser, setGuestUser] = useState(false);
+  let [showPassword,setShowPassword] = useState(false);
   
   let [authData, setAuthData] = useState(initForm);
   let NavigateTo = useNavigate();
@@ -32,7 +35,7 @@ const Auth = ({ login }) => {
 
   let handleSubmit = (e) => {
     e.preventDefault();
-    setShowSpinner(true)
+    
 
     if (authToggle) {
             // sign up function
@@ -45,6 +48,7 @@ const Auth = ({ login }) => {
         }, 5000);
         return;
       }
+      setShowSpinner(true);
 
       signupCall(authDetails)
         .then((data) => {
@@ -64,6 +68,7 @@ const Auth = ({ login }) => {
       })
       
     } else {
+      setShowSpinner(true);
 
       // login as guest user 
       if (guestUser) {
@@ -165,23 +170,36 @@ const Auth = ({ login }) => {
                   value={authData.username}
                   onChange={(e) => onChangeInAuthInput(e)}
                 />
-                <input
-                  required={!guestUser}
-                  className="form-control"
-                  type={authToggle ? "text" : "password"}
-                  placeholder="Password"
-                  name="password"
-                  value={authData.password}
-                  onChange={(e) => onChangeInAuthInput(e)}
-                />
 
-                {!authToggle &&
-                  <div className="p-2">
-                    <span className="mx-2" >login as guest user</span>
-                    <input type="checkbox"
+                <div className="position-relative ">
+                  <input
+                    required={!guestUser}
+                    className="form-control "
+                    type={showPassword?"text":"password"}
+                    placeholder="Password"
+                    name="password"
+                    value={authData.password}
+                    onChange={(e) => onChangeInAuthInput(e)}
+                  />
+
+                  {!authToggle && <span
+                    onClick={()=>setShowPassword(!showPassword)}
+                    style={{ position: "absolute", top: "10%", right: "5%" }}
+                  >
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </span>}
+                 
+                </div>
+
+                {!authToggle && (
+                  <div className="p-2 my-2">
+                    <span className="mx-2">login as guest user</span>
+                    <input
+                      type="checkbox"
                       onChange={(e) => setGuestUser(e.target.checked)}
                     />
-                </div>}
+                  </div>
+                )}
 
                 {authToggle && (
                   <input
@@ -209,18 +227,21 @@ const Auth = ({ login }) => {
                     alignSelf: "center",
                   }}
                 >
-                  
                   <button className="btn follow btn-warning">
-                    
-                    {!showSpinner && <span>{authToggle ? "submit" : "login"} </span>} 
-                    { showSpinner&& <><span
-                        className="spinner-border text-secondary mx-1 spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      Loading...</>}  
-                    </button>
-                  
+                    {!showSpinner && (
+                      <span>{authToggle ? "submit" : "login"} </span>
+                    )}
+                    {showSpinner && (
+                      <>
+                        <span
+                          className="spinner-border text-secondary mx-1 spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        ...wait
+                      </>
+                    )}
+                  </button>
                 </div>
                 <p
                   style={{
@@ -236,11 +257,12 @@ const Auth = ({ login }) => {
                     onClick={() => {
                       setAuthData(initForm);
                       setShowPasswordError(false);
+                      setSignupSuccessMsg(false);
                       setAuthToggle(!authToggle);
                       if (authToggle) {
-                        NavigateTo("/Auth/login")
+                        NavigateTo("/Auth/login");
                       } else {
-                        NavigateTo("/Auth/signup")
+                        NavigateTo("/Auth/signup");
                       }
                     }}
                     className="pointer"
@@ -257,7 +279,7 @@ const Auth = ({ login }) => {
                     fontSize: "1.04em",
                   }}
                 >
-                  sign up Successfully
+                  sign up Successfully! try to login now
                 </div>
               )}
             </form>

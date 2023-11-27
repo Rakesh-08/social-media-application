@@ -31,6 +31,7 @@ module.exports.validateSignup = async (req, res, next) => {
 
 module.exports.verifyToken = ( req,res,next) => {
     let token = req.headers["x-access-token"];
+     
 
     if (!token) {
         return res.status(401).send({ message: 'please pass the token along with request' })

@@ -10,21 +10,25 @@ import SendIcon from "@mui/icons-material/Send";
 import Avatar from './Avatar';
 import dummyUser from '../utils/dummyUser';
 import { createPost } from '../apiCalls/postsApi';
+import { useSelector } from "react-redux";
 
 
 const FeedSide = ({profile}) => {
-  
- 
+  let [refetchPost,setRefetchPost] = useState(false)
   
   return (
     <Box mx={1} py={1} sx={{ minHeight: "100vh" }}>
-            <SharePostConttainer/>
-      {profile &&
+      <SharePostConttainer setRefetchPost={setRefetchPost} />
+      {profile && (
         <Typography variant="h6" m={3}>
-          <span className="text-danger mx-1"><SendIcon /></span> Your Posts
-      </Typography>}
+          <span className="text-danger mx-1">
+            <SendIcon />
+          </span>{" "}
+          Your Posts
+        </Typography>
+      )}
 
-      <PostContainer  />
+      <PostContainer profile={profile}  refetchPost={refetchPost} />
     </Box>
   );
 }
@@ -33,13 +37,22 @@ const FeedSide = ({profile}) => {
 
 export default FeedSide;
 
-let SharePostConttainer = () => {
+let SharePostConttainer = ({ setRefetchPost }) => {
+  
   let [imgUpload, setImgUpload] = useState("");
   let [newPostDescription, setNewPostDescription] = useState("");
-  let [showSpinner,setShowSpinner] = useState(false); 
+  let [showSpinner, setShowSpinner] = useState(false);
 
-  let handlePostShare = (e) => {
+  let state = useSelector(state => state.authReducers)
+ 
+  let handlePostShare = async(e) => {
     e.preventDefault();
+
+    if (!(imgUpload || newPostDescription)) {
+        return alert("empty post can't be uploaded")
+    }
+
+    setShowSpinner(true)
 
      if (!localStorage.getItem("pgmToken")) {
        alert("Please login first to share anything with your friends");
@@ -51,12 +64,18 @@ let SharePostConttainer = () => {
     Data.append("post", imgUpload)
     
     createPost(Data).then((res) => {
-        console.log(res)
+      alert("Post created successfully");
+      setShowSpinner(false)
+      setImgUpload("");
+      setNewPostDescription("");
+      setRefetchPost(true);
+      state.fetch();
     }).catch((err) => {
       console.log(err);
+      setShowSpinner(false)
+      alert(err.response.data.message||err.message)
       })
   }
-  
 
 
   return (

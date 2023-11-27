@@ -192,9 +192,9 @@ const DeleteAccountModal = ({openDeleteModal,setOpenDeleteModal,username,userId 
 
       deleteUser(userId)
         .then((res) => {
-          console.log(res.data.message);
           alert(res.data.message)
-          NavigateTo("/Auth/singup")
+          localStorage.clear();
+          NavigateTo("/Auth/signup")
         }).catch((err) => {
           console.log(err);
           alert(err.response.data.message)

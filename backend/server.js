@@ -21,7 +21,7 @@ let express = require("express");
 let expressApp = express();
 let bodyParser = require("body-parser");
 let cors = require("cors");
-let path= require("path")
+let path = require("path")
 
 expressApp.use(express.static(path.join(__dirname, "/public")));
 

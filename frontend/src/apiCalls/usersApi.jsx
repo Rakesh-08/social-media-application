@@ -8,6 +8,10 @@ let tokenHeader = {
     
 }
 
+let getUser = async (id) => {
+  let token = await tokenHeader;
+   return await axios.get(apis.Base_Url+ `/user/${id}`,token)
+ }
 
 let updateUserDetails = async (obj) => {
   let token = await tokenHeader;
@@ -19,13 +23,15 @@ let deleteUser = async (id) => {
   return await axios.delete(apis.Base_Url+`/user/${id}`,token)
 }
 
-let followUser = async (id) => {
+let fetchAllUsers = async (q) => {
+  let token = await tokenHeader;
+  return await axios.get(apis.Base_Url+`/users?${q}=${true}`,token)
+}
+
+let followUnfollowUser = async (id,action) => {
    let token = await tokenHeader;
-  return await axios.put(apis.Base_Url +`/user/${id}/follow`, token);
-};
-let unFollowUser = async (id) => {
-   let token = await tokenHeader;
-  return await axios.put(apis.Base_Url + `/user/${id}/unfollow`,  token);
+  return await axios.put(apis.Base_Url +`/user/${id}/followUnfollow?action=${action}`,{},token);
 };
 
-export {updateUserDetails,followUser,unFollowUser,deleteUser}
+
+export {updateUserDetails,followUnfollowUser,deleteUser,fetchAllUsers,getUser}
