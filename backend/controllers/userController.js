@@ -66,17 +66,21 @@ let updateUserById = async (req, res) => {
     let { password } = req.body;
   
     try {
+
+        if (req.params.userId != req._id) {
+            return res.status(403).send({
+                message: "UnAuthorized request"
+            })
+        }
+
         if (password) {
             req.body.password =  await bcrypt.hashSync(password, 8)
-       
         };
 
         let updatedUser = await userModal.findOneAndUpdate({
             _id: req._id
         },req.body,{new:true})
         
-
-
     if (!updatedUser) {
         return res.status(404).send({
             message: "There is no such user with given userId"
@@ -95,8 +99,55 @@ let updateUserById = async (req, res) => {
     }
 }
 
-let deleteUser = async (req, res) => {
+let uploadUserImages = async (req, res) => {
+    
     try {
+        if (req.params.userId != req._id) {
+            return res.status(403).send({
+                message: "UnAuthorized request"
+            })
+        }
+
+
+        let user = await userModal.find({ _id: req._id });
+
+        if (req.files && req.files.length == 2) {
+
+            user.profilePic = `${process.env.BASE_URL}/usersImg/${req.files[0].filename}`;
+            user.coverPic = `${process.env.BASE_URL}/usersImg/${req.files[1].filename}`;
+
+        } else {
+
+            if (req.files[0].originalname == "profilePic") {
+                user.profilePic = `${process.env.BASE_URL}/usersImg/${req.files[0].filename}`;
+
+            } else {
+                user.coverPic = `${process.env.BASE_URL}/usersImg/${req.files[1].filename}`;
+
+            }
+
+        }
+
+        await user.save();
+
+        return res.status(200).send(user)
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err)
+    }
+}
+
+let deleteUser = async (req, res) => {
+
+    try {
+
+        if (req.params.userId != req._id) {
+            return res.status(403).send({
+                    message:"UnAuthorized request"
+                })
+        }
+        
         await userModal.deleteOne({ _id: req.params.userId });
 
         res.status(200).send({
@@ -169,5 +220,6 @@ module.exports = {
     updateUserById,
     deleteUser,
     followUnfollowUser,
-    fetchUsers
+    fetchUsers,
+    uploadUserImages
 }
