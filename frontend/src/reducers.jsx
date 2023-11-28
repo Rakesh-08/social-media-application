@@ -24,12 +24,8 @@ let initForm = {
   workAt: "",
   Status: "",
   contact: "",
-  profilePic: "",
-  coverPic: "",
-    confirmation: false,
   fetch:currentUser
 };
-
 
 
 let authReducers = (state=initForm, action) => {

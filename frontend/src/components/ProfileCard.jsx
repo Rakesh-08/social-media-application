@@ -2,11 +2,13 @@ import React,{useState,useEffect} from 'react'
 import { Link } from "react-router-dom"
 import { Card, CardMedia, CardContent } from "@mui/material"
 import dummyUser from '../utils/dummyUser';
+import { UploadAuthImgModal } from './UpdateInfoModal';
 
 
 const ProfileCard = ({ data }) => {
 
   let [user, setUser] = useState({});
+  let [editImages, setEditImages] = useState(false);
   
   useEffect(() => {
     if (localStorage.getItem("authInfo")) {
@@ -21,7 +23,7 @@ const ProfileCard = ({ data }) => {
   return (
     <Card
         sx={{
-        width:"95%",
+        width:"98%",
         boxShadow: "none",
         borderRadius: "2em",
         marginBottom: "1em",
@@ -44,8 +46,15 @@ const ProfileCard = ({ data }) => {
           borderRadius: "50%",
           margin: "auto",
           marginTop: "-12%",
+          position:"relative",
         }}
-      ></CardMedia>
+      >
+        {data?.profile &&
+        
+          <img src="https://logowik.com/content/uploads/images/888_edit.jpg" alt="edit profile or cover image" height={30} className="rounded bottom-0 position-absolute end-0 pointer" onClick={()=>setEditImages(true)} />
+        }
+        
+      </CardMedia>
 
       <CardContent sx={{ width:"100%", height: "fit-content" }}>
         <div className="text-center">
@@ -77,6 +86,7 @@ const ProfileCard = ({ data }) => {
           )}
         </div>
       </CardContent>
+      <UploadAuthImgModal editImages={editImages}  setEditImages={setEditImages} userId={user._id} />
     </Card>
   );
 }

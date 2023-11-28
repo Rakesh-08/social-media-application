@@ -10,7 +10,8 @@ export default function ErrorPage() {
         if (!localStorage.getItem("firstLoad")) {
             localStorage.setItem("firstLoad",1)
         } else {
-            localStorage.removeItem("firstLoad");
+         
+          localStorage.clear()
             NavigateTo("/Auth/login")
         }
        

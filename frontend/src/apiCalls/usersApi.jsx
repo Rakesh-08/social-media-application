@@ -13,9 +13,14 @@ let getUser = async (id) => {
    return await axios.get(apis.Base_Url+ `/user/${id}`,token)
  }
 
-let updateUserDetails = async (obj) => {
+let updateUserDetails = async (obj,id) => {
   let token = await tokenHeader;
-     return await axios.put(apis.Base_Url+apis.updateUserDetailsApi,obj,token)
+     return await axios.put(apis.Base_Url + `/user/${id}`, obj, token);
+}
+
+let uploadUserPics = async (obj,id) => {
+  let token = await tokenHeader;
+  return await axios.put(apis.Base_Url+`/user/${id}/upload`,obj,token)
 }
 
 let deleteUser = async (id) => {
@@ -34,4 +39,4 @@ let followUnfollowUser = async (id,action) => {
 };
 
 
-export {updateUserDetails,followUnfollowUser,deleteUser,fetchAllUsers,getUser}
+export {updateUserDetails,followUnfollowUser,deleteUser,fetchAllUsers,getUser,uploadUserPics}

@@ -52,12 +52,11 @@ let SharePostConttainer = ({ setRefetchPost }) => {
         return alert("empty post can't be uploaded")
     }
 
-    setShowSpinner(true)
-
      if (!localStorage.getItem("pgmToken")) {
        alert("Please login first to share anything with your friends");
        return;
     }
+    setShowSpinner(true)
     
     let Data = new FormData();
     Data.append("description", newPostDescription);

@@ -9,7 +9,7 @@ let dummyUser = {
     about: "Software Developer",
     followers: new Array(238),
     following: new Array(99),
-    posts: new Array(7),
+    posts: new Array(5),
     Status:"in relationship",
     workAt:"Microsoft",
     staysIn:"New Delhi,110084",

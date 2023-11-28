@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-// import followersList from "../utils/followersData";
+import followersList  from "../utils/followersData";
 import { Card, Box,Typography } from "@mui/material";
 import Avatar from "./Avatar";
 import UsersListModal from './UsersListModal';
@@ -9,12 +9,21 @@ import { fetchAllUsers, followUnfollowUser } from '../apiCalls/usersApi';
 
 const FollowersCard = ({sliced,heading,query }) => {
  
-  let [usersModal, setUsersModal] = useState(false)
-  let [users,setUsers]=useState([])
+  let [usersModal, setUsersModal] = useState(false);
+  let [users, setUsers] = useState([]);
+
+   let userId = JSON.parse(localStorage.getItem("authInfo"))?._id;
  
-  let userId = JSON.parse(localStorage.getItem("authInfo"))._id;
   useEffect(() => {
-    getAllUsers();
+
+    if (!localStorage.getItem("pgmToken")) {
+      setUsers(followersList)
+      
+    } else {
+      getAllUsers();
+    
+     }
+    
   },[query])
    
   let getAllUsers = () => {
@@ -24,7 +33,6 @@ const FollowersCard = ({sliced,heading,query }) => {
       
        }).catch((err) => {console.log(err)});
   }
- 
 
   return (
     <div className={`mx-3 ${sliced &&"mobFirst1"} `}>
@@ -42,10 +50,12 @@ const FollowersCard = ({sliced,heading,query }) => {
         }}
       >
         {users.slice(0, sliced).map((follower, i) => {
-
-          if (follower._id==userId) {
+           
+          if (userId &&follower._id == userId) {
+            
              return 
-           }
+          }
+        
           return (<User user={follower} key={follower._id} query={query} userId={userId} />)
         })}
        
@@ -64,18 +74,22 @@ const FollowersCard = ({sliced,heading,query }) => {
 
 const User = ({ user,query,userId}) => {
   let [follow, setFollow] = useState(false);
- 
+
  
   useEffect(() => {
-    if (user.followers.includes(userId)) {
+
+    if (userId) {
+      if (user.followers.includes(userId)) {
            setFollow(true)
+    }
     }
     
   }, [query]);
     
   let followUnfollowAction = () => {
 
-    if (!localStorage.getItem("pgmToken")){
+    if (!localStorage.getItem("pgmToken")) {
+        setFollow(!follow)
          return;
     };
 

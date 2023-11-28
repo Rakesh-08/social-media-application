@@ -8,10 +8,10 @@ let {
     passComentsOnPost
 } = require("../controllers/postsController");
 let { verifyToken } = require("../middlewares/authMiddleware");
-let multerMiddleware= require("../middlewares/upload")
+let {uploadPost}= require("../middlewares/upload")
 
 module.exports = (app) => {
-    app.post("/post",verifyToken,multerMiddleware.single("post"),createPost);
+    app.post("/post",verifyToken,uploadPost.single("post"),createPost);
     app.get("/post/:postId",getPostById);
     app.put("/post/:postId",verifyToken,updatePost);
     app.delete("/post/:postId",verifyToken,deletePost);

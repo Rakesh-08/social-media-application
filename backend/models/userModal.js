@@ -4,7 +4,8 @@ let userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim:true
     },
     firstName: {
         type: String,
@@ -16,6 +17,7 @@ let userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        trim:true
     },
     userType: {
         type: String,

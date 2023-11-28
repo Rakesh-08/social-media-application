@@ -21,7 +21,8 @@ const SinglePost = ({ data }) => {
           <MoreVertIcon />
         </p>
       </div>
-      <img
+
+      {data?.imgPost?<img
         style={{
           width: "100%",
           maxHeight: "20rem",
@@ -30,7 +31,8 @@ const SinglePost = ({ data }) => {
         }}
         src={data.imgPost}
         alt="postPic"
-      />
+      />:<div className="fw-bold mx-2">{data?.desc}</div>}
+     
       <div className="w-25  d-flex justify-content-between m-2">
         <span
           onClick={() => setToggleHeartIcon(!toggleHeartIcon)}
@@ -51,8 +53,8 @@ const SinglePost = ({ data }) => {
           {data.comments.length} comments
         </div>
       </div>
-      <div className="fw-bold mx-2">
-        {data.desc}{" "}
+      <div className=" mx-2">
+       {data.imgPost&& data.desc } 
         <span className="text-primary"> #web-development, #MERN_Stack</span>
       </div>
       <p className="smallFont mx-2">

@@ -2,50 +2,45 @@
 
 let followersList = [
   {
-    name: "Rakesh Mandal",
-    username: "mandalRakesh",
-    img: "/dummyImg1.jpeg",
+   _id: 1, name: "Rakesh Mandal",
+    username: "mandalRakesh"
   },
-  { name: "Rahul ", username: "rahul", img: "/dummyImg2.jpeg" },
+  {_id: 2, name: "Rahul ", username: "rahul" },
 
-  { name: "Raghav kapoor", username: "ragKapoor", img: "/dummyImg4.jpeg" },
-  { name: "siddtharth", username: "sid", img: "/dummyImg5.jpeg" },
+  {_id: 3, name: "Raghav kapoor", username: "ragKapoor" },
+  {_id:4, name: "siddtharth", username: "sid" },
   {
-    name: "Rakesh Mandal",
-    username: "mandalRakesh",
-    img: "/dummyImg1.jpeg",
+   _id:5, name: "Rakesh Mandal",
+    username: "mandalRakesh"
   },
-  { name: "Rahul ", username: "rahul", img: "/dummyImg2.jpeg" },
+  {_id: 6, name: "Rahul ", username: "rahul" },
 
-  { name: "Raghav kapoor", username: "ragKapoor", img: "/dummyImg4.jpeg" },
-  { name: "siddtharth", username: "sid", img: "/dummyImg5.jpeg" },
+  {_id: 7, name: "Raghav kapoor", username: "ragKapoor"},
+  {_id: 8, name: "siddtharth", username: "sid" },
   {
-    name: "Rakesh Mandal",
-    username: "mandalRakesh",
-    img: "/dummyImg1.jpeg",
+   _id: 9, name: "Rakesh Mandal",
+    username: "mandalRakesh"
   },
-  { name: "Rahul ", username: "rahul", img: "/dummyImg2.jpeg" },
+  {_id: 10, name: "Rahul ", username: "rahul" },
 
-  { name: "Raghav kapoor", username: "ragKapoor", img: "/dummyImg4.jpeg" },
-  { name: "siddtharth", username: "sid", img: "/dummyImg5.jpeg" },
+  {_id: 11, name: "Raghav kapoor", username: "ragKapoor" },
+  {_id: 12, name: "siddtharth", username: "sid"},
   {
-    name: "Rakesh Mandal",
-    username: "mandalRakesh",
-    img: "/dummyImg1.jpeg",
+   _id: 13, name: "Rakesh Mandal",
+    username: "mandalRakesh"
   },
-  { name: "Rahul ", username: "rahul", img: "/dummyImg2.jpeg" },
+  {_id: 14, name: "Rahul ", username: "rahul" },
 
-  { name: "Raghav kapoor", username: "ragKapoor", img: "/dummyImg4.jpeg" },
-  { name: "siddtharth", username: "sid", img: "/dummyImg5.jpeg" },
+  {_id: 15, name: "Raghav kapoor", username: "ragKapoor" },
+  {_id: 16, name: "siddtharth", username: "sid" },
   {
-    name: "Rakesh Mandal",
-    username: "mandalRakesh",
-    img: "/dummyImg1.jpeg",
+   _id: 17, name: "Rakesh Mandal",
+    username: "mandalRakesh"
   },
-  { name: "Rahul ", username: "rahul", img: "/dummyImg2.jpeg" },
+  {_id: 18, name: "Rahul ", username: "rahul" },
 
-  { name: "Raghav kapoor", username: "ragKapoor", img: "/dummyImg4.jpeg" },
-  { name: "siddtharth", username: "sid", img: "/dummyImg5.jpeg" },
+  {_id: 19, name: "Raghav kapoor", username: "ragKapoor",  },
+  {_id: 20, name: "siddtharth", username: "sid" },
 ];
 
 export default followersList;

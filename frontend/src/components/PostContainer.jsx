@@ -1,15 +1,15 @@
 import React,{useState,useEffect} from 'react';
 import SinglePost from './SinglePost';
 import { getTimelinePost } from '../apiCalls/postsApi';
-
+import { postData } from '../utils/PostsData';
 
 
 const PostContainer = ({refetchPost,profile}) => {
   let [posts, setPosts] = useState([]);
 
-useEffect(() => {
-  fetchPosts();
- 
+  useEffect(() => {
+    fetchPosts();
+    
 }, [refetchPost]);
 
   let fetchPosts = () => {
@@ -26,9 +26,11 @@ useEffect(() => {
 
   return (
       <div className=" rounded">
-          {posts.map((post, index) => 
-              <SinglePost key={index} data={post} />
-          )}
+          {posts.map((post) => 
+              <SinglePost key={post._id} data={post} />
+      )}
+      {!profile&&postData.map((post, index) =>
+       <SinglePost key={index} data={post} />)}
     </div>
   )
 }
