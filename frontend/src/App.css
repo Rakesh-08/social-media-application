@@ -1,10 +1,11 @@
 body{
   font-family:Robotto;
   box-sizing: border-box;
-  background: linear-gradient(30deg ,rgb(153, 144, 240),white ,purple );
+  background: linear-gradient(30deg ,rgb(137, 126, 237),white  ,rgb(228, 163, 228) );
   overflow-x: hidden;
- 
+
 }
+
 
 *{
   margin:0;
@@ -15,8 +16,7 @@ body{
       .mobFirst1{
         display: none!important;
       }
-      
-
+    
       .search-input{
         width:60%
       }
@@ -65,9 +65,9 @@ body{
 
 
 .home,.profilePage{
-  display: grid;
-  grid-template-columns: 1fr 1.7fr 1fr;
-  gap: 5px;
+  display:flex;
+  justify-content:space-around;
+  
   
 }
 .signUpForm{
@@ -100,8 +100,8 @@ body{
   grid-row: 2/3;
 }
 .smallFont{
-  font-size: 15px;
-  color:rgb(158, 156, 156)
+  font-size: 13px;
+  color:rgb(109, 107, 107)
 }
 .navIcons:hover{
   background-color: rgb(174, 171, 171);
@@ -109,4 +109,5 @@ body{
   border-radius: 50%;
   cursor: pointer;
 }
+
 

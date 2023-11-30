@@ -35,7 +35,7 @@ function App() {
           path="/"
           element={
             localStorage.getItem("pgmToken") ? (
-              <Navigate to="/profile" />
+              <Navigate to="/home" />
             ) : (
               <Navigate to="/Auth/login" />
             )

@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
         cb(null, 'public/posts')
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now()+"post" + '-' + file.originalname);
+        cb(null, Date.now()+"-post" + '-' + file.originalname);
     }
 });
 
@@ -17,7 +17,7 @@ let authStorage = multer.diskStorage({
         cb(null,"public/usersImg")
     },
     filename: (req, file, cb) => { 
-        cb(null,Date.now()+"user"+"-"+file.originalname);
+        cb(null,Date.now()+"-user"+"-"+file.originalname);
     }
 })
 
@@ -25,7 +25,9 @@ let authStorage = multer.diskStorage({
 const uploadPost = multer({ storage: storage });
 const uploadUserImage = multer({ storage: authStorage });
 
+let uploadMiddleware = uploadUserImage.fields([{ name: "profile", maxCount: 1 }, { name: "cover", maxCount: 1 }])
+
 module.exports = {
     uploadPost,
-    uploadUserImage
+   uploadMiddleware
 }

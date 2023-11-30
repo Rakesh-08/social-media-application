@@ -9,7 +9,6 @@ let postSchema = new mongoose.Schema({
     },
     imgPost: String,
     likes: [],
-    comments: [{}],
     desc: String,
     username: String,
     profilePic: String

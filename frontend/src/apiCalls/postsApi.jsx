@@ -15,7 +15,7 @@ let createPost = async (obj) => {
 
 let updatePost = async (id) => {
 
-  return await axios.put(apis.Base_Url + `/post/${id}`, token);
+  return await axios.put(apis.Base_Url + `/post/${id}`, {}, token);
 };
 let deletePost = async (id) => {
 
@@ -29,13 +29,20 @@ let getTimelinePost = async (q) => {
 
 let likeDislike = async (id) => {
 
-    return await axios.put(apis.Base_Url+`/post/${id}/likeDislike`, token);
+  return await axios.put(apis.Base_Url + `/post/${id}/likeDislike`, {}, token);
 };
 
-let commentOnPostApi = async (id) => {
+let commentOnPostApi = async (id,obj) => {
 
-    return await axios.put(apis.Base_Url + `/post/${id}/comment`, token);
+    return await axios.post(apis.Base_Url + `/post/${id}/comment`,obj ,token);
 }
+
+let updateComment = async (id, obj) => {
+  return await axios.put(apis.Base_Url + `/post/comment/${id}`, obj, token);
+};
+let getAllCommentOnPost = async (id) => {
+  return await axios.get(apis.Base_Url + `/post/${id}/comment`, token);
+};
  
 
-export {createPost, updatePost,deletePost,likeDislike,commentOnPostApi ,getTimelinePost };
+export {createPost, updatePost,deletePost,likeDislike,commentOnPostApi ,getTimelinePost,updateComment,getAllCommentOnPost };

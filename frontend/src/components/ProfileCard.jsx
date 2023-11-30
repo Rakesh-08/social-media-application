@@ -17,8 +17,7 @@ const ProfileCard = ({ data }) => {
           setUser(dummyUser)
      }
   }, [localStorage.getItem("authInfo")]);
-  
-  
+
 
   return (
     <Card
@@ -51,7 +50,12 @@ const ProfileCard = ({ data }) => {
       >
         {data?.profile &&
         
-          <img src="https://logowik.com/content/uploads/images/888_edit.jpg" alt="edit profile or cover image" height={30} className="rounded bottom-0 position-absolute end-0 pointer" onClick={()=>setEditImages(true)} />
+          <img src="https://logowik.com/content/uploads/images/888_edit.jpg" alt="edit profile or cover image" height={30} className="rounded bottom-0 position-absolute end-0 pointer" onClick={() => {
+          if (!localStorage.getItem("pgmToken")) {
+              return alert ("Please login first to change profile and cover image")
+            }
+            setEditImages(true)
+          }} />
         }
         
       </CardMedia>

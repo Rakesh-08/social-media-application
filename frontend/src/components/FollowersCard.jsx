@@ -31,7 +31,10 @@ const FollowersCard = ({sliced,heading,query }) => {
     fetchAllUsers(query).then((res) => {
       setUsers(res.data)
       
-       }).catch((err) => {console.log(err)});
+    }).catch((err) => {
+     
+      console.log(err)
+    });
   }
 
   return (

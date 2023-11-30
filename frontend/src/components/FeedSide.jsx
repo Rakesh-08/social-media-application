@@ -28,7 +28,7 @@ const FeedSide = ({profile}) => {
         </Typography>
       )}
 
-      <PostContainer profile={profile}  refetchPost={refetchPost} />
+      <PostContainer profile={profile} setRefetchPost={setRefetchPost}  refetchPost={refetchPost} />
     </Box>
   );
 }
@@ -75,7 +75,6 @@ let SharePostConttainer = ({ setRefetchPost }) => {
       alert(err.response.data.message||err.message)
       })
   }
-
 
   return (
     <Card

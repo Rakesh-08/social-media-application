@@ -36,16 +36,24 @@ module.exports.verifyToken = ( req,res,next) => {
     if (!token) {
         return res.status(401).send({ message: 'please pass the token along with request' })
     }
+
  
     jwt.verify(token, secretKey, (err, decoder) => {
         if (err) {
             return res.status(401).send({
-                message:"invalid token"
+                message: "invalid token"
             })
-        }
+        };
 
+        let currentTime = new Date().getTime() / 1000;
+        if (currentTime > decoder.exp) {
+            return res.status(402).send({
+                message:"Token expired"
+            })
+        } 
         req._id = decoder.id;
-    })
-
+   })
+    
+   
    next();
 }

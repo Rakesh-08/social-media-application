@@ -1,5 +1,9 @@
 let userModal = require("../models/userModal");
+let postModel = require("../models/postsModel")
 let bcrypt = require("bcryptjs");
+
+let fs = require("fs");
+
 
 let getUserById = async (req, res) => {
     try {
@@ -8,14 +12,14 @@ let getUserById = async (req, res) => {
 
         if (!user) {
             return res.status(404).send({
-                message:"User not found"
+                message: "User not found"
             })
         }
 
-        user.password=""
+        user.password = ""
 
         res.status(200).send(user);
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send(err)
@@ -24,14 +28,14 @@ let getUserById = async (req, res) => {
 
 let fetchUsers = async (req, res) => {
     let { followers, following } = req.query
-             
+
 
     try {
         let users;
         let query;
 
         let user = await userModal.findOne({
-            _id:req._id
+            _id: req._id
         })
 
         if (followers) {
@@ -40,31 +44,27 @@ let fetchUsers = async (req, res) => {
             query = user?.following;
         };
 
-
-
-
         if (query) {
             users = await userModal.find({
                 _id: {
-                  $in: query
+                    $in: query
                 }
- })}
-        else {
-             users = await userModal.find({});
-    }
-    
+            })
+        } else {
+            users = await userModal.find({});
+        }
+
         res.status(200).send(users)
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send(err)
-     }
+    }
 
 }
 
 let updateUserById = async (req, res) => {
-    let { password } = req.body;
-  
+
     try {
 
         if (req.params.userId != req._id) {
@@ -72,35 +72,34 @@ let updateUserById = async (req, res) => {
                 message: "UnAuthorized request"
             })
         }
-
-        if (password) {
-            req.body.password =  await bcrypt.hashSync(password, 8)
-        };
 
         let updatedUser = await userModal.findOneAndUpdate({
             _id: req._id
-        },req.body,{new:true})
-        
-    if (!updatedUser) {
-        return res.status(404).send({
-            message: "There is no such user with given userId"
-        })
+        }, req.body, { new: true })
+
+        if (!updatedUser) {
+            return res.status(404).send({
+                message: "There is no such user with given userId"
+            })
         };
-    
+
         {
             updatedUser.password = "";
-             res.status(200).send(updatedUser)
-             }
+            res.status(200).send(updatedUser)
+        }
 
-   
+
     } catch (err) {
         console.log(err);
-        res.status(500).send( err )
+        res.status(500).send(err)
     }
 }
 
+
 let uploadUserImages = async (req, res) => {
-    
+
+    let { profile, cover } = req.files;
+
     try {
         if (req.params.userId != req._id) {
             return res.status(403).send({
@@ -108,30 +107,86 @@ let uploadUserImages = async (req, res) => {
             })
         }
 
+        let user = await userModal.findOne({ _id: req._id });
 
-        let user = await userModal.find({ _id: req._id });
+ // check profile has to be updated or not
+        if (profile && profile.length > 0) {
 
-        if (req.files && req.files.length == 2) {
 
-            user.profilePic = `${process.env.BASE_URL}/usersImg/${req.files[0].filename}`;
-            user.coverPic = `${process.env.BASE_URL}/usersImg/${req.files[1].filename}`;
+            // delete old img from server storage
+            if (user.profilePic) {
+                let temp = user.profilePic.split("/usersImg");
 
-        } else {
+                fs.unlink("public/usersImg" + temp[1], (err) => {
+                    console.log(err);
+                    return res.status(500).send({
+                        message:"some error occured while changing profile image"
+                    })
+                })
+            }
+           
+            user.profilePic = `${process.env.BASE_URL}/usersImg/${profile[0].filename}`;
 
-            if (req.files[0].originalname == "profilePic") {
-                user.profilePic = `${process.env.BASE_URL}/usersImg/${req.files[0].filename}`;
 
-            } else {
-                user.coverPic = `${process.env.BASE_URL}/usersImg/${req.files[1].filename}`;
+           // update the images stored in post model
+            let myPosts = await postModel.updateMany({
+                userId: req._id
+            }, {
+                profilePic: user.profilePic
+            });
+        };
 
+// check cover img has to be updated
+        if (cover && cover.length > 0) {
+
+            // delete old img from server storage
+            if (user.coverPic) {
+                let temp = user.coverPic.split("/usersImg");
+
+                fs.unlink("public/usersImg" + temp[1], (err) => {
+    
+                    if (err) {
+                       console.log(err);
+                    return res.status(500).send({
+                        message: "some error occured while changing profile image"
+                    }) 
+                    }
+                    
+                })
             }
 
+            user.coverPic = `${process.env.BASE_URL}/usersImg/${cover[0].filename}`;
+  }
+
+        await user.save();
+        res.status(200).send(user)
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err)
+    }
+}
+
+let changePassword = async (req, res) => {
+    let { username, newPassword } = req.body;
+
+    try {
+        let user = await userModal.findOne({ username: username });
+
+        if (!user) {
+            return res.status(404).send({
+                message: "Incorrect username! no user found"
+            });
         }
+
+        user.password = await bcrypt.hash(newPassword, 8);
 
         await user.save();
 
-        return res.status(200).send(user)
-        
+        res.status(200).send({
+            message: "Password has been updated successfully,please try to login now"
+        })
+
     } catch (err) {
         console.log(err);
         res.status(500).send(err)
@@ -144,14 +199,14 @@ let deleteUser = async (req, res) => {
 
         if (req.params.userId != req._id) {
             return res.status(403).send({
-                    message:"UnAuthorized request"
-                })
+                message: "UnAuthorized request"
+            })
         }
-        
+
         await userModal.deleteOne({ _id: req.params.userId });
 
         res.status(200).send({
-            message:"User deleted successfully"
+            message: "User deleted successfully"
         })
 
     } catch (err) {
@@ -173,25 +228,25 @@ let followUnfollowUser = async (req, res) => {
 
         let requester = await userModal.findOne({ _id: req._id });
         let referringTo = await userModal.findOne({ _id: userId });
-       
-        if (action=="follow") {
-       
+
+        if (action == "follow") {
+
             if (requester.following.includes(userId)) {
                 return res.status(200).send({
                     message: "you are already following him"
                 })
             }
-        
+
             requester.following.push(userId);
             referringTo.followers.push(req._id);
             await requester.save();
             await referringTo.save();
 
-        
+
 
             res.status(200).send(requester)
         } else {
-         
+
 
             if (!requester.following.includes(userId)) {
                 return res.status(200).send({
@@ -203,7 +258,7 @@ let followUnfollowUser = async (req, res) => {
             referringTo.followers = requester.followers.filter(id => id != req._id)
             await requester.save();
             await referringTo.save();
-            
+
 
             res.status(200).send(requester);
         }
@@ -221,5 +276,6 @@ module.exports = {
     deleteUser,
     followUnfollowUser,
     fetchUsers,
-    uploadUserImages
+    uploadUserImages,
+    changePassword
 }

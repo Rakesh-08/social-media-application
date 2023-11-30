@@ -25,6 +25,7 @@ let path = require("path")
 
 expressApp.use(express.static(path.join(__dirname, "/public")));
 
+
 expressApp.use(bodyParser.json())
 expressApp.use(bodyParser.urlencoded({ extended: true }));
 expressApp.use(cors());

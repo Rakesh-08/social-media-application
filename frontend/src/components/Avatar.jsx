@@ -1,7 +1,8 @@
 import React from 'react'
 import dummyUser from '../utils/dummyUser';
 
-const Avatar = ({img,dim}) => {
+const Avatar = ({ img, dim }) => {
+ 
   return (
     <div>
       <img
@@ -10,6 +11,7 @@ const Avatar = ({img,dim}) => {
         height={dim}
         src={img||dummyUser.profilePic}
         alt="avatar"
+        onError={(e)=>e.target.src=dummyUser.profilePic}
       />
     </div>
   );

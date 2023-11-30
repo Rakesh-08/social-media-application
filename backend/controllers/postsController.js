@@ -1,12 +1,13 @@
 let postModel = require("../models/postsModel");
 let userModel = require("../models/userModal");
+let commentModel = require("../models/commentsModel");
 
 
 let createPost = async (req, res) => {
 
     let desc = req.body.description;
     let baseUrl = process.env.BASE_URL;
-   
+
     try {
         if (!(req.file || desc)) {
             return res.status(400).send({
@@ -17,9 +18,9 @@ let createPost = async (req, res) => {
         let url;
 
         if (req.file) {
-             url=`${baseUrl}/posts/${req.file.filename}`
+            url = `${baseUrl}/posts/${req.file.filename}`
         } else {
-            url=""
+            url = ""
         }
 
 
@@ -27,13 +28,13 @@ let createPost = async (req, res) => {
 
         let post = await postModel.create({
             userId: req._id,
-              desc:desc,
+            desc: desc,
             imgPost: url,
-              username: user.username,
-              profilePic:user.profilePic
+            username: user.username,
+            profilePic: user.profilePic
         })
 
-        
+
         user.posts.push(post._id);
         await user.save();
 
@@ -155,16 +156,89 @@ let passComentsOnPost = async (req, res) => {
             })
         }
 
+        let user = await userModel.findOne({ _id: req._id })
+
         let temp = {
-            id: req._id,
-            comment: description
+            userId: req._id,
+            desc: description,
+            profilePic: user.profilePic,
+            username: user.username,
+            postId: req.params.postId,
         }
 
-        let post = await postModel.findOne({ _id: req.params.postId });
-        post.comments.push(temp);
-        await post.save();
+        let createComment = await commentModel.create(temp);
+        res.status(200).send(createComment);
 
-        res.status(200).send({ message: "comment added into this post" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+}
+
+let updateComment = async (req, res) => {
+    let {  username, profilePic, replyMsg,like,dislike } = req.body;
+    try {
+        let comment = await commentModel.findOne({ _id: req.params.commentId });
+  
+
+        if (like&& !dislike) {
+            comment.likes.push(req._id);
+            if (comment.dislikes.includes(req._id)) {
+                 comment.dislikes.filter(id => id != req._id);
+            }
+
+            await comment.save();
+            return res.status(200).send({
+                message:"comment liked"
+            })
+        } else if (!like && dislike) {
+            comment.dislikes.push(req._id)
+            if (comment.likes.includes(req._id)) {
+                  comment.likes = comment.likes.filter(id => id != req._id)
+            
+            }
+           
+            await comment.save();
+            return res.status(200).send({
+                message: "comment disliked"
+            }) 
+        } else {
+
+            if (comment.dislikes.includes(req._id)) {
+                  comment.likes = comment.likes.filter(id => id != req._id)
+            }
+            if (comment.likes.includes(req._id)) {
+                  comment.dislikes.filter(id => id != req._id);
+            }
+            
+            await comment.save();
+            return res.status(200).send({
+                message: "No reaction"
+            }) 
+        }
+
+        let temp = {
+            userId:req._id, username, profilePic, replyMsg
+        }
+
+        comment.reply.push(temp);
+        await comment.save();
+        res.status(200).send(temp)
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err)
+    }
+}
+
+let getAllCommentsByPost = async (req, res) => {
+    try {
+
+        let comments = await commentModel.find({
+            postId: req.params.postId
+        })
+
+        res.status(200).send(comments)
 
     } catch (err) {
         console.log(err);
@@ -188,9 +262,9 @@ let getTimelinePosts = async (req, res) => {
             }
         }).sort({ createdAt: -1 })
 
-        if (req.query.post=="own") {
+        if (req.query.post == "own") {
             res.status(200).send(myPosts)
-            
+
         }
         else {
 
@@ -213,6 +287,7 @@ module.exports = {
     deletePost,
     likeDislikePost,
     getTimelinePosts,
-    passComentsOnPost
-
+    passComentsOnPost,
+    updateComment,
+    getAllCommentsByPost
 }

@@ -93,6 +93,7 @@ const Auth = ({ login }) => {
          })
          .catch((err) => {
            console.log(err);
+           setShowSpinner(false)
             localStorage.setItem("errorCode", err.response.status);
             localStorage.setItem("errMsg", err.response.data.message);
             NavigateTo("/Error");

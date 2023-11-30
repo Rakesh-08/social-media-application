@@ -143,7 +143,6 @@ const UpdateInfoModal = ({ updateModal, setUpdateModal }) => {
 
 export default UpdateInfoModal
 
-
 const DeleteAccountModal = ({openDeleteModal,setOpenDeleteModal,username,userId }) => {
      
   let [showMsg, setShowMsg] = useState(false);
@@ -221,42 +220,47 @@ const UploadAuthImgModal = ({editImages,setEditImages,userId}) => {
   
 
     // authentication checking
-     if (!localStorage.getItem("pgmToken")) {
-       alert("Please login first to update your details");
-       return;
+    if (!localStorage.getItem("pgmToken")) {
+      alert("Please login first to update your details");
+      return;
     };
  
     // checkbox is clicked or not
     if (!confirm) {
-         return alert("please confirm the checkbox")
+      return alert("please confirm the checkbox")
     }
 
-   // atleast one of the image has to be changed
+    // atleast one of the image has to be changed
     if (!(profilePic || coverPic)) {
       return alert("Please choose the images to be uploaded")
     }
 
     //calling the update function
-    let data = new FormData(); 
+    let data = new FormData();
      
     if (profilePic && coverPic) {
-      data.append("auth", profilePic,"profilePic");
-      data.append("auth", coverPic,"coverPic");
+      data.append("profile", profilePic);
+      data.append("cover", coverPic);
       
     } else if (profilePic) {
-      data.append("auth", profilePic,"profilePic");
+      data.append("profile", profilePic);
       
     } else {
-      data.append("auth", coverPic,"coverPic");
+      data.append("cover", coverPic);
     }
        
   
-       uploadUserPics(data,userId)
-         .then((res) => {
-           console.log(res);
-           setAuthImgs({ profilePic: "", coverPic: "" });
-         })
-      .catch((err) => console.log(err));
+    uploadUserPics(data, userId)
+      .then((res) => {
+       
+        setAuthImgs({ profilePic: "", coverPic: "" });
+        setEditImages(false)
+        localStorage.setItem("authInfo", JSON.stringify(res.data))
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.response.data||err.response.data.message);
+         });
     
    
      
@@ -270,7 +274,11 @@ const UploadAuthImgModal = ({editImages,setEditImages,userId}) => {
       backdrop="static"
     >
       <Modal.Body className="p-3">
-        <form onSubmit={uploadAuthImages}>
+        <form
+          onSubmit={uploadAuthImages}
+          method="post"
+          encType="multipart/form-data"
+        >
           <p className="fw-bold text-primary p-2">
             Edit profile picture and cover image:
           </p>
@@ -281,11 +289,9 @@ const UploadAuthImgModal = ({editImages,setEditImages,userId}) => {
                 className="form-control"
                 type="file"
                 onChange={(e) => {
-                  if (e.target.files ) {
+                  if (e.target.files) {
                     setAuthImgs({ ...authImgs, profilePic: e.target.files[0] });
-                   
                   }
-                  
                 }}
               />
             </div>
@@ -298,7 +304,8 @@ const UploadAuthImgModal = ({editImages,setEditImages,userId}) => {
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     setAuthImgs({ ...authImgs, coverPic: e.target.files[0] });
-               }}}
+                  }
+                }}
               />
             </div>
           </div>
@@ -312,7 +319,7 @@ const UploadAuthImgModal = ({editImages,setEditImages,userId}) => {
             <button
               onClick={() => {
                 setEditImages(false);
-                setAuthImgs({profilePic:"", coverPic:""})
+                setAuthImgs({ profilePic: "", coverPic: "" });
               }}
               className="btn btn-secondary m-1"
               type="button"
