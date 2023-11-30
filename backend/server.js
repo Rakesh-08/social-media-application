@@ -1,7 +1,7 @@
 let mongoose = require("mongoose");
 require("dotenv").config();
 
-mongoose.connect(process.env.MongoDB_URI);
+mongoose.connect(process.env.MONGODB_URI);
 let dbConnection = mongoose.connection;
 
 dbConnection.on("error", () => {
@@ -12,7 +12,9 @@ dbConnection.once("open", () => {
     console.log("Connected to MongoDB");
 })
 
-
+console.log("port", process.env.PORT);
+console.log("baseUrl", process.env.BASE_URL);
+console.log("Mongodb_uri", process.env.MONGODB_URI)
 
 // express middleware configuration
 
@@ -39,9 +41,9 @@ require("./Routes/postRoutes")(expressApp);
 
 
 
-expressApp.listen(process.env.Port, () => {
+expressApp.listen(process.env.PORT, () => {
 
-    console.log("server listening on port " + process.env.Port)
+    console.log("server listening on port " + process.env.PORT)
 })
 
 
