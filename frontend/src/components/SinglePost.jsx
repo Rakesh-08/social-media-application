@@ -53,47 +53,59 @@ const SinglePost = ({ data, setRefetchPost }) => {
         </p>
       </div>
 
-      {data?.imgPost?<img
-        style={{
-          width: "100%",
-          maxHeight: "20rem",
-          borderRadius: "0.5em",
-          objectFit: "contain",
-        }}
-        src={data.imgPost}
-        alt="postPic"
-      />:<div className="fw-bold mx-2">{data?.desc}</div>}
-     
-      <div className="w-25  d-flex justify-content-between m-2">
-        <span
-          onClick={toggleLike}
-          className="text-danger "
-        >
+      {data?.imgPost ? (
+        <img
+          style={{
+            width: "100%",
+            maxHeight: "20rem",
+            borderRadius: "0.5em",
+            objectFit: "contain",
+          }}
+          src={data.imgPost}
+          alt="postPic"
+        />
+      ) : (
+        <div className="fw-bold mx-2">{data?.desc}</div>
+      )}
+
+      <div className="d-flex border-top border-3 justify-content-between m-2 p-2">
+       <div><span onClick={toggleLike} className="text-danger pointer ">
           {toggleHeartIcon ? (
-            <FavoriteIcon className="fs-2 " />
+            <FavoriteIcon style={{ fontSize: "2em" }} />
           ) : (
-            <FavoriteBorderIcon className="fs-2" />
+            <FavoriteBorderIcon style={{ fontSize: "2em" }} />
           )}
         </span>
-        <CommentIcon onClick={()=>setShowComments(true)} className="fs-2 text-secondary pointer" />
+        <CommentIcon
+          onClick={() => setShowComments(true)}
+          className=" text-primary pointer mx-4"
+          style={{ fontSize: "2em" }}
+        /></div> 
         <ReplyIcon className="fs-2 text-success pointer" />
       </div>
       <div className="d-flex m-2 ">
-        <div className="mx-2  ">{data.likes.length}<span className="text-secondary "> likes</span> </div>
+        <div className="mx-2  ">
+          {data.likes.length}
+          <span className="text-secondary "> likes</span>{" "}
+        </div>
         <div className="mx-2 ">
-          {data.comments.length} <span className="text-secondary"> comments</span>
+          {data.comments.length}{" "}
+          <span className="text-secondary"> comments</span>
         </div>
       </div>
       <div className=" mx-2">
-       {data.imgPost&& data.desc } 
+        {data.imgPost && data.desc}
         <span className="text-primary"> #web-development, #MERN_Stack</span>
       </div>
-      <p className="smallFont mx-2">
-        Posted on {data.createdAt.slice(0,10)}
-      </p>
+      <p className="smallFont mx-2">Posted on {data.createdAt.slice(0, 10)}</p>
 
-  {showComments &&   <CommentComponent showComments={showComments} setShowComments={setShowComments} data={data} /> }
-    
+      {showComments && (
+        <CommentComponent
+          showComments={showComments}
+          setShowComments={setShowComments}
+          data={data}
+        />
+      )}
     </div>
   );
 }

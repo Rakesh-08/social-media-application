@@ -33,7 +33,6 @@ let authReducers = (state=initForm, action) => {
     switch (action.type) { 
    
         case "updateInfo":
-            
             let info = action.payload;
             return { ...state, ...info };
         default:
@@ -42,9 +41,21 @@ let authReducers = (state=initForm, action) => {
     }
 }
 
+let utilReducer = (state = { searchTerm:""}, action) => {
+  
+  switch (action.type) { 
+    
+    case "searchTerm":
+      return { ...state, searchTerm: action.searchTerm };
+    default:
+      return state;
+  }
+}
+
 
 let rootReducer = combineReducers({
-    authReducers
+  authReducers,
+  utilReducer
 })
 
 export default rootReducer;

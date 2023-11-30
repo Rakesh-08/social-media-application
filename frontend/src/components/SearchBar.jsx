@@ -1,12 +1,23 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Paper, IconButton } from "@mui/material"
 import { Search } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useDispatch } from "react-redux";
+
 
 const SearchBar = () => {
-    let handleSearch = () => {
-        
-    }
+  let [search,setSearch]=useState("")
+  let dispatch = useDispatch();
+
+  let handleSearch = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: "searchTerm",
+      searchTerm: search
+    })
+    setSearch("")
+  };
+
     return (
        
       
@@ -27,7 +38,8 @@ const SearchBar = () => {
         className="search-input"
         placeholder="#Explore the feed"
         style={{outline:"none",border:0}}
-        
+          value={search}
+          onChange={(e)=>setSearch(e.target.value)}
       />
       <IconButton
         type="submit"

@@ -12,9 +12,6 @@ dbConnection.once("open", () => {
     console.log("Connected to MongoDB");
 })
 
-console.log("port", process.env.PORT);
-console.log("baseUrl", process.env.BASE_URL);
-console.log("Mongodb_uri", process.env.MONGODB_URI)
 
 // express middleware configuration
 

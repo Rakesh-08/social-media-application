@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 import SinglePost from './SinglePost';
 import { getTimelinePost } from '../apiCalls/postsApi';
 import { postData } from '../utils/PostsData';
@@ -7,15 +8,16 @@ import { postData } from '../utils/PostsData';
 
 const PostContainer = ({refetchPost,setRefetchPost,profile}) => {
   let [posts, setPosts] = useState([]);
+
+  let search = useSelector(state => state.utilReducer.searchTerm)
    
   useEffect(() => {
-
     if (localStorage.getItem('pgmToken')) {
       fetchPosts();
-    }
+    }  
     
-    
-}, [refetchPost]);
+  }, [refetchPost]);
+ 
 
   let fetchPosts = () => {
     let q = profile ? "own" : "";
@@ -34,14 +36,20 @@ const PostContainer = ({refetchPost,setRefetchPost,profile}) => {
 };
 
   return (
-      <div className=" rounded">
-          {posts.map((post) => 
-              <SinglePost key={post._id} data={post} setRefetchPost={setRefetchPost} />
-      )}
-      {!profile&&postData.map((post, index) =>
-        <SinglePost key={index} data={post}  />)}
+    <div className=" rounded">
+      {posts.filter((post) => post.desc.includes(search)).map((post) => (
+          <SinglePost
+            key={post._id}
+            data={post}
+            setRefetchPost={setRefetchPost}
+          />
+        ))}
+      {!profile &&
+        postData.filter((post) => {
+         return post.desc.includes(search);
+        }).map((post, index) => <SinglePost key={index} data={post} />)}
     </div>
-  )
+  );
 }
 
 export default PostContainer

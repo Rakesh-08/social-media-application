@@ -106,7 +106,7 @@ let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
 
       <div className={`d-flex  m-${gap}`}>
         {" "}
-        <Badge badgeContent={5} color="secondary">
+        <Badge badgeContent={"9"} color="secondary">
           <NotificationsActiveIcon
             onClick={() => {
               navAction("/notifications")

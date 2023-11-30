@@ -17,11 +17,11 @@ const FeedSide = ({profile}) => {
   let [refetchPost,setRefetchPost] = useState(false)
   
   return (
-    <Box mx={1} py={1} sx={{ minHeight: "100vh" }}>
+    <Box mx={1} py={1} sx={{ minHeight: "100vh",flex:"0.48" }}>
       <SharePostConttainer setRefetchPost={setRefetchPost} />
       {profile && (
-        <Typography variant="h6" m={3}>
-          <span className="text-danger mx-1">
+        <Typography sx={{color:"red"}} variant="h6" m={3}>
+          <span className=" mx-1">
             <SendIcon />
           </span>{" "}
           Your Posts
