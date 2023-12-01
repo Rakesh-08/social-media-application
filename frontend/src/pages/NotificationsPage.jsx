@@ -30,7 +30,7 @@ let SingleNotification = ({notification}) => {
       </div>
       <div className="d-flex align-items-center">
         <span style={{fontSize:"13px",color:"gray",marginRight:"1em"}}>
-        {notification.createdAt}m{" "}
+         2h ago
       </span>
       <DeleteIcon className="pointer" />
       </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import TrendingTags from '../components/TrendingTags';
 import FeedSide from "../components/FeedSide"
 import ProfileRightSide from '../components/ProfileRightSide';
@@ -6,6 +6,10 @@ import ProfileCard from '../components/ProfileCard';
 import InfoDetails from '../components/InfoDetails';
 
 const Profile = () => {
+
+  useEffect(() => {
+    
+  },[])
   return (
       <div className="profilePage">
           <TrendingTags />

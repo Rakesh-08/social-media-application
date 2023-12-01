@@ -17,7 +17,7 @@ const FeedSide = ({profile}) => {
   let [refetchPost,setRefetchPost] = useState(false)
   
   return (
-    <Box mx={1} py={1} sx={{ minHeight: "100vh",flex:"0.48" }}>
+    <Box mx={1} py={1} sx={{ minHeight: "100vh" }}>
       <SharePostConttainer setRefetchPost={setRefetchPost} />
       {profile && (
         <Typography sx={{color:"red"}} variant="h6" m={3}>

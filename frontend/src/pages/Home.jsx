@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div style={{flex:"0.26"}} className="mobFirst1"> <ProfileSide /></div>
+      <div  className="mobFirst1"> <ProfileSide /></div>
      
       <FeedSide />
       <TrendingTags/>
