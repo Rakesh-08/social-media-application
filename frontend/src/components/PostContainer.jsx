@@ -6,23 +6,24 @@ import { getTimelinePost } from '../apiCalls/postsApi';
 import { postData } from '../utils/PostsData';
 
 
-const PostContainer = ({refetchPost,setRefetchPost,profile}) => {
+const PostContainer = ({refetchPost,setRefetchPost,profile,user}) => {
   let [posts, setPosts] = useState([]);
 
   let search = useSelector(state => state.utilReducer.searchTerm)
    
   useEffect(() => {
-    if (localStorage.getItem('pgmToken')) {
+    if (localStorage.getItem('pgmToken')&& user._id) {
       fetchPosts();
     }  
-    
-  }, [refetchPost]);
+
+  }, [refetchPost,user]);
  
+
 
   let fetchPosts = () => {
     let q = profile ? "own" : "";
 
-  getTimelinePost( q)
+  getTimelinePost(q,user._id)
     .then((res) => {
        setPosts(res.data)
     })
@@ -33,10 +34,11 @@ const PostContainer = ({refetchPost,setRefetchPost,profile}) => {
        }
       console.log(err);
     });
-};
-
+  };
+  
   return (
     <div className=" rounded">
+
       {posts.filter((post) => post.desc.includes(search)).map((post) => (
           <SinglePost
             key={post._id}
@@ -44,7 +46,7 @@ const PostContainer = ({refetchPost,setRefetchPost,profile}) => {
             setRefetchPost={setRefetchPost}
           />
         ))}
-      {!profile &&
+      {(!profile||!user._id) &&
         postData.filter((post) => {
          return post.desc.includes(search);
         }).map((post, index) => <SinglePost key={index} data={post} />)}

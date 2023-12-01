@@ -12,7 +12,6 @@ dbConnection.once("open", () => {
     console.log("Connected to MongoDB");
 })
 
-
 // express middleware configuration
 
 

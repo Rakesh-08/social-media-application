@@ -100,6 +100,8 @@ let uploadUserImages = async (req, res) => {
 
     let { profile, cover } = req.files;
 
+    let baseUrl = process.env.NODE_ENV !== "production" ? "http ://localhost:8040" : "https://photogram-app.onrender.com"
+
     try {
         if (req.params.userId != req._id) {
             return res.status(403).send({
@@ -109,7 +111,7 @@ let uploadUserImages = async (req, res) => {
 
         let user = await userModal.findOne({ _id: req._id });
 
- // check profile has to be updated or not
+        // check profile has to be updated or not
         if (profile && profile.length > 0) {
 
 
@@ -120,15 +122,15 @@ let uploadUserImages = async (req, res) => {
                 fs.unlink("public/usersImg" + temp[1], (err) => {
                     console.log(err);
                     return res.status(500).send({
-                        message:"some error occured while changing profile image"
+                        message: "some error occured while changing profile image"
                     })
                 })
             }
-           
-            user.profilePic = `${process.env.BASE_URL}/usersImg/${profile[0].filename}`;
+
+            user.profilePic = `${baseUrl}/usersImg/${profile[0].filename}`;
 
 
-           // update the images stored in post model
+            // update the images stored in post model
             let myPosts = await postModel.updateMany({
                 userId: req._id
             }, {
@@ -136,7 +138,7 @@ let uploadUserImages = async (req, res) => {
             });
         };
 
-// check cover img has to be updated
+        // check cover img has to be updated
         if (cover && cover.length > 0) {
 
             // delete old img from server storage
@@ -144,19 +146,19 @@ let uploadUserImages = async (req, res) => {
                 let temp = user.coverPic.split("/usersImg");
 
                 fs.unlink("public/usersImg" + temp[1], (err) => {
-    
+
                     if (err) {
-                       console.log(err);
-                    return res.status(500).send({
-                        message: "some error occured while changing profile image"
-                    }) 
+                        console.log(err);
+                        return res.status(500).send({
+                            message: "some error occured while changing profile image"
+                        })
                     }
-                    
+
                 })
             }
 
-            user.coverPic = `${process.env.BASE_URL}/usersImg/${cover[0].filename}`;
-  }
+            user.coverPic = `${baseUrl}/usersImg/${cover[0].filename}`;
+        }
 
         await user.save();
         res.status(200).send(user)

@@ -65,8 +65,8 @@ body{
 
 
 .home,.profilePage{
- display: grid;
- grid-template-columns: 1fr 1.5fr 1fr;
+ display: flex;
+ justify-content: space-evenly;
 }
 .signUpForm{
   display: grid;

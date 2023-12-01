@@ -11,6 +11,7 @@ const FollowersCard = ({sliced,heading,query }) => {
  
   let [usersModal, setUsersModal] = useState(false);
   let [users, setUsers] = useState([]);
+ 
 
    let userId = JSON.parse(localStorage.getItem("authInfo"))?._id;
  
@@ -87,6 +88,7 @@ const User = ({ user,query,userId}) => {
     }
     }
     
+    
   }, [query]);
     
   let followUnfollowAction = () => {
@@ -126,11 +128,11 @@ const User = ({ user,query,userId}) => {
     <Box
             display="flex"
             alignItems="center"
-            justifyContent="space-between"
+      justifyContent="space-between"
            
           >
             <div className="m-1 d-flex ">
-              <Avatar img={user.img} dim="45" />
+              <Avatar img={user.profilePic} dim="45" userId={user._id} />
               <div className="m-1 mx-2 d-flex flex-column ">
                 <span className="fw-bold"> {user.name}</span>
                 <span>@{user.username}</span>

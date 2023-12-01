@@ -20,7 +20,7 @@ module.exports = (app) => {
     app.delete("/post/:postId",verifyToken,deletePost);
     app.put("/post/:postId/likeDislike", verifyToken, likeDislikePost);
     app.post("/post/:postId/comment", verifyToken, passComentsOnPost);
-    app.get("/post", verifyToken, getTimelinePosts);
+    app.get("/post/timeline/:userId", verifyToken, getTimelinePosts);
     app.put("/post/comment/:commentId", verifyToken,updateComment);
     app.get("/post/:postId/comment",verifyToken,getAllCommentsByPost)
 }

@@ -1,8 +1,10 @@
 import { combineReducers } from "redux"
 import { getUser } from "./apiCalls/usersApi"
+let id = JSON.parse(localStorage.getItem("authInfo"))?._id;
+
 
 let currentUser = () => {
-  let id = JSON.parse(localStorage.getItem("authInfo"))._id;
+  
   let result;
 
   getUser(id)
@@ -41,12 +43,15 @@ let authReducers = (state=initForm, action) => {
     }
 }
 
-let utilReducer = (state = { searchTerm:""}, action) => {
+let utilReducer = (state = { searchTerm:"",profileId:id}, action) => {
   
   switch (action.type) { 
     
     case "searchTerm":
       return { ...state, searchTerm: action.searchTerm };
+    case "otherProfile":
+      console.log(action.userId)
+      return { ...state, profileId: action.userId };
     default:
       return state;
   }

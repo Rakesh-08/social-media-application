@@ -13,22 +13,27 @@ import { createPost } from '../apiCalls/postsApi';
 import { useSelector } from "react-redux";
 
 
-const FeedSide = ({profile}) => {
-  let [refetchPost,setRefetchPost] = useState(false)
+const FeedSide = ({profile,user}) => {
+  let [refetchPost, setRefetchPost] = useState(false);
+
+  let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
+
   
   return (
     <Box mx={1} py={1} sx={{ minHeight: "100vh" }}>
-      <SharePostConttainer setRefetchPost={setRefetchPost} />
+
+      {(user._id && user._id == loggedUserId)||(!profile)&&
+      <SharePostConttainer userId={user._id} setRefetchPost={setRefetchPost} />}
       {profile && (
         <Typography sx={{color:"red"}} variant="h6" m={3}>
           <span className=" mx-1">
             <SendIcon />
           </span>{" "}
-          Your Posts
+           Posts of {user.firstName}
         </Typography>
       )}
 
-      <PostContainer profile={profile} setRefetchPost={setRefetchPost}  refetchPost={refetchPost} />
+      <PostContainer profile={profile} setRefetchPost={setRefetchPost}  refetchPost={refetchPost} user={user} />
     </Box>
   );
 }
@@ -37,7 +42,7 @@ const FeedSide = ({profile}) => {
 
 export default FeedSide;
 
-let SharePostConttainer = ({ setRefetchPost }) => {
+let SharePostConttainer = ({ setRefetchPost,userId }) => {
   
   let [imgUpload, setImgUpload] = useState("");
   let [newPostDescription, setNewPostDescription] = useState("");
@@ -90,10 +95,10 @@ let SharePostConttainer = ({ setRefetchPost }) => {
       <div>
         <Avatar
           img={
-            JSON.parse(localStorage.getItem("authInfo"))?.profilePic ||
-            dummyUser.profilePic
+            JSON.parse(localStorage.getItem("authInfo"))?.profilePic 
           }
           dim="45"
+          userId={userId}
         />
       </div>
       <div className="w-100 mx-2">

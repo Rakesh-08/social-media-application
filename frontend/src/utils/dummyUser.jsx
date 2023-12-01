@@ -13,7 +13,7 @@ let dummyUser = {
     Status:"in relationship",
     workAt:"Microsoft",
     staysIn:"New Delhi,110084",
-    contact:"8448393xxx"
+    contact: "8448393xxx"
 }
 
 export default dummyUser

@@ -40,12 +40,13 @@ const SinglePost = ({ data, setRefetchPost }) => {
     })
      
   }
-  
+
+
   return (
     <div style={{ background: "#effe" }} className=" p-2 rounded my-2 ">
       <div className="d-flex my-2 justify-content-between ">
         <div className="d-flex align-items-center">
-          <Avatar img={data.profilePic} dim={40} />
+          <Avatar img={data.profilePic} dim={40} userId={data.userId} />
           <span className="mx-2 ">@{data.username}</span>
         </div>
         <p onClick={() => alert("Working on some action buttons for the post")}>
@@ -180,7 +181,7 @@ let CommentComponent = ({ data,setShowComments, showComments }) => {
             {" "}
             <p className=" m-2 p-2 btn btn-outline-primary">
               {" "}
-              There is no comment on your post 
+             Be the first to comment on this post
             </p>
           </div>
         ) : (

@@ -6,7 +6,7 @@ let commentModel = require("../models/commentsModel");
 let createPost = async (req, res) => {
 
     let desc = req.body.description;
-    let baseUrl = process.env.BASE_URL;
+    let baseUrl = process.env.NODE_ENV !== "production" ? "http ://localhost:8040" : "https://photogram-app.onrender.com"
 
     try {
         if (!(req.file || desc)) {
@@ -176,49 +176,49 @@ let passComentsOnPost = async (req, res) => {
 }
 
 let updateComment = async (req, res) => {
-    let {  username, profilePic, replyMsg,like,dislike } = req.body;
+    let { username, profilePic, replyMsg, like, dislike } = req.body;
     try {
         let comment = await commentModel.findOne({ _id: req.params.commentId });
-  
 
-        if (like&& !dislike) {
+
+        if (like && !dislike) {
             comment.likes.push(req._id);
             if (comment.dislikes.includes(req._id)) {
-                 comment.dislikes.filter(id => id != req._id);
+                comment.dislikes.filter(id => id != req._id);
             }
 
             await comment.save();
             return res.status(200).send({
-                message:"comment liked"
+                message: "comment liked"
             })
         } else if (!like && dislike) {
             comment.dislikes.push(req._id)
             if (comment.likes.includes(req._id)) {
-                  comment.likes = comment.likes.filter(id => id != req._id)
-            
+                comment.likes = comment.likes.filter(id => id != req._id)
+
             }
-           
+
             await comment.save();
             return res.status(200).send({
                 message: "comment disliked"
-            }) 
+            })
         } else {
 
             if (comment.dislikes.includes(req._id)) {
-                  comment.likes = comment.likes.filter(id => id != req._id)
+                comment.likes = comment.likes.filter(id => id != req._id)
             }
             if (comment.likes.includes(req._id)) {
-                  comment.dislikes.filter(id => id != req._id);
+                comment.dislikes.filter(id => id != req._id);
             }
-            
+
             await comment.save();
             return res.status(200).send({
                 message: "No reaction"
-            }) 
+            })
         }
 
         let temp = {
-            userId:req._id, username, profilePic, replyMsg
+            userId: req._id, username, profilePic, replyMsg
         }
 
         comment.reply.push(temp);
@@ -247,13 +247,16 @@ let getAllCommentsByPost = async (req, res) => {
 }
 
 let getTimelinePosts = async (req, res) => {
+
+    let { userId } = req.params;
+
     try {
 
         let myPosts = await postModel.find({
-            userId: req._id
+            userId: userId
         }).sort({ createdAt: -1 })
 
-        let temp = await userModel.findOne({ _id: req._id });
+        let temp = await userModel.findOne({ _id: userId });
         let arrayOfIds = temp.following;
 
         let postFromFollowing = await postModel.find({

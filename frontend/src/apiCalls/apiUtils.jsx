@@ -6,7 +6,7 @@ let apis = {
     createPostApi: "/post",
     updatePostApi: "/post/:postId",
     deletePostApi: "/post/:postId",
-    getTimelinePostApi: "/post",
+    getTimelinePostApi: "/post/timeline/",
     updateUserDetailsApi: "/user/:userId",
 };
 

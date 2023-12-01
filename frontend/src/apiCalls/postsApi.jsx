@@ -22,9 +22,9 @@ let deletePost = async (id) => {
   return await axios.delete(apis.Base_Url + `/post/${id}`, token);
 };
 
-let getTimelinePost = async (q) => {
+let getTimelinePost = async (q,id) => {
 
-    return await axios.get(apis.Base_Url + apis.getTimelinePostApi+`?post=${q}`,token);
+    return await axios.get(apis.Base_Url + apis.getTimelinePostApi+`${id}?post=${q}`,token);
 }
 
 let likeDislike = async (id) => {

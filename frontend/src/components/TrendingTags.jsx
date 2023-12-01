@@ -4,7 +4,7 @@ import { trending } from '../utils/trendingTopics'
 
 const TrendingTags = () => {
   return (
-    <div className="mobFirst ">
+    <div className="mobFirst w-25 ">
        <Box
       sx={{
         display: "flex",

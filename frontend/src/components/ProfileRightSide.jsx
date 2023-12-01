@@ -3,10 +3,10 @@ import React from 'react'
 import FollowersCard from './FollowersCard'
 import InfoDetails from './InfoDetails'
 
-const ProfileRightSide = () => {
+const ProfileRightSide = ({user}) => {
   return (
       <div>
-         <InfoDetails/>
+      <InfoDetails user={user} />
       <FollowersCard query="followers" sliced={2} heading="who is following you" />
           
     </div>

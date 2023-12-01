@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
-import { useNavigate,useLocation } from "react-router-dom"
-import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Box, Stack, Badge } from "@mui/material";
 import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";
@@ -56,6 +56,10 @@ export default Navbar;
 
 let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
   let location = useLocation();
+  let dispatch = useDispatch();
+
+  let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
+
   let navAction = (path) => {
     NavigateTo(path);
     if (setShowSidebar) {
@@ -63,7 +67,8 @@ let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
     }
    
  }
-  let {direction,navLabel,gap}= sidebarData||{};
+  let { direction, navLabel, gap } = sidebarData || {};
+  
   return (
     <div
       className={`${!direction && "mobFirst"}`}
@@ -139,7 +144,11 @@ let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
         {" "}
         <AccountCircleIcon
           onClick={() => {
-            navAction("/profile")
+            dispatch({
+              type: "otherProfile",
+              userId: loggedUserId,
+            });
+            navAction("/profile");
           }
           }
           className={`navIcons ${
