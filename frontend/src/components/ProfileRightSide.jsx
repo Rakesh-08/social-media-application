@@ -5,12 +5,16 @@ import InfoDetails from './InfoDetails'
 
 const ProfileRightSide = ({user}) => {
   return (
-      <div>
+    <div>
       <InfoDetails user={user} />
-      <FollowersCard query="followers" sliced={2} heading="who is following you" />
-          
+      <FollowersCard
+        userIdForFollower={user?._id}
+        query="following"
+        sliced={2}
+        heading="who is following you"
+      />
     </div>
-  )
+  );
 }
 
 export default ProfileRightSide

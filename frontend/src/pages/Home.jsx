@@ -1,4 +1,5 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from "react-router-dom";
 import ProfileSide from '../components/ProfileSide'
 import FeedSide from '../components/FeedSide'
 import TrendingTags from '../components/TrendingTags';
@@ -7,6 +8,7 @@ import dummyUser from "../utils/dummyUser";
 
 const Home = () => {
   let [user, setUser] = useState({});
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (localStorage.getItem("pgmToken")) {
@@ -15,6 +17,12 @@ const Home = () => {
       setUser(dummyUser)
     }
   }, [localStorage.getItem("authInfo")]);
+
+  
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname]);
 
   return (
     <div className="home">

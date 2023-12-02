@@ -1,14 +1,115 @@
 
 export const postData = [
-    { imgPost: "/viewTube.png", likes: "49", comments: "85", desc: "A youtube clone application", username: "Rakesh Mandal",createdAt: "20-2-2023" },
-    
-    { imgPost: "/resume-builder.png", likes: "294", comments: "33", desc: "create resume with AI in few minutes", username: "Rahul",createdAt: "20-4-2023" },
-    
-    { imgPost: "/netflix.png", likes: "203", comments: "45", desc: "A video streaming application just like Amazon,hotstar etc.",username:"Raghav kapoor",createdAt:"30-3-2023" },
-    
-    { imgPost: "/tic-tac-toe.png", likes: "195", comments: "20", desc: "simple tic-tac-toe game",username:"Raman",createdAt:"10-12-2022" },
-    
-        {imgPost:"/fitness-app.png",likes:"599",comments:"132",desc:"Full-stack project to book appointments with nearby hospitals",username:"Rakesh Mandal",createdAt:"20-2-2023"}
-]
+  {
+    imgPost: "/dummy1.jpg",
+    likes: "49",
+    comments: "85",
+    desc: "A beautiful hill side village",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+
+  {
+    videoUrl: "/32PouIfy02Y",
+    likes: "294",
+    comments: "33",
+    desc: "preview of netflix-project",
+    username: "Rakesh Mandal",
+    createdAt: "20-4-2023",
+  },
+  {
+    imgPost: "/resume-builder.png",
+    likes: "294",
+    comments: "33",
+    desc: "create resume with AI in few minutes",
+    username: "Rakesh_Mandal",
+    createdAt: "20-4-2023",
+  },
+
+  {
+    videoUrl: "/WmVVWf6oBF8",
+    likes: "203",
+    comments: "45",
+    desc: "my own youtube application",
+    username: "Rakesh_Mandal",
+    createdAt: "30-3-2023",
+  },
+  {
+    imgPost: "/dummy2.jpg",
+    likes: "203",
+    comments: "45",
+    desc: "A red leaf path of peace",
+    username: "Rakesh_Mandal",
+    createdAt: "30-3-2023",
+  },
+
+  {
+    imgPost: "/dummy3.jpg",
+    likes: "195",
+    comments: "20",
+    desc: "simple tic-tac-toe game",
+    username: "Rakesh_Mandal",
+    createdAt: "10-12-2022",
+  },
+  {
+    videoUrl: "/Pk_qBTqTLs0",
+    likes: "195",
+    comments: "20",
+    desc: "simple calculater for arithmetic calculations",
+    username: "Rakesh_Mandal",
+    createdAt: "10-12-2022",
+  },
+
+  {
+    videoUrl: "/_u-4XLLgZ7M",
+    likes: "599",
+    comments: "132",
+    desc: "frontend counterpart for an e-commerce website",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+  {
+    imgPost: "/dummy4.jpg",
+    likes: "599",
+    comments: "132",
+    desc: "Tracking is the most lovable tough thing as adventure",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+  {
+    videoUrl: "/XpoiGVBWQ08",
+    likes: "599",
+    comments: "132",
+    desc: "counter timer",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+  ,
+  {
+    videoUrl: "/hK6Z-ooqqVc",
+    likes: "599",
+    comments: "132",
+    desc: "Tic-tac toe game built with html,css and js",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+  ,
+  {
+    videoUrl: "/wxT-Be9b-eo",
+    likes: "599",
+    comments: "132",
+    desc: "Appointment Booking appplication for patients",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+  {
+    imgPost: "/dummy5.jpg",
+    likes: "599",
+    comments: "132",
+    desc: "Books are best partner for wisdom",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+];
 
 

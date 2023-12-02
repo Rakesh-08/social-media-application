@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Stack, Box, Card } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { loginCall, signupCall } from "../apiCalls/authApis";
+import { forgotPasswordCall, loginCall, signupCall } from "../apiCalls/authApis";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Modal } from "react-bootstrap"
 
 let initForm = {
   firstName: "",
@@ -19,7 +20,8 @@ const Auth = ({ login }) => {
   let [signupSuccessMsg, setSignupSuccessMsg] = useState(false);
   let [showSpinner,setShowSpinner] = useState(false);
   let [guestUser, setGuestUser] = useState(false);
-  let [showPassword,setShowPassword] = useState(false);
+  let [showPassword, setShowPassword] = useState(false);
+  let [forgotPassword, setForgotPassword] = useState(false);
   
   let [authData, setAuthData] = useState(initForm);
   let NavigateTo = useNavigate();
@@ -28,6 +30,9 @@ const Auth = ({ login }) => {
     
     if (e.target.value==" ") {
       return;
+    }
+    if (showPasswordError) {
+      setShowPasswordError(false)
     }
    
  setAuthData({...authData, [e.target.name]: e.target.value });
@@ -42,10 +47,7 @@ const Auth = ({ login }) => {
       let { confirmPassword, ...authDetails } = authData;
 
       if (authData.password !== confirmPassword) {
-        let ErrorMsg = setShowPasswordError(true);
-        setTimeout(() => {
-          setShowPasswordError(false);
-        }, 5000);
+        setShowPasswordError(true);
         return;
       }
       setShowSpinner(true);
@@ -94,9 +96,14 @@ const Auth = ({ login }) => {
          .catch((err) => {
            console.log(err);
            setShowSpinner(false)
-            localStorage.setItem("errorCode", err.response.status);
+           if (err.response) {
+             localStorage.setItem("errorCode", err.response.status);
             localStorage.setItem("errMsg", err.response.data.message);
             NavigateTo("/Error");
+           } else {
+             alert(err.message)
+           }
+            
          });
        }
   };
@@ -176,20 +183,25 @@ const Auth = ({ login }) => {
                   <input
                     required={!guestUser}
                     className="form-control "
-                    type={showPassword?"text":"password"}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     name="password"
                     value={authData.password}
                     onChange={(e) => onChangeInAuthInput(e)}
                   />
 
-                  {!authToggle && <span
-                    onClick={()=>setShowPassword(!showPassword)}
-                    style={{ position: "absolute", top: "10%", right: "5%" }}
-                  >
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </span>}
-                 
+                  {!authToggle && (
+                    <span
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{ position: "absolute", top: "10%", right: "5%" }}
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </span>
+                  )}
                 </div>
 
                 {!authToggle && (
@@ -220,15 +232,10 @@ const Auth = ({ login }) => {
                 </div>
               )}
 
-              <div className="d-flex flex-wrap justify-content-around align-items-center">
+              <div className="d-flex  flex-wrap justify-content-around align-items-center">
                 {" "}
-                <div
-                  style={{
-                    justifySelf: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  <button className="btn follow btn-warning">
+       
+                  <button className="btn follow btn-warning mx-1">
                     {!showSpinner && (
                       <span>{authToggle ? "submit" : "login"} </span>
                     )}
@@ -243,34 +250,33 @@ const Auth = ({ login }) => {
                       </>
                     )}
                   </button>
-                </div>
-                <p
-                  style={{
-                    color: "rgb(190,250,231)",
-                    textDecoration: "underline",
-                  }}
-                  className=" m-2 my-3 "
+               
+                <div
+                  className="m-2 p-2 "
                 >
-                  {authToggle
-                    ? "Already have an account?"
-                    : "Don't have an account?"}
-                  <span
-                    onClick={() => {
-                      setAuthData(initForm);
-                      setShowPasswordError(false);
-                      setSignupSuccessMsg(false);
-                      setAuthToggle(!authToggle);
-                      if (authToggle) {
-                        NavigateTo("/Auth/login");
-                      } else {
-                        NavigateTo("/Auth/signup");
-                      }
-                    }}
-                    className="pointer"
-                  >
-                    {authToggle ? "Login" : "sign up"}
-                  </span>
-                </p>
+                  <span className="text-white border-bottom ">
+                    {authToggle
+                      ? "Already have an account? "
+                      : "Don't have an account? "}
+                    <span
+                      onClick={() => {
+                        setAuthData(initForm);
+                        setShowPasswordError(false);
+                        setSignupSuccessMsg(false);
+                        setAuthToggle(!authToggle);
+                        if (authToggle) {
+                          NavigateTo("/Auth/login");
+                        } else {
+                          NavigateTo("/Auth/signup");
+                        }
+                      }}
+                      className=" authHover"
+                    >
+                      {authToggle ? "Login" : "sign up"}
+                    </span>
+                  </span >
+                  {!authToggle && <p onClick={()=>setForgotPassword(true)} className="authHover w-75" >forgot password?</p>}
+                </div>
               </div>
               {signupSuccessMsg && (
                 <div
@@ -286,9 +292,119 @@ const Auth = ({ login }) => {
             </form>
           </Card>
         </Box>
+        <ForgotPassword forgotPassword={forgotPassword} setForgotPassword={setForgotPassword} />
       </Stack>
     </div>
   );
 };
+
+
+let ForgotPassword = ({ forgotPassword, setForgotPassword }) => {
+  let [credential, setCredential] = useState({ username: "", password: "", confirmPassword: "" })
+  let [showMsg, setShowMsg] = useState(false);
+  let [resMsg,setResMsg] = useState("")
+
+  let resetPassword = (e) => {
+    e.preventDefault();
+    let { username, password, confirmPassword } = credential;
+
+    if (password != confirmPassword) {
+      setShowMsg(true)
+      return
+    }
+
+    forgotPasswordCall({ username,newPassword: password }).then((res) => {
+      console.log(res);
+      setResMsg("success")
+
+    }).catch((err) => {
+      console.log(err)
+      setResMsg("failed")
+    });
+  }
+
+  let handleOnChange = (e) => {
+    
+    if (e.target.value == " ") {
+      return;
+    }
+    if (showMsg) {
+      setShowMsg(false);
+      return;
+    }
+
+    setCredential({...credential,[e.target.name]:e.target.value})
+  }
+
+  return (
+    <Modal
+      show={forgotPassword}
+      onHide={() => setForgotPassword(false)}
+      centered
+      backdrop="static"
+    >
+      <Modal.Header closeButton className="fw-bold">Reset Password:</Modal.Header>
+      <Modal.Body className="p-3">
+        <form onSubmit={resetPassword}>
+          <label>Enter your username </label>
+          <input
+            className="form-control"
+            type="text"
+            name="username"
+            value={credential.username}
+            onChange={(e) => handleOnChange(e)}
+          />
+
+          <label>New Password</label>
+          <input
+            className="form-control"
+            type="text"
+            name="password"
+            value={credential.password}
+            onChange={(e) => handleOnChange(e)}
+          />
+          <label> Confirm Password</label>
+          <input
+            className="form-control"
+            type="password"
+            name="confirmPassword"
+            value={credential.confirmPassword}
+            onChange={(e) => handleOnChange(e)}
+          />
+          {showMsg && (
+            <div className="text-danger m-2">
+              *confirm password is different
+            </div>
+          )}
+
+          <div className="d-flex justify-content-end m-2">
+            <button type="submit" className="btn btn-outline-primary m-1">
+              confirm
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setForgotPassword(false)
+                setResMsg("");
+                setCredential({username:"",password:"",confirmPassword:""})
+              }}
+              className="btn btn-outline-danger m-1"
+            >
+              cancel
+            </button>
+          </div>
+
+          <div className="text-center m-2">
+            {resMsg == "success" && <span className="text-success">Your password is reset, try to login with new Password</span>}
+              {resMsg=="failed"&&<span className="text-danger">Some error occurred while reseting password, try again later</span>}
+            
+            </div>
+        </form>
+      </Modal.Body>
+    
+    </Modal>
+  );
+
+}
 
 export default Auth;

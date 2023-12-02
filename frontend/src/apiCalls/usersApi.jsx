@@ -28,9 +28,9 @@ let deleteUser = async (id) => {
   return await axios.delete(apis.Base_Url+`/user/${id}`,token)
 }
 
-let fetchAllUsers = async (q) => {
+let fetchAllUsers = async (q,id) => {
   let token = await tokenHeader;
-  return await axios.get(apis.Base_Url+`/users?${q}=${true}`,token)
+  return await axios.get(apis.Base_Url+`/users/${id}?${q}=${true}`,token)
 }
 
 let followUnfollowUser = async (id,action) => {

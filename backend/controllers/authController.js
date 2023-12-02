@@ -18,6 +18,8 @@ let signUp = async (req, res) => {
             })
         }
 
+        // send email to the admin that somebody has signed up ;
+
         let IsExistingUser = await userModal.findOne({ username: username });
 
         if (IsExistingUser) {

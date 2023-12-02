@@ -58,7 +58,8 @@ const InfoDetails = ({width,user}) => {
           <b>Contact @</b>
           <span>{user?.contact}</span>
         </div>
-        <div className="my-2">
+
+        {loggedUserId == user._id &&<div className="my-2">
           <span
             onClick={() => setOpenDeleteModal(true)}
             className="pointer text-danger border-bottom border-2 border-danger"
@@ -66,7 +67,8 @@ const InfoDetails = ({width,user}) => {
             {" "}
             Delete Account
           </span>
-        </div>
+        </div>}
+        
       </div>
       <UpdateInfoModal
         updateModal={updateModal}

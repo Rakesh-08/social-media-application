@@ -35,7 +35,7 @@ let fetchUsers = async (req, res) => {
         let query;
 
         let user = await userModal.findOne({
-            _id: req._id
+            _id:req.params.userId
         })
 
         if (followers) {

@@ -18,11 +18,11 @@ const FeedSide = ({profile,user}) => {
 
   let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
 
-  
+
   return (
     <Box mx={1} py={1} sx={{ minHeight: "100vh" }}>
 
-      {(user._id && user._id == loggedUserId)||(!profile)&&
+      {(!profile||user._id && user._id == loggedUserId)&&
       <SharePostConttainer userId={user._id} setRefetchPost={setRefetchPost} />}
       {profile && (
         <Typography sx={{color:"red"}} variant="h6" m={3}>

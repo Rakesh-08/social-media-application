@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux"
+import { useLocation } from "react-router-dom";
 import TrendingTags from '../components/TrendingTags';
 import FeedSide from "../components/FeedSide"
 import ProfileRightSide from '../components/ProfileRightSide';
@@ -13,6 +14,7 @@ import dummyUser from "../utils/dummyUser"
 const Profile = () => {
   let id= useSelector(state=>state.utilReducer.profileId)
   let [user, setUser] = useState({})
+    const { pathname } = useLocation();
 
   useEffect(() => {
     if (localStorage.getItem("pgmToken") && id) {
@@ -29,6 +31,9 @@ const Profile = () => {
     }
   }, [id,localStorage.getItem("authInfo")])
 
+   useEffect(() => {
+     window.scrollTo(0, 0);
+   }, [pathname]);
 
   let getUserDetail = () => {
      getUser(id)
@@ -51,7 +56,8 @@ const Profile = () => {
               <ProfileCard data={{
                   profile:true,
                   coverPhotoHeight: 220,
-                  dim:130
+          dim: 130,
+                  height:"70vh"
         }} user={user} />
         
         <InfoDetails user={user} width="90%"/>

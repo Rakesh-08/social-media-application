@@ -17,8 +17,7 @@ let commentSchema = new mongoose.Schema({
         required: true,
     },
     profilePic: {
-        type: String,
-        required: true,
+        type: String
     },
     desc: {
         type: String,

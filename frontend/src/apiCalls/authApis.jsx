@@ -12,4 +12,8 @@ let loginCall = async (obj) => {
   return await axios.post(apis.Base_Url + apis.loginApi, obj);
 };
 
-export {signupCall,loginCall}
+let forgotPasswordCall = async (obj) => {
+  return await axios.put(apis.Base_Url + apis.forgorPasswordApi, obj)
+};
+
+export {signupCall,loginCall,forgotPasswordCall}

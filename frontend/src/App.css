@@ -1,5 +1,5 @@
 body{
-  font-family:Robotto;
+  font-family:' Arial Narrow', Arial, sans-serif;
   box-sizing: border-box;
   background: linear-gradient(30deg ,rgb(137, 126, 237),white  ,rgb(228, 163, 228) );
   overflow-x: hidden;
@@ -105,6 +105,12 @@ body{
   transform: scale(1.2);
   border-radius: 50%;
   cursor: pointer;
+}
+
+.authHover:hover{
+  cursor:pointer;
+  text-decoration: underline;
+  color:rgb(18, 70, 87)
 }
 
 

@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SendIcon from "@mui/icons-material/Send";
@@ -65,7 +65,11 @@ const SinglePost = ({ data, setRefetchPost }) => {
           src={data.imgPost}
           alt="postPic"
         />
-      ) : (
+      ) : data.videoUrl ?
+          <iframe className="rounded-2" width="100%" height="315" src={`https://www.youtube.com/embed${data.videoUrl}?si=Yq5-Fxb0vAttMPFa`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen>
+
+          </iframe> :
+          (
         <div className="fw-bold mx-2">{data?.desc}</div>
       )}
 
@@ -78,7 +82,7 @@ const SinglePost = ({ data, setRefetchPost }) => {
           )}
         </span>
         <CommentIcon
-          onClick={() => setShowComments(true)}
+          onClick={() => setShowComments(!showComments)}
           className=" text-primary pointer mx-4"
           style={{ fontSize: "2em" }}
         /></div> 
@@ -134,8 +138,8 @@ let CommentComponent = ({ data,setShowComments, showComments }) => {
 
   let sendComment = () => {
     
-    if (!localStorage.getItem("pgmToken")) {
-      return alert("please login first")
+    if (!data._id) {
+      return alert("Its a dummy post uploaded by admin,you can't send comments on this post")
     }
 
     if (!commentInput.trim()) {
@@ -201,25 +205,54 @@ let Comment = ({ comment }) => {
    let [toggleCommentLike, setToggleCommentLike] = useState(false);
   let [toggleCommentDislike, setToggleCommentDisLike] = useState(false);
   let [openReply, setOpenReply] = useState(false);
-  let [replyMsg,setReplyMsg] = useState("");
+  let [replyMsg, setReplyMsg] = useState("");
 
   let userId = JSON.parse(localStorage.getItem("authInfo"))?._id;
-
-  let handleCommentReactions = () => {
+  
+  useEffect(() => {
      
-    // like icon toggle;
-                  if (toggleCommentDislike && !toggleCommentLike) {
-                    setToggleCommentDisLike(false);
-                    setToggleCommentLike(!toggleCommentLike);
-
-                  } else if  (!toggleCommentDislike && toggleCommentLike) {
-                     setToggleCommentLike(false);
-                     setToggleCommentDisLike(!toggleCommentDislike);
+    if (comment.likes.includes(userId)) {
+              setToggleCommentLike(true)
     }
+
+    if (comment.dislikes.includes(userId)) {
+      setToggleCommentDisLike(true)
+     }
+},[])
+
+  let handleCommentReactions = (action) => {
+
+    // like dislike both can't be used;
+    let ld={}
     
+    if (action == "like") {
+      if (toggleCommentDislike && !toggleCommentLike) {
+        setToggleCommentDisLike(false)
+        ld.dislike = false;
+      } else {
+       
+        ld.dislike = toggleCommentDislike;
+      }
+         ld.like = !toggleCommentLike;
+            setToggleCommentLike(!toggleCommentLike);
+    } else if (action == "dislike")
+    { 
+      
+      if (toggleCommentLike && !toggleCommentDislike) {
+        setToggleCommentLike(false)
+        ld.like=false
+      } else {
+         ld.like = toggleCommentLike
+      }
+
+          ld.dislike = !toggleCommentDislike;
+      setToggleCommentDisLike(!toggleCommentDislike);
+    }
+         
      if (!localStorage.getItem("pgmToken")) {
        return;
     };
+
     let temp;
 
     if (openReply) {
@@ -230,9 +263,10 @@ let Comment = ({ comment }) => {
       }
     } else {
       temp = {
-        like: toggleCommentLike,
-        dislike:toggleCommentDislike
-       }
+        like: ld.like,
+        dislike: ld.dislike
+      }
+      
     }
     
     updateComment(comment._id, temp).then((res) => {
@@ -241,14 +275,16 @@ let Comment = ({ comment }) => {
            
               }
   return (
-    <div className={`d-flex ${comment.userId == userId && "justify-content-end"}`}>
+    <div
+      className={`d-flex ${comment.userId == userId && "justify-content-end"}`}
+    >
       <div
-        style={{ minWidth: "16em" }}
-        className={`p-1 m-1 w-75 `}
+        style={{ maxWidth: "80%" }}
+        className={`p-1 m-1  `}
         key={comment._id}
       >
         <div className="d-flex align-items-center">
-          <Avatar img={comment.profilePic} dim={26} />
+          <Avatar img={comment.profilePic} dim={26} userId={comment.userId} />
           <span style={{ fontSize: "0.9em" }} className="mx-2 fw-bold ">
             {comment.username}
           </span>
@@ -259,15 +295,19 @@ let Comment = ({ comment }) => {
             background: comment.userId == userId ? "lightGreen" : "lightBlue",
             fontSize: "0.9rem",
           }}
-          className="p-2 m-1 mx-2  rounded " >
-          <p> { comment.desc}  </p>
+          className="p-2 m-1 mx-2  rounded "
+        >
+          <p> {comment.desc} </p>
 
           <div className="mt-2 d-flex justify-content-around  w-75">
             <div>
               <ThumbUpAltOutlinedIcon
                 style={{ fontSize: "1em" }}
                 className={`${toggleCommentLike && "text-primary"} `}
-                onClick={handleCommentReactions}
+                onClick={() => {
+                  
+                  handleCommentReactions("like");
+                }}
               />{" "}
               <span className="smallFont">like</span>
             </div>
@@ -276,8 +316,10 @@ let Comment = ({ comment }) => {
               <ThumbDownAltOutlinedIcon
                 style={{ fontSize: "1em" }}
                 className={`${toggleCommentDislike && "text-primary"}`}
-                onClick={handleCommentReactions}
-                    
+                onClick={() => {
+                  
+                  handleCommentReactions("dislike")
+                }}
               />{" "}
               <span className="smallFont">dislike</span>
             </div>
@@ -293,3 +335,5 @@ let Comment = ({ comment }) => {
     </div>
   );
 }
+
+

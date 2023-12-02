@@ -6,37 +6,34 @@ import UsersListModal from './UsersListModal';
 import { fetchAllUsers, followUnfollowUser } from '../apiCalls/usersApi';
 
 
-
-const FollowersCard = ({sliced,heading,query }) => {
+const FollowersCard = ({sliced,heading,query,userIdForFollower}) => {
  
   let [usersModal, setUsersModal] = useState(false);
   let [users, setUsers] = useState([]);
- 
-
-   let userId = JSON.parse(localStorage.getItem("authInfo"))?._id;
+  let userId = JSON.parse(localStorage.getItem("authInfo"))?._id;
  
   useEffect(() => {
+  
 
-    if (!localStorage.getItem("pgmToken")) {
-      setUsers(followersList)
-      
-    } else {
-      getAllUsers();
+  if (!localStorage.getItem("pgmToken")||!userIdForFollower) {
+      setUsers(followersList)   
+  } else {
+    getAllUsers(userIdForFollower);
     
-     }
+    }
     
-  },[query])
+  }, [userIdForFollower])
+  
    
-  let getAllUsers = () => {
-      
-    fetchAllUsers(query).then((res) => {
+  let getAllUsers = (id) => {
+
+    fetchAllUsers(query,id).then((res) => {
       setUsers(res.data)
-      
     }).catch((err) => {
-     
-      console.log(err)
+     console.log(err)
     });
   }
+
 
   return (
     <div className={`mx-3 ${sliced &&"mobFirst1"} `}>
@@ -45,7 +42,8 @@ const FollowersCard = ({sliced,heading,query }) => {
         {heading}
       </Typography>
 
-      {users.length>0? <Card
+      {users.length > 0 ?
+        <Card
         sx={{
           width: "100%",
           backgroundColor: "transparent",
@@ -53,10 +51,11 @@ const FollowersCard = ({sliced,heading,query }) => {
           padding: "1em",
         }}
       >
-        {users.slice(0, sliced).map((follower, i) => {
+          {users.filter(user => user[query] ? user[query].includes(userIdForFollower) : true)
+            .slice(0, sliced)
+            .map((follower, i) => {
            
-          if (userId &&follower._id == userId) {
-            
+          if (userId &&follower._id == userId&&follower._id==userIdForFollower) {
              return 
           }
         
@@ -70,7 +69,7 @@ const FollowersCard = ({sliced,heading,query }) => {
        
       </Card>:<p>You have not socialized with peoples, try to connect with peoples </p>}
      
-      <UsersListModal usersModal={usersModal} setUsersModal={setUsersModal} />
+      <UsersListModal usersModal={usersModal} setUsersModal={setUsersModal} userId={userId} />
 
     </div>
   );
@@ -79,11 +78,10 @@ const FollowersCard = ({sliced,heading,query }) => {
 const User = ({ user,query,userId}) => {
   let [follow, setFollow] = useState(false);
 
- 
   useEffect(() => {
 
     if (userId) {
-      if (user.followers.includes(userId)) {
+      if (user.followers&&user.followers.includes(userId)) {
            setFollow(true)
     }
     }
@@ -92,9 +90,9 @@ const User = ({ user,query,userId}) => {
   }, [query]);
     
   let followUnfollowAction = () => {
-
+     setFollow(!follow)
     if (!localStorage.getItem("pgmToken")) {
-        setFollow(!follow)
+       
          return;
     };
 

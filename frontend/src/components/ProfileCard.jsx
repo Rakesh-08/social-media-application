@@ -23,12 +23,13 @@ let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
   return (
     <Card
         sx={{
-        width:"98%",
+        width:"100%",
         boxShadow: "none",
         borderRadius: "2em",
         marginBottom: "1em",
         marginTop: "0.3em",
-        marginLeft:"0.2em",
+        marginLeft: "0.2em",
+        height:data?.height
       }}
      
     >

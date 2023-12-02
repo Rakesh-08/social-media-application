@@ -5,13 +5,17 @@ import ProfileCard from "./ProfileCard";
 
 
 const ProfileSide = ({user}) => {
-  
+ 
  
   return (
-    <div style={{position:"sticky",top:"11%"}} className="m-3  px-2 " >
+    <div style={{ position: "sticky", top: "11%" }} className="m-3  px-2 ">
       <ProfileCard user={user} />
-      <FollowersCard query="followers" heading="who is following you" sliced={2}  />
-     
+      <FollowersCard
+        userIdForFollower={user._id}
+        query="following"
+        heading="who is following you"
+        sliced={2}
+      />
     </div>
   );
 };

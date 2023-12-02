@@ -19,8 +19,8 @@ module.exports = (app) => {
     app.put("/user/:userId",verifyToken,updateUserById);
     app.delete("/user/:userId",verifyToken,deleteUser);
     app.put("/user/:userId/followUnfollow",verifyToken,followUnfollowUser);
-    app.get("/users", verifyToken, fetchUsers);
+    app.get("/users/:userId", verifyToken, fetchUsers);
     app.put("/user/:userId/upload", [verifyToken, uploadMiddleware], uploadUserImages);
-    app.put("/user/Password/forgot",changePassword)
+    app.put("/user/password/forgot",changePassword)
     
 }

@@ -12,11 +12,11 @@ const PostContainer = ({refetchPost,setRefetchPost,profile,user}) => {
   let search = useSelector(state => state.utilReducer.searchTerm)
    
   useEffect(() => {
-    if (localStorage.getItem('pgmToken')&& user._id) {
+    if (localStorage.getItem('pgmToken') && user._id) {
       fetchPosts();
     }  
 
-  }, [refetchPost,user]);
+  }, [refetchPost,user,localStorage.getItem('pgmToken')]);
  
 
 
