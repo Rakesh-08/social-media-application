@@ -10,15 +10,20 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import Avatar from './Avatar';
-import { commentOnPostApi, getAllCommentOnPost, likeDislike, updateComment } from '../apiCalls/postsApi';
+import { Modal } from "react-bootstrap";
+import { commentOnPostApi, deletePost, getAllCommentOnPost, likeDislike, updateComment } from '../apiCalls/postsApi';
 
 const SinglePost = ({ data, setRefetchPost }) => {
   
   let [showComments, setShowComments] = useState(false)
   let [toggleHeartIcon, setToggleHeartIcon] = useState(false);
+  let [showActions, setShowActions] = useState(false);
+  let [openEditModal,setOpenEditModal] = useState(false);
+  
+  let id=JSON.parse(localStorage.getItem("authInfo"))?._id
   
   useEffect(() => {
-    if (data.likes.includes(JSON.parse(localStorage.getItem("authInfo"))?._id)) {
+    if (data.likes.includes(id)) {
           setToggleHeartIcon(true)
         }
   },[])
@@ -41,52 +46,121 @@ const SinglePost = ({ data, setRefetchPost }) => {
      
   }
 
+  let deletePostFn = () => {
+    let confirmation = window.confirm('Are you sure you want to delete this Post?');
+
+    if (confirmation) {
+      // invoke deletePost api call
+      deletePost().then((res) => {
+        console.log(res);
+      }).catch(err=>console.log(err))
+
+      setShowActions(false)
+    }
+  }
+
 
   return (
-    <div style={{ background: "#effe" }} className=" p-2 rounded my-2 ">
+    <div className=" p-2 rounded my-2 border position-relative ">
       <div className="d-flex my-2 justify-content-between ">
         <div className="d-flex align-items-center">
           <Avatar img={data.profilePic} dim={40} userId={data.userId} />
           <span className="mx-2 ">@{data.username}</span>
         </div>
-        <p onClick={() => alert("Working on some action buttons for the post")}>
-          <MoreVertIcon />
-        </p>
+        <div>
+          {showActions && (
+            <div
+              style={{
+                position: "absolute",
+                top: "1.8em",
+                right: "1.8em",
+                borderRadius: "0.9em 0em 0.5em 0.9em",
+              }}
+              className="bg-white p-3"
+            >
+             
+              <p
+                onClick={() => alert("post saved in your saved library")}
+                className="authHover"
+              >
+                Save post
+              </p>
+              {true && (
+                <p
+                  onClick={() => {
+                    setOpenEditModal(true);
+                    setShowActions(false)
+                  }}
+                  className="authHover"
+                >
+                  Edit post
+                </p>
+              )}
+
+              {true && (
+                <p
+                  onClick={deletePostFn}
+                  className="authHover text-danger"
+                >
+                  Delete post
+                </p>
+              )}
+            </div>
+          )}
+          <PostEditModal openEditModal={openEditModal}setOpenEditModal={setOpenEditModal}/>
+
+          <MoreVertIcon onClick={() => setShowActions(!showActions)} />
+        </div>
       </div>
 
       {data?.imgPost ? (
         <img
           style={{
             width: "100%",
-            maxHeight: "20rem",
+            maxHeight: "24rem",
             borderRadius: "0.5em",
             objectFit: "contain",
           }}
           src={data.imgPost}
           alt="postPic"
         />
-      ) : data.videoUrl ?
-          <iframe className="rounded-2" width="100%" height="315" src={`https://www.youtube.com/embed${data.videoUrl}?si=Yq5-Fxb0vAttMPFa`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen>
-
-          </iframe> :
-          (
+      ) : data.videoUrl && data.dummy ? (
+        <iframe
+          className="rounded-2"
+          width="100%"
+          height="355"
+          src={`https://www.youtube.com/embed${data.videoUrl}?si=Yq5-Fxb0vAttMPFa`}
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        ></iframe>
+      ) : !data.dummy && data.videoUrl ? (
+        <video controls src={data.videoUrl} width="100%" />
+      ) : (
         <div className="fw-bold mx-2">{data?.desc}</div>
       )}
 
       <div className="d-flex border-top border-3 justify-content-between m-2 p-2">
-       <div><span onClick={toggleLike} className="text-danger pointer ">
-          {toggleHeartIcon ? (
-            <FavoriteIcon style={{ fontSize: "2em" }} />
-          ) : (
-            <FavoriteBorderIcon style={{ fontSize: "2em" }} />
-          )}
-        </span>
-        <CommentIcon
-          onClick={() => setShowComments(!showComments)}
-          className=" text-primary pointer mx-4"
-          style={{ fontSize: "2em" }}
-        /></div> 
-        <ReplyIcon className="fs-2 text-success pointer" />
+        <div>
+          <span onClick={toggleLike} className="text-danger pointer ">
+            {toggleHeartIcon ? (
+              <FavoriteIcon style={{ fontSize: "2em" }} />
+            ) : (
+              <FavoriteBorderIcon style={{ fontSize: "2em" }} />
+            )}
+          </span>
+          <CommentIcon
+            onClick={() => setShowComments(!showComments)}
+            className=" text-primary pointer mx-4"
+            style={{ fontSize: "2em" }}
+          />
+        </div>
+
+        <ReplyIcon
+          onClick={() => alert("Post sharing feature is not available ")}
+          className="fs-2 share-btn text-success pointer"
+        />
       </div>
       <div className="d-flex m-2 ">
         <div className="mx-2  ">
@@ -333,6 +407,42 @@ let Comment = ({ comment }) => {
         </div>
       </div>
     </div>
+  );
+}
+
+let PostEditModal = ({openEditModal,setOpenEditModal}) => {
+  return (
+    <Modal show={openEditModal} hide={() => setOpenEditModal(false)}
+    >
+      <Modal.Body>
+        <form>
+          <div className="d-flex mb-3 justify-content-between">
+            <h5>Edit your post</h5>
+            <ClearIcon onClick={() => setOpenEditModal(false)} />
+          </div>
+          <input
+            className="form-control m-2"
+            type="text"
+            placeholder="new description for the post......"
+          />{" "}
+          <div className="d-flex m-2">
+            <div><h6>Upload new img</h6>
+            <input type="file" id="imgUpload" placeholder="upload new image" /></div>
+             <div>
+            <h6>Upload new video</h6>
+            <input type="file" />
+          </div>
+          </div>
+         
+          
+            <button type="button" onClick={()=>setOpenEditModal(false)} className="btn btn-info m-2 my-3 ">back</button>
+          
+            <button className="btn btn-success m-2 my-3">confirm</button>
+          
+            
+        </form>
+      </Modal.Body>
+    </Modal>
   );
 }
 

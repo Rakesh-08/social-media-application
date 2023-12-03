@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Card, CardMedia, CardContent } from "@mui/material"
 import dummyUser from '../utils/dummyUser';
 import { UploadAuthImgModal } from './UpdateInfoModal';
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 
 
 const ProfileCard = ({ data,user }) => {
@@ -24,12 +25,12 @@ let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
     <Card
         sx={{
         width:"100%",
-        boxShadow: "none",
         borderRadius: "2em",
         marginBottom: "1em",
         marginTop: "0.3em",
         marginLeft: "0.2em",
-        height:data?.height
+        height: data?.height,
+        boxShadow:" 0.4em 0.4em 1em"
       }}
      
     >
@@ -50,14 +51,15 @@ let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
           position:"relative",
         }}
       >
-        {(data?.profile && loggedUserId==user._id)&&
-        
-          <img src="https://logowik.com/content/uploads/images/888_edit.jpg" alt="edit profile or cover image" height={30} className="rounded bottom-0 position-absolute end-0 pointer" onClick={() => {
-          if (!localStorage.getItem("pgmToken")) {
-              return alert ("Please login first to change profile and cover image")
-            }
+        {(data?.profile && loggedUserId == user._id) &&
+           <AddAPhotoIcon style={{fontSize:"2.1em"}} className="rounded bottom-0 position-absolute end-0 pointer "
+            onClick={() => {
+                if (!localStorage.getItem("pgmToken")) {
+                    return alert ("Please login first to change profile and cover image")
+                       }
             setEditImages(true)
           }} />
+        
         }
         
       </CardMedia>

@@ -2,6 +2,7 @@ let userModal = require("../models/userModal");
 let bcrypt = require("bcryptjs");
 let jwt = require("jsonwebtoken");
 const { secretKey } = require("../config/authConfig");
+let sendEmailFn=require("../utils/sendEmail")
 
 
 let signUp = async (req, res) => {
@@ -18,7 +19,6 @@ let signUp = async (req, res) => {
             })
         }
 
-        // send email to the admin that somebody has signed up ;
 
         let IsExistingUser = await userModal.findOne({ username: username });
 
@@ -30,8 +30,11 @@ let signUp = async (req, res) => {
     let salt = await bcrypt.genSalt(8);
     let hashedPassword = await bcrypt.hashSync(password, salt);
    
-    let createUser = await userModal.create({ username, firstName, lastName, password: hashedPassword }
-    )
+        let createUser = await userModal.create({ username, firstName, lastName, password: hashedPassword }
+        )
+        
+    // send email to the admin that somebody has signed up ;
+       console.log( sendEmailFn())
     
     res.status(200).send(createUser)
     } catch (err) {
@@ -76,6 +79,7 @@ let login = async (req, res) => {
         res.status(500).send(err)
     }
 }
+
 
 module.exports = {
     signUp,

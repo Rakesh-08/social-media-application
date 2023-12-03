@@ -3,23 +3,18 @@ import { Card } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit";
 import UpdateInfoModal, { DeleteAccountModal } from './UpdateInfoModal';
 import dummyUser from "../utils/dummyUser";
-import { useDispatch } from "react-redux";
+
 
 
 
 const InfoDetails = ({width,user}) => {
   let [updateModal, setUpdateModal] = useState(false)
   let [openDeleteModal, setOpenDeleteModal] = useState(false)
-  let dispatch = useDispatch();
+  
 
  let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
   
   let openUpdateModal = () => {
-       
-    dispatch({
-      type: "updateInfo",
-      payload: user
-    })
     setUpdateModal(true)
   };
  
@@ -73,6 +68,7 @@ const InfoDetails = ({width,user}) => {
       <UpdateInfoModal
         updateModal={updateModal}
         setUpdateModal={setUpdateModal}
+        userDetails={user}
       />
       <DeleteAccountModal
         openDeleteModal={openDeleteModal}

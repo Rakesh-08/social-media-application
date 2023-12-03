@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import FollowersCard from "./FollowersCard";
 
-const UsersListModal = ({ usersModal,setUsersModal}) => {
+const UsersListModal = ({ usersModal,setUsersModal,userId}) => {
   return (
     <Modal
       show={usersModal}
@@ -11,7 +11,7 @@ const UsersListModal = ({ usersModal,setUsersModal}) => {
       scrollable={true}
     >
       <Modal.Body>
-        <FollowersCard  query="following" heading="Your followers" />
+        <FollowersCard userIdForFollower={userId}  query="following" heading="Your followers" />
       </Modal.Body>
     </Modal>
   );

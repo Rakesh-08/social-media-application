@@ -13,7 +13,7 @@ const NotificationsPage = () => {
     }, [pathname]);
   return (
     <div className="min-vh-100  d-flex  justify-content-center">
-      <div style={{background:"white",padding:"1em",minWidth:"50vw"}} >
+      <div style={{background:"white",padding:"1em",minWidth:"50vw",boxShadow:"0.3rem 0.3rem 0.5em "}} >
         {notifications.map((notifi, i) =>
           <SingleNotification key={i} notification={notifi} val={i} />
         )}  

@@ -18,12 +18,12 @@ const Profile = () => {
 
   useEffect(() => {
     if (localStorage.getItem("pgmToken") && id) {
-     
       let loggedUser = JSON.parse(localStorage.getItem("authInfo"));
       if (loggedUser._id !== id) {
          getUserDetail();
       } else {
         setUser(loggedUser)
+      
       }
      
     } else {
@@ -34,7 +34,8 @@ const Profile = () => {
    useEffect(() => {
      window.scrollTo(0, 0);
    }, [pathname]);
-
+  
+ 
   let getUserDetail = () => {
      getUser(id)
        .then((res) => {
@@ -46,8 +47,6 @@ const Profile = () => {
        });
   }
   
-
-
   return (
       <div className="profilePage">
           <TrendingTags />

@@ -1,11 +1,10 @@
 body{
   font-family:' Arial Narrow', Arial, sans-serif;
   box-sizing: border-box;
-  background: linear-gradient(30deg ,rgb(137, 126, 237),white  ,rgb(228, 163, 228) );
+  background: linear-gradient(90deg,rgb(231, 156, 231) ,white  ,rgb(130, 117, 240) );
   overflow-x: hidden;
 
 }
-
 
 *{
   margin:0;
@@ -112,5 +111,4 @@ body{
   text-decoration: underline;
   color:rgb(18, 70, 87)
 }
-
 

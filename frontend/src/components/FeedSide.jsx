@@ -10,7 +10,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Avatar from './Avatar';
 import dummyUser from '../utils/dummyUser';
 import { createPost } from '../apiCalls/postsApi';
-import { useSelector } from "react-redux";
+
 
 
 const FeedSide = ({profile,user}) => {
@@ -25,8 +25,8 @@ const FeedSide = ({profile,user}) => {
       {(!profile||user._id && user._id == loggedUserId)&&
       <SharePostConttainer userId={user._id} setRefetchPost={setRefetchPost} />}
       {profile && (
-        <Typography sx={{color:"red"}} variant="h6" m={3}>
-          <span className=" mx-1">
+        <Typography sx={{ color: "darkViolet",textDecoration:"underline" }} variant="h6" m={3}>
+          <span className="mx-1">
             <SendIcon />
           </span>{" "}
            Posts of {user.firstName}
@@ -42,19 +42,24 @@ const FeedSide = ({profile,user}) => {
 
 export default FeedSide;
 
-let SharePostConttainer = ({ setRefetchPost,userId }) => {
+let SharePostConttainer = ({ setRefetchPost, userId }) => {
   
   let [imgUpload, setImgUpload] = useState("");
+  let [videoUpload, setVideoUpload] = useState("");
   let [newPostDescription, setNewPostDescription] = useState("");
   let [showSpinner, setShowSpinner] = useState(false);
 
-  let state = useSelector(state => state.authReducers)
  
-  let handlePostShare = async(e) => {
+  let handlePostShare = async (e) => {
     e.preventDefault();
 
-    if (!(imgUpload || newPostDescription)) {
+    if (!(imgUpload || newPostDescription||videoUpload)) {
         return alert("empty post can't be uploaded")
+    }
+
+    if (imgUpload && videoUpload) {
+      return alert("Please post either a video or an image, uploading both is not possible at the moment");
+
     }
 
      if (!localStorage.getItem("pgmToken")) {
@@ -65,15 +70,26 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
     
     let Data = new FormData();
     Data.append("description", newPostDescription);
-    Data.append("post", imgUpload)
+
+    if (imgUpload) {
+      Data.append("post", imgUpload)
+      Data.append("postType","image")
+    }
+    if (videoUpload) {
+      Data.append("post", videoUpload);
+        Data.append("postType", "video");
+    }
+  
+    
     
     createPost(Data).then((res) => {
       alert("Post created successfully");
       setShowSpinner(false)
       setImgUpload("");
+      setVideoUpload("")
       setNewPostDescription("");
       setRefetchPost(true);
-      state.fetch();
+    
     }).catch((err) => {
       console.log(err);
       setShowSpinner(false)
@@ -94,9 +110,7 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
     >
       <div>
         <Avatar
-          img={
-            JSON.parse(localStorage.getItem("authInfo"))?.profilePic 
-          }
+          img={JSON.parse(localStorage.getItem("authInfo"))?.profilePic}
           dim="45"
           userId={userId}
         />
@@ -104,7 +118,7 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
       <div className="w-100 mx-2">
         <form method="post" encType="multipart/form-data">
           <input
-            className="m-1 p-2 rounded w-100 border-0  "
+            className="m-1 p-2 form-control "
             type="text"
             placeholder="What's happening...."
             style={{ backgroundColor: "lightGray", outline: "none" }}
@@ -126,6 +140,10 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
 
             <input
               onChange={(e) => {
+                if (videoUpload) {
+                  setVideoUpload("");
+                }
+
                 if (e.target.files && e.target.files[0]) {
                   setImgUpload(e.target.files[0]);
                   e.target.value = "";
@@ -136,15 +154,45 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
               name="post"
               className="d-none"
             />
-            <div style={{ color: "red" }}>
-              <PlayCircleIcon />
-              <span className="mx-1">video</span>
-            </div>
-            <div style={{ color: "blue" }}>
+
+            <label htmlFor="videoFile">
+              {" "}
+              <div style={{ color: "red" }}>
+                <PlayCircleIcon />
+                <span className="mx-1">video</span>
+              </div>
+            </label>
+
+            <input
+              onChange={(e) => {
+                if (imgUpload) {
+                  setImgUpload("");
+                }
+
+                if (e.target.files && e.target.files[0]) {
+                  setVideoUpload(e.target.files[0]);
+                }
+                e.target.value = "";
+              }}
+              id="videoFile"
+              type="file"
+              name="post"
+              className="d-none"
+            />
+
+            <div
+              onClick={() => alert("Schedule feature is not created yet")}
+              style={{ color: "blue" }}
+            >
               <CalendarMonthIcon />
               <span className="mx-1">Schedule</span>
             </div>
-            <div style={{ color: "green" }}>
+            <div
+              onClick={() =>
+                alert("location sharing feature is not created yet")
+              }
+              style={{ color: "green" }}
+            >
               <LocationOnIcon />
               <span className="mx-1">location</span>
             </div>
@@ -153,7 +201,7 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
               onClick={handlePostShare}
               className="btn btn-dark"
             >
-              {showSpinner ?(
+              {showSpinner ? (
                 <>
                   <span
                     className="spinner-border text-secondary mx-1 spinner-border-sm"
@@ -162,13 +210,19 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
                   ></span>
                   uploading...
                 </>
-              ) :"Share" }
-             
+              ) : (
+                "Share"
+              )}
             </button>
           </Stack>
           {imgUpload && (
-            <div className="position-relative bottom-0 start-0">
-              <ClearIcon className="" onClick={() => setImgUpload("")} />
+            <div>
+              <ClearIcon
+                onClick={() => {
+                  setImgUpload("");
+                }}
+              />
+
               <img
                 style={{
                   width: "100%",
@@ -179,6 +233,16 @@ let SharePostConttainer = ({ setRefetchPost,userId }) => {
                 src={URL.createObjectURL(imgUpload)}
                 alt="postImg"
               />
+            </div>
+          )}
+          {videoUpload && (
+            <div>
+              <ClearIcon
+                onClick={() => {
+                  setVideoUpload("");
+                }}
+              />
+              <video controls width="100%"><source src={URL.createObjectURL(videoUpload)}></source></video>
             </div>
           )}
         </form>

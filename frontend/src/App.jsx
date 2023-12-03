@@ -114,6 +114,7 @@ function LayoutForNonNavbar({ children }) {
         position: "sticky",
         top: 0,
         zIndex: 99,
+        boxShadow: " 0.2em 0.2em 0.4em",
         background: "linear-gradient(80deg ,rgb(153, 144, 240),white ,purple )",
       }}
     >

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
 import { deleteUser, updateUserDetails, uploadUserPics } from '../apiCalls/usersApi';
 
 
 
-const UpdateInfoModal = ({ updateModal, setUpdateModal }) => {
-  let userDetails = useSelector(state => state.authReducers);
+const UpdateInfoModal = ({ updateModal, setUpdateModal,userDetails }) => {
+  
   let [updateUser, setUpdateUser] = useState({})
   
  // useEffect hook 

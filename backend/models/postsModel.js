@@ -8,7 +8,9 @@ let postSchema = new mongoose.Schema({
         required:true
     },
     imgPost: String,
+    videoUrl:String,
     likes: [],
+    comments:[],
     desc: String,
     username: String,
     profilePic: String

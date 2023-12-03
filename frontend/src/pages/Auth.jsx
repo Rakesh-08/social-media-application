@@ -114,7 +114,7 @@ const Auth = ({ login }) => {
         direction="row"
         sx={{ justifyContent: "space-around", width: "100%", flexWrap: "wrap" }}
       >
-        <Box m={2} display="flex" alignItems="center" sx={{ flexWrap: "wrap" }}>
+        <Box m={2} display="flex" alignItems="center" >
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPHRvtFUvNT9Rrpz2HE4gu05hPPg8m7DweCg&usqp=CAU"
             alt="logo"
@@ -343,8 +343,8 @@ let ForgotPassword = ({ forgotPassword, setForgotPassword }) => {
       centered
       backdrop="static"
     >
-      <Modal.Header closeButton className="fw-bold">Reset Password:</Modal.Header>
-      <Modal.Body className="p-3">
+      <Modal.Header closeButton className="fw-bold bg-warning ">Reset Password:</Modal.Header>
+      <Modal.Body className="p-3 ">
         <form onSubmit={resetPassword}>
           <label>Enter your username </label>
           <input
@@ -378,7 +378,7 @@ let ForgotPassword = ({ forgotPassword, setForgotPassword }) => {
           )}
 
           <div className="d-flex justify-content-end m-2">
-            <button type="submit" className="btn btn-outline-primary m-1">
+            <button type="submit" className="btn btn-primary m-1">
               confirm
             </button>
             <button
@@ -388,7 +388,7 @@ let ForgotPassword = ({ forgotPassword, setForgotPassword }) => {
                 setResMsg("");
                 setCredential({username:"",password:"",confirmPassword:""})
               }}
-              className="btn btn-outline-danger m-1"
+              className="btn btn-danger m-1"
             >
               cancel
             </button>

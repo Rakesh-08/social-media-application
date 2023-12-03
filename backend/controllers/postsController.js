@@ -6,7 +6,7 @@ let commentModel = require("../models/commentsModel");
 let createPost = async (req, res) => {
 
     let desc = req.body.description;
-    let baseUrl = process.env.NODE_ENV !== "production" ? "http ://localhost:8040" : "https://photogram-app.onrender.com"
+    let baseUrl = process.env.NODE_ENV !== "production" ? "http://localhost:8040" : "https://photogram-app.onrender.com"
 
     try {
         if (!(req.file || desc)) {
@@ -15,25 +15,31 @@ let createPost = async (req, res) => {
             })
         }
 
+        let user = await userModel.findOne({ _id: req._id });
+
+        let temp = {
+            userId: req._id,
+            desc: desc,
+            username: user.username,
+            profilePic: user.profilePic
+        }
+
         let url;
 
         if (req.file) {
             url = `${baseUrl}/posts/${req.file.filename}`
         } else {
             url = ""
+        };
+
+        if (req.body.postType == "image") {
+            temp.imgPost = url;
+         }else if (req.body.postType == "video") {
+            temp.videoUrl = url;
         }
 
 
-        let user = await userModel.findOne({ _id: req._id });
-
-        let post = await postModel.create({
-            userId: req._id,
-            desc: desc,
-            imgPost: url,
-            username: user.username,
-            profilePic: user.profilePic
-        })
-
+        let post = await postModel.create(temp);
 
         user.posts.push(post._id);
         await user.save();
@@ -167,6 +173,10 @@ let passComentsOnPost = async (req, res) => {
         }
 
         let createComment = await commentModel.create(temp);
+        let post = await postModel.findOne({ _id: req.params.postId });
+        post.comments.push(createComment._id);
+        await post.save();
+
         res.status(200).send(createComment);
 
     } catch (err) {

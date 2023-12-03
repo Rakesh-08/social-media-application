@@ -36,41 +36,61 @@ const FollowersCard = ({sliced,heading,query,userIdForFollower}) => {
 
 
   return (
-    <div className={`mx-3 ${sliced &&"mobFirst1"} `}>
+    <div className={`mx-3  ${sliced && "mobFirst1"} `}>
       {" "}
       <Typography sx={{ fontWeight: "bold" }} my={2}>
         {heading}
       </Typography>
-
-      {users.length > 0 ?
+      {users.length > 0 ? (
         <Card
-        sx={{
-          width: "100%",
-          backgroundColor: "transparent",
-          border: "none",
-          padding: "1em",
-        }}
-      >
-          {users.filter(user => user[query] ? user[query].includes(userIdForFollower) : true)
+          sx={{
+            width: "100%",
+            padding: "1em",
+            background:"linear-gradient(49deg,white,gray)"
+          }}
+        >
+          {users
+            .filter((user) =>
+              user[query] ? user[query].includes(userIdForFollower) : true
+            )
             .slice(0, sliced)
             .map((follower, i) => {
-           
-          if (userId &&follower._id == userId&&follower._id==userIdForFollower) {
-             return 
-          }
-        
-          return (<User user={follower} key={follower._id} query={query} userId={userId} />)
-        })}
-       
-       {sliced&&<div className="d-flex justify-content-center">
-          <p onClick={() => setUsersModal(true)} className="   m-1 pointer">
-            show more
-          </p></div> } 
-       
-      </Card>:<p>You have not socialized with peoples, try to connect with peoples </p>}
-     
-      <UsersListModal usersModal={usersModal} setUsersModal={setUsersModal} userId={userId} />
+              if (
+                userId &&
+                follower._id == userId &&
+                follower._id == userIdForFollower
+              ) {
+                return;
+              }
 
+              return (
+                <User
+                  user={follower}
+                  key={follower._id}
+                  query={query}
+                  userId={userId}
+                />
+              );
+            })}
+
+          {sliced && (
+            <div className="d-flex justify-content-center">
+              <p onClick={() => setUsersModal(true)} className=" text-primary  m-1 pointer">
+                show more
+              </p>
+            </div>
+          )}
+        </Card>
+      ) : (
+        <p>
+          You have not socialized with peoples, try to connect with peoples{" "}
+        </p>
+      )}
+      <UsersListModal
+        usersModal={usersModal}
+        setUsersModal={setUsersModal}
+        userId={userId}
+      />
     </div>
   );
 }

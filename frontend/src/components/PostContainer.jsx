@@ -9,7 +9,8 @@ import { postData } from '../utils/PostsData';
 const PostContainer = ({refetchPost,setRefetchPost,profile,user}) => {
   let [posts, setPosts] = useState([]);
 
-  let search = useSelector(state => state.utilReducer.searchTerm)
+  let search = useSelector(state => state.utilReducer.searchTerm);
+  let state = useSelector((state) => state.authReducers);
    
   useEffect(() => {
     if (localStorage.getItem('pgmToken') && user._id) {
@@ -25,7 +26,8 @@ const PostContainer = ({refetchPost,setRefetchPost,profile,user}) => {
 
   getTimelinePost(q,user._id)
     .then((res) => {
-       setPosts(res.data)
+      setPosts(res.data);
+      state.fetch();
     })
     .catch((err) => {
       if (err.response?.data?.message == "Token expired") {
@@ -37,7 +39,7 @@ const PostContainer = ({refetchPost,setRefetchPost,profile,user}) => {
   };
   
   return (
-    <div className=" rounded">
+    <div className="shadow rounded">
 
       {posts.filter((post) => post.desc.includes(search)).map((post) => (
           <SinglePost

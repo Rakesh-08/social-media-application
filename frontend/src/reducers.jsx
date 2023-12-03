@@ -9,7 +9,7 @@ let currentUser = () => {
 
   getUser(id)
     .then((res) => {
-        result = res.data;
+      result = res.data;
         localStorage.setItem("authInfo", JSON.stringify(result));
     })
     .catch((err) => {
@@ -18,25 +18,15 @@ let currentUser = () => {
   return result;
 };
 
-let initForm = {
-  firstName: "",
-  lastName: "",
-  staysIn: "",
-  about: "",
-  workAt: "",
-  Status: "",
-  contact: "",
-  fetch:currentUser
+let init = {
+ fetch:currentUser
 };
 
 
-let authReducers = (state=initForm, action) => {
+let authReducers = (state=init, action) => {
     
     switch (action.type) { 
    
-        case "updateInfo":
-            let info = action.payload;
-            return { ...state, ...info };
         default:
             return state
         
