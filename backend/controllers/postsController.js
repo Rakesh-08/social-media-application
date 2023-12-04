@@ -1,13 +1,14 @@
 let postModel = require("../models/postsModel");
 let userModel = require("../models/userModal");
 let commentModel = require("../models/commentsModel");
+let fs=require("fs")
 
+let baseUrl = process.env.NODE_ENV !== "production" ? "http://localhost:8040" : "https://photogram-app.onrender.com";
 
 let createPost = async (req, res) => {
 
     let desc = req.body.description;
-    let baseUrl = process.env.NODE_ENV !== "production" ? "http://localhost:8040" : "https://photogram-app.onrender.com"
-
+   
     try {
         if (!(req.file || desc)) {
             return res.status(400).send({
@@ -70,6 +71,9 @@ let getPostById = async (req, res) => {
 }
 
 let updatePost = async (req, res) => {
+
+    let { description } = req.body;
+
     try {
         let post = await postModel.findOne({ _id: req.params.postId });
         if (!post) {
@@ -80,11 +84,35 @@ let updatePost = async (req, res) => {
             return res.status(403).send({ message: "you are not allowed to update someone else's post" })
         }
 
-        let updatedPost = await postModel.updateOne({
-            _id: req.params.postId
-        }, req.body);
+        post.desc = description ? description : post.desc;
+      
+    if (req.file) {
 
-        res.status(200).send(updatedPost)
+        let url = `${baseUrl}/posts/${req.file.filename}`
+        let temp = post.imgPost ? post.imgPost.split("/posts") : post.videoUrl.split("/posts")
+
+         // delete old img from server storage
+         fs.unlink("public/posts" + temp[1], (err) => {
+             if (err) {
+                  return res.status(500).send({
+                    message: "some error occured while clearing old image of post"
+                }) 
+              }
+               
+            });
+       
+        if (post.imgPost) {
+        post.imgPost = url;
+        }
+       
+        if (post.videoUrl) {
+            post.videoUrl = url;
+        }
+
+          }
+       
+        await post.save();
+res.status(200).send(post)
 
     } catch (err) {
         console.log(err);
@@ -104,13 +132,40 @@ let deletePost = async (req, res) => {
             return res.status(403).send({ message: "you are not allowed to delete someone else's post" })
         };
 
-        await postModel.deleteOne({
-            _id: req.params.postId
-        })
+  // remove the image or video from server;
+        let temp = "";
 
+        if (post.imgPost) {
+              temp=(post.imgPost.split("/posts"))[1]
+        }
+        if (post.videoUrl) {
+            temp=(post.videoUrl.split("/posts"))[1]
+        }
+
+        if (temp) {
+            fs.unlink("public/posts" + temp, (err) => {
+            if (err) {
+                return res.status(500).send({
+                    message: "some error occured while clearing old image of post"
+                })
+            }
+
+            });
+        }
+
+        // delete all comments from database
+        await commentModel.deleteMany({ postId: post._id });
+
+        
+       // remove post id from user model;
         let user = await userModel.findOne({ _id: req._id });
         user.posts = user.posts.filter(id => id != req.params.postId);
         await user.save();
+   
+        // and finally delete the post
+        await postModel.deleteOne({
+            _id: req.params.postId
+        })
 
         res.status(200).send({ message: "post deleted successfully" });
 

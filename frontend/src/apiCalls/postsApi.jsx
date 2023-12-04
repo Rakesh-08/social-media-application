@@ -13,9 +13,9 @@ let createPost = async (obj) => {
   return await axios.post(apis.Base_Url + apis.createPostApi, obj, token);
 };
 
-let updatePost = async (id) => {
+let updatePost = async (id,obj) => {
 
-  return await axios.put(apis.Base_Url + `/post/${id}`, {}, token);
+  return await axios.put(apis.Base_Url + `/post/${id}`, obj, token);
 };
 let deletePost = async (id) => {
 

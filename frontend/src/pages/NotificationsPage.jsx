@@ -13,10 +13,37 @@ const NotificationsPage = () => {
     }, [pathname]);
   return (
     <div className="min-vh-100  d-flex  justify-content-center">
-      <div style={{background:"white",padding:"1em",minWidth:"50vw",boxShadow:"0.3rem 0.3rem 0.5em "}} >
-        {notifications.map((notifi, i) =>
+      <div
+        style={{
+          background: "white",
+          padding: "1em",
+          minWidth: "50vw",
+          boxShadow: "0.3rem 0.3rem 0.5em ",
+        }}
+      >
+        <div className="d-flex mb-3 justify-content-evenly align-items-center w-25">
+          <div
+            style={{
+              width: "1em",
+              height: "1em",
+              backgroundColor: "rgb(243, 212, 212)",
+              borderRadius: "1em",
+            }}
+          ></div>{" "}
+          <span>unread</span>
+          <div
+            style={{
+              width: "1em",
+              height: "1em",
+              backgroundColor: "rgb(239,238,212)",
+              borderRadius: "1em",
+            }}
+          ></div>{" "}
+          <span>read</span>
+        </div>
+        {notifications.map((notifi, i) => (
           <SingleNotification key={i} notification={notifi} val={i} />
-        )}  
+        ))}
       </div>
     </div>
   );

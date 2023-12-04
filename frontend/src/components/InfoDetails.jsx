@@ -21,7 +21,7 @@ const InfoDetails = ({width,user}) => {
   return (
     <Card
       sx={{
-        width: width || "70%",
+        width: width || "80%",
         height: "fit-content",
         borderRadius: "1em",
         margin: "1em",

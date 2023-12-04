@@ -16,7 +16,7 @@ let {uploadPost}= require("../middlewares/upload")
 module.exports = (app) => {
     app.post("/post",[verifyToken,uploadPost.single("post")],createPost);
     app.get("/post/:postId",getPostById);
-    app.put("/post/:postId",verifyToken,updatePost);
+    app.put("/post/:postId",[verifyToken,uploadPost.single("postUpdate")],updatePost);
     app.delete("/post/:postId",verifyToken,deletePost);
     app.put("/post/:postId/likeDislike", verifyToken, likeDislikePost);
     app.post("/post/:postId/comment", verifyToken, passComentsOnPost);

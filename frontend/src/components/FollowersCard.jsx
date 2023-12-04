@@ -22,7 +22,7 @@ const FollowersCard = ({sliced,heading,query,userIdForFollower}) => {
     
     }
     
-  }, [userIdForFollower])
+  }, [userIdForFollower,localStorage.getItem("pgmToken")]);
   
    
   let getAllUsers = (id) => {

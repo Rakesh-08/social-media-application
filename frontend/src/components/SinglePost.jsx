@@ -11,7 +11,7 @@ import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import Avatar from './Avatar';
 import { Modal } from "react-bootstrap";
-import { commentOnPostApi, deletePost, getAllCommentOnPost, likeDislike, updateComment } from '../apiCalls/postsApi';
+import { commentOnPostApi, deletePost, getAllCommentOnPost, likeDislike, updateComment,updatePost } from '../apiCalls/postsApi';
 
 const SinglePost = ({ data, setRefetchPost }) => {
   
@@ -51,17 +51,21 @@ const SinglePost = ({ data, setRefetchPost }) => {
 
     if (confirmation) {
       // invoke deletePost api call
-      deletePost().then((res) => {
+      deletePost(data._id).then((res) => {
         console.log(res);
+        setRefetchPost(true)
       }).catch(err=>console.log(err))
-
-      setShowActions(false)
+  
     }
+    setShowActions(false);
   }
 
 
   return (
-    <div className=" p-2 rounded my-2 border position-relative ">
+    <div
+      style={{ borderRadius: "2em", boxShadow: "0.5em 0.5em 0.3em" }}
+      className="  p-2 my-2 position-relative "
+    >
       <div className="d-flex my-2 justify-content-between ">
         <div className="d-flex align-items-center">
           <Avatar img={data.profilePic} dim={40} userId={data.userId} />
@@ -78,18 +82,17 @@ const SinglePost = ({ data, setRefetchPost }) => {
               }}
               className="bg-white p-3"
             >
-             
               <p
                 onClick={() => alert("post saved in your saved library")}
                 className="authHover"
               >
                 Save post
               </p>
-              {true && (
+              {data.userId && data.userId == id && (
                 <p
                   onClick={() => {
                     setOpenEditModal(true);
-                    setShowActions(false)
+                    setShowActions(false);
                   }}
                   className="authHover"
                 >
@@ -97,17 +100,18 @@ const SinglePost = ({ data, setRefetchPost }) => {
                 </p>
               )}
 
-              {true && (
-                <p
-                  onClick={deletePostFn}
-                  className="authHover text-danger"
-                >
+              {data.userId && data.userId == id && (
+                <p onClick={deletePostFn} className="authHover text-danger">
                   Delete post
                 </p>
               )}
             </div>
           )}
-          <PostEditModal openEditModal={openEditModal}setOpenEditModal={setOpenEditModal}/>
+          <PostEditModal
+            openEditModal={openEditModal}
+            setOpenEditModal={setOpenEditModal}
+            post={data}
+          />
 
           <MoreVertIcon onClick={() => setShowActions(!showActions)} />
         </div>
@@ -410,13 +414,45 @@ let Comment = ({ comment }) => {
   );
 }
 
-let PostEditModal = ({openEditModal,setOpenEditModal}) => {
+let PostEditModal = ({ openEditModal, setOpenEditModal, post }) => {
+  let [editedPost, setEditedPost] = useState({ desc: post.desc, img: "", video: "" });
+
+  let handlePostEdit = (e) => {
+    e.preventDefault();
+    if (!localStorage.getItem("pgmToken")) {
+       return alert("Please login to access")
+    }
+   
+
+    if (editedPost.desc == post.desc && !(editedPost.img || editedPost.video)) {
+      return console.log("no change has done so no need to call api")
+      }
+
+    let Data = new FormData();
+
+    Data.append("description", editedPost.desc);
+
+    if (post.imgPost) {
+      Data.append("postUpdate", editedPost.img);
+    }
+    if (post.videoUrl) {
+      Data.append("postUpdate",editedPost.video)
+
+    }
+    
+    
+    updatePost(post._id,Data).then(res => {
+        alert("Post updated successfully")
+      setEditedPost({desc:post.desc,img:"",video:""})
+    }).catch(err=>console.log(err))
+
+    
+  }
   return (
-    <Modal show={openEditModal} hide={() => setOpenEditModal(false)}
-    >
+    <Modal show={openEditModal} onHide={() => setOpenEditModal(false)}>
       <Modal.Body>
-        <form>
-          <div className="d-flex mb-3 justify-content-between">
+        <form onSubmit={handlePostEdit} encType="multipart/form-data">
+          <div className="d-flex mb-3 justify-content-between ">
             <h5>Edit your post</h5>
             <ClearIcon onClick={() => setOpenEditModal(false)} />
           </div>
@@ -424,22 +460,52 @@ let PostEditModal = ({openEditModal,setOpenEditModal}) => {
             className="form-control m-2"
             type="text"
             placeholder="new description for the post......"
+            value={editedPost.desc}
+            onChange={(e) =>
+              setEditedPost({ ...editedPost, desc: e.target.value })
+            }
           />{" "}
-          <div className="d-flex m-2">
-            <div><h6>Upload new img</h6>
-            <input type="file" id="imgUpload" placeholder="upload new image" /></div>
-             <div>
-            <h6>Upload new video</h6>
-            <input type="file" />
+          {post.imgPost && (
+            <div className="m-2 my-3">
+              <h6>Upload new img</h6>
+              <input
+                type="file"
+                id="imgUpload"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setEditedPost({ ...editedPost, img: e.target.files[0] });
+                  }
+                }}
+              />
+            </div>
+          )}
+          {post.videoUrl && (
+            <div className="my-3 m-2">
+              <h6>Upload new video</h6>
+              <input
+                type="file"
+                id="videoUpload"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setEditedPost({ ...editedPost, video: e.target.files[0] });
+                  }
+                }}
+              />
+            </div>
+          )}
+          <div className="d-flex justify-content-end">
+            <div>
+              <button
+                type="button"
+                onClick={() => setOpenEditModal(false)}
+                className="btn btn-info m-2 my-3 "
+              >
+                back
+              </button>
+
+              <button className="btn btn-success m-2 my-3">confirm</button>
+            </div>
           </div>
-          </div>
-         
-          
-            <button type="button" onClick={()=>setOpenEditModal(false)} className="btn btn-info m-2 my-3 ">back</button>
-          
-            <button className="btn btn-success m-2 my-3">confirm</button>
-          
-            
         </form>
       </Modal.Body>
     </Modal>
