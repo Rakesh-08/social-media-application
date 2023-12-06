@@ -25,7 +25,6 @@ const NotificationsPage = () => {
 
   
   let fetchNotificationsAndUpdateStatus = async() => {
-  
     fetchAllNotifications().then((res) => {
       setNotifications(res.data)
       
@@ -89,7 +88,7 @@ const NotificationsPage = () => {
         </div>
 
           {notifications.map((notifi, i) => (
-          <SingleNotification key={i} notification={notifi} deleteFn={deleteFn} userId={id} />
+          <SingleNotification key={i} notification={notifi} deleteFn={deleteFn} userId={id} val={i} />
           ))}
         
       </div>}
@@ -101,7 +100,7 @@ const NotificationsPage = () => {
 
 export default NotificationsPage
 
-let SingleNotification = ({ notification,deleteFn,userId }) => {
+let SingleNotification = ({ notification,deleteFn,userId,val }) => {
   
   let convrersionFn = (date) => {
      let temp = new Date(date).getTime();
@@ -121,13 +120,13 @@ let SingleNotification = ({ notification,deleteFn,userId }) => {
 
     return result
   }
-  
+  let read = [2, 4, 5, 7, 1, 9, 11];
   
   return (
     <div
       style={{
         backgroundColor: `${
-          notification.seen.includes(userId)
+          notification.seen?.includes(userId)||read.includes(val)
             ? "rgb(243, 212, 112)"
             : "rgb(239,238,212)"
         }`,
@@ -140,7 +139,7 @@ let SingleNotification = ({ notification,deleteFn,userId }) => {
       </div>
       <div className="d-flex align-items-center">
         <span style={{ fontSize: "13px", color: "gray", marginRight: "1em" }}>
-          {convrersionFn(notification.createdAt)} ago
+          { notification._id?convrersionFn(notification.createdAt):"2h"} ago
         </span>
         <DeleteIcon
           onClick={() => deleteFn(notification._id)}
