@@ -1,41 +1,38 @@
-import axios from "axios";
+
 import apis from "./apiUtils";
 
-let tokenHeader = {
-    headers: {
-        "x-access-token": localStorage.getItem("pgmToken")
-    }
-    
-}
+
 
 let getUser = async (id) => {
-  let token = await tokenHeader;
-   return await axios.get(apis.Base_Url+ `/user/${id}`,token)
+ return await apis.axiosInstance.get(`/user/${id}`);
  }
 
 let updateUserDetails = async (obj,id) => {
-  let token = await tokenHeader;
-     return await axios.put(apis.Base_Url + `/user/${id}`, obj, token);
+     return await apis.axiosInstance.put(
+       `/user/${id}`,
+       obj
+     );
 }
 
 let uploadUserPics = async (obj,id) => {
-  let token = await tokenHeader;
-  return await axios.put(apis.Base_Url+`/user/${id}/upload`,obj,token)
+  return await apis.axiosInstance.put( `/user/${id}/upload`,
+    obj
+  );
 }
 
 let deleteUser = async (id) => {
-   let token = await tokenHeader;
-  return await axios.delete(apis.Base_Url+`/user/${id}`,token)
+  return await apis.axiosInstance.delete(`/user/${id}`);
 }
 
 let fetchAllUsers = async (q,id) => {
-  let token = await tokenHeader;
-  return await axios.get(apis.Base_Url+`/users/${id}?${q}=${true}`,token)
+  return await apis.axiosInstance.get(`/users/${id}?${q}=${true}`
+  );
 }
 
 let followUnfollowUser = async (id,action) => {
-   let token = await tokenHeader;
-  return await axios.put(apis.Base_Url +`/user/${id}/followUnfollow?action=${action}`,{},token);
+  return await apis.axiosInstance.put(`/user/${id}/followUnfollow?action=${action}`,
+    {}
+  );
 };
 
 

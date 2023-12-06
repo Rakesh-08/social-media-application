@@ -89,7 +89,7 @@ const Auth = ({ login }) => {
        loginCall(authDetails)
          .then((res) => {
            localStorage.setItem("authInfo", JSON.stringify(res.data));
-           localStorage.setItem("pgmToken",res.data.accessToken)
+           localStorage.setItem("pgmToken", res.data.accessToken);
            setAuthData(initForm);
            NavigateTo("/home")
          })

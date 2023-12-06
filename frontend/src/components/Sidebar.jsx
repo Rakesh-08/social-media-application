@@ -16,8 +16,9 @@ function Sidebar({showSidebar,setShowSidebar}) {
 
           <Offcanvas style={{
               width: "13em",
-              height: "fit-content",
-              backgroundColor:"lightGray"
+        height: "fit-content",
+              borderRadius:"1em"
+           
               
       }} show={showSidebar} onHide={closeSidebar} placement="end">
         <Offcanvas.Header  closeButton>

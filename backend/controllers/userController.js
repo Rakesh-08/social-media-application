@@ -3,6 +3,7 @@ let postModel = require("../models/postsModel")
 let bcrypt = require("bcryptjs");
 
 let fs = require("fs");
+const { sendNotifications } = require("./notificationController");
 
 
 let getUserById = async (req, res) => {
@@ -244,7 +245,7 @@ let followUnfollowUser = async (req, res) => {
             await requester.save();
             await referringTo.save();
 
-
+             sendNotifications(req._id,[userId],`${requester.firstName} has just started following you`,requester.profilePic)
 
             res.status(200).send(requester)
         } else {

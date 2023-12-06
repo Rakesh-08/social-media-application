@@ -10,11 +10,12 @@ dbConnection.on("error", () => {
 
 dbConnection.once("open", () => {
     console.log("Connected to MongoDB");
-})
+});
+
+// cron background job for notification;
+require("./utils/cronJobForNotifications")
 
 // express middleware configuration
-
-
 let express = require("express");
 let expressApp = express();
 let bodyParser = require("body-parser");
@@ -34,6 +35,7 @@ expressApp.use(cors());
 require("./Routes/userRoutes")(expressApp);
 require("./Routes/authRoutes")(expressApp);
 require("./Routes/postRoutes")(expressApp);
+require("./Routes/notificationRoutes")(expressApp);
 
 
 

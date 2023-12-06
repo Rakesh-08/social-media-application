@@ -1,11 +1,15 @@
 import { combineReducers } from "redux"
 import { getUser } from "./apiCalls/usersApi"
-let id = JSON.parse(localStorage.getItem("authInfo"))?._id;
+
+
 
 
 let currentUser = () => {
-  
+  let id = JSON.parse(localStorage.getItem("authInfo"))?._id;
   let result;
+   if (!localStorage.getItem("pgmToken")) {
+     return;
+  }
 
   getUser(id)
     .then((res) => {
@@ -19,7 +23,7 @@ let currentUser = () => {
 };
 
 let init = {
- fetch:currentUser
+  fetch: currentUser,
 };
 
 
@@ -33,7 +37,7 @@ let authReducers = (state=init, action) => {
     }
 }
 
-let utilReducer = (state = { searchTerm:"",profileId:id}, action) => {
+let utilReducer = (state = { searchTerm:"",profileId:JSON.parse(localStorage.getItem("authInfo"))?._id}, action) => {
   
   switch (action.type) { 
     

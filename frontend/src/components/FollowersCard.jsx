@@ -13,21 +13,17 @@ const FollowersCard = ({sliced,heading,query,userIdForFollower}) => {
   let userId = JSON.parse(localStorage.getItem("authInfo"))?._id;
  
   useEffect(() => {
-  
-
   if (!localStorage.getItem("pgmToken")||!userIdForFollower) {
-      setUsers(followersList)   
+    setUsers(followersList)   
   } else {
     getAllUsers(userIdForFollower);
+   }
     
-    }
-    
-  }, [userIdForFollower,localStorage.getItem("pgmToken")]);
-  
+  }, [userIdForFollower,localStorage.getItem("pgmToken"),query]);
+
    
   let getAllUsers = (id) => {
-
-    fetchAllUsers(query,id).then((res) => {
+    fetchAllUsers("new",id).then((res) => {
       setUsers(res.data)
     }).catch((err) => {
      console.log(err)

@@ -236,13 +236,13 @@ let SharePostConttainer = ({ setRefetchPost, userId }) => {
             </div>
           )}
           {videoUpload && (
-            <div>
+            <div className="d-flex">
               <ClearIcon
                 onClick={() => {
                   setVideoUpload("");
                 }}
               />
-              <video controls width="100%"><source src={URL.createObjectURL(videoUpload)}></source></video>
+              <video controls style={{maxWidth:"40vw"}} width="100%"><source src={URL.createObjectURL(videoUpload)}></source></video>
             </div>
           )}
         </form>

@@ -22,7 +22,7 @@ const PostContainer = ({refetchPost,setRefetchPost,profile,user}) => {
 
 
   let fetchPosts = () => {
-    let q = profile ? "own" : "";
+    let q = profile ? "own" : " ";
 
   getTimelinePost(q,user._id)
     .then((res) => {

@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { fetchAllNotifications } from "../apiCalls/notificationApis";
 import { Box, Stack, Badge } from "@mui/material";
 import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";
@@ -14,7 +15,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Navbar = () => {
   let NavigateTo = useNavigate();
-  let [showSidebar,setShowSidebar]=useState(false)
+  let [showSidebar, setShowSidebar] = useState(false)
+
  
   return (
     <Stack
@@ -57,8 +59,25 @@ export default Navbar;
 let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
   let location = useLocation();
   let dispatch = useDispatch();
+    let [newNotifications, setNewNotifications] = useState(null);
+  
+
+  useEffect(() => {
+    if (localStorage.getItem("pgmToken")) {
+           newNoti()
+    } else {
+      setNewNotifications(12)
+    }
+    }, [location]);
 
   let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
+
+  let newNoti = () => {
+    fetchAllNotifications().then((res) => {
+      let temp = res.data?.filter(noti => !noti.seen.includes(loggedUserId));
+      setNewNotifications(temp.length);
+    }).catch(err => console.log(err));
+  }
 
   let navAction = (path) => {
     NavigateTo(path);
@@ -111,7 +130,7 @@ let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
 
       <div className={`d-flex  m-${gap}`}>
         {" "}
-        <Badge badgeContent={"9"} color="secondary">
+        <Badge badgeContent={newNotifications} color="secondary">
           <NotificationsActiveIcon
             onClick={() => {
               navAction("/notifications")

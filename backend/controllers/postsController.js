@@ -1,7 +1,9 @@
 let postModel = require("../models/postsModel");
 let userModel = require("../models/userModal");
 let commentModel = require("../models/commentsModel");
-let fs=require("fs")
+let fs = require("fs");
+
+let {sendNotifications }= require("../controllers/notificationController")
 
 let baseUrl = process.env.NODE_ENV !== "production" ? "http://localhost:8040" : "https://photogram-app.onrender.com";
 
@@ -44,6 +46,10 @@ let createPost = async (req, res) => {
 
         user.posts.push(post._id);
         await user.save();
+
+        if (user.followers.length > 0) {
+            sendNotifications(user._id,user.followers,`${user.firstName} has just posted a new post`,user.profilePic)
+        }
 
         res.status(200).send(post)
 
@@ -197,6 +203,10 @@ let likeDislikePost = async (req, res) => {
             post.likes.push(req._id);
             await post.save();
             msg = "you liked the post"
+
+            let user= await userModel.findOne({_id:req._id})
+
+            sendNotifications(req._id,[post.userId],`${user.firstName} has liked your post`);
         }
         res.status(200).send({ message: msg });
 
@@ -231,6 +241,8 @@ let passComentsOnPost = async (req, res) => {
         let post = await postModel.findOne({ _id: req.params.postId });
         post.comments.push(createComment._id);
         await post.save();
+
+        sendNotifications(req._id, [post.userId], `${user.firstName} has commented on your post`);
 
         res.status(200).send(createComment);
 
