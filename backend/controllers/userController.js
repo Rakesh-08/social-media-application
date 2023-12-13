@@ -121,10 +121,11 @@ let uploadUserImages = async (req, res) => {
                 let temp = user.profilePic.split("/usersImg");
 
                 fs.unlink("public/usersImg" + temp[1], (err) => {
-                    console.log(err);
+                    if(err){
+                        console.log(err);
                     return res.status(500).send({
                         message: "some error occured while changing profile image"
-                    })
+                    })}
                 })
             }
 
