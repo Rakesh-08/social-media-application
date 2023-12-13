@@ -14,6 +14,7 @@ import rootReducer from "./reducers";
 
 // components and pages
 import Navbar from "./components/Navbar";
+import { NavIconContainer } from "./components/Navbar";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Auth from "./pages/Auth";
@@ -89,6 +90,10 @@ function App() {
           }
         ></Route>
       </Routes>
+
+      <MobileNavbar>
+        <NavIconContainer mobileView={true} />
+      </MobileNavbar>
     </BrowserRouter>
   );
 }
@@ -122,3 +127,35 @@ function LayoutForNonNavbar({ children }) {
     </div>
   );
 }
+
+
+function MobileNavbar({ children }) {
+  let [showNavbar, setShowNavbar] = useState(false);
+  let location = useLocation();
+  let excludedRoutes = ["/Error", "/Auth/login", "/Auth/signup"];
+
+  useEffect(() => {
+    if (excludedRoutes.includes(location.pathname)) {
+      setShowNavbar(false);
+    } else {
+      setShowNavbar(true);
+    }
+  }, [location]);
+
+  return (
+    <div
+      style={{
+        position: "sticky",
+        bottom: 0,
+        zIndex: 99,
+        boxShadow: " 0.2em 0.2em 0.4em",
+        background: "linear-gradient(80deg ,rgb(153, 144, 240),white ,purple )",
+      }}
+      className="mobileNavbar"
+    >
+      {showNavbar && children}
+    </div>
+  );
+}
+
+

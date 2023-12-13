@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchAllNotifications } from "../apiCalls/notificationApis";
 import { Box, Stack, Badge } from "@mui/material";
-import Sidebar from "./Sidebar";
 import SearchBar from "./SearchBar";
 import HomeIcon from "@mui/icons-material/Home";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";;
@@ -28,6 +27,7 @@ const Navbar = () => {
         justifyContent: "space-between",
         alignItems: "center", 
       }}
+      
     >
       <Box px={1}>
         <img
@@ -44,21 +44,23 @@ const Navbar = () => {
       <Box>
         <SearchBar />
       </Box>
-      <NavIconContainer  NavigateTo={NavigateTo}/>
-      <AuthBtns  NavigateTo={NavigateTo}  />
-      <div className="mx-2 sidebar">
-        <ReorderIcon onClick={() =>setShowSidebar(true)} />
-       </div>
-      <Sidebar AuthBtns={AuthBtns} showSidebar={showSidebar} setShowSidebar={setShowSidebar}/>
+      
+        <NavIconContainer  mobileView={false}  />
+       
+       <AuthBtns NavigateTo={NavigateTo} />
+     
+    
     </Stack>
   );
 };
 
 export default Navbar;
 
-let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
+let NavIconContainer = ({ mobileView }) => {
   let location = useLocation();
   let dispatch = useDispatch();
+  let NavigateTo = useNavigate();
+  
     let [newNotifications, setNewNotifications] = useState(null);
   
 
@@ -80,86 +82,72 @@ let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
   }
 
   let navAction = (path) => {
-    NavigateTo(path);
-    if (setShowSidebar) {
-       setShowSidebar(false)
-    }
-   
- }
-  let { direction, navLabel, gap } = sidebarData || {};
+    NavigateTo(path); 
+  }
   
+  
+ 
   return (
     <div
-      className={`${!direction && "mobFirst"}`}
       style={{
         display: "flex",
-        flexDirection: direction,
         justifyContent: "space-between",
-        width: "20%",
+        minWidth: "25%",
       }}
+      className={`${mobileView?"p-3":"mobFirst"} mx-2`}
     >
-      <div className={`d-flex  m-${gap}`}>
+      <div className={`d-flex`}>
         {" "}
         <HomeIcon
           onClick={() => {
-           navAction("/home");
+            navAction("/home");
           }}
           className={`navIcons ${
             location.pathname == "/home" && "bg-secondary rounded"
           } fs-2 p-1`}
         />{" "}
-        {direction && (
-          <span className="mx-2 text-primary">{navLabel.home}</span>
-        )}
       </div>
 
-      <div className={`d-flex  m-${gap}`}>
+      <div className={`d-flex `}>
         {" "}
         <GroupAddIcon
           onClick={() => {
-            navAction("/users")
+            navAction("/users");
           }}
           className={`navIcons ${
             location.pathname == "/users" && "bg-secondary rounded"
           } fs-2 p-1`}
         />
-        {direction && (
-          <span className="mx-2 text-primary">{navLabel.newFriend}</span>
-        )}
       </div>
 
-      <div className={`d-flex  m-${gap}`}>
+      <div className={`d-flex `}>
         {" "}
         <Badge badgeContent={newNotifications} color="secondary">
           <NotificationsActiveIcon
             onClick={() => {
-              navAction("/notifications")
+              navAction("/notifications");
             }}
             className={`navIcons ${
               location.pathname == "/notifications" && "bg-secondary rounded"
             } fs-2 p-1`}
           />
         </Badge>{" "}
-        {direction && (
-          <span className="mx-2 text-primary">{navLabel.notify}</span>
-        )}
       </div>
 
-      <div className={`d-flex  m-${gap}`}>
+      <div className={`d-flex `}>
         <Badge badgeContent="" variant="dot" color="primary">
           <ChatBubbleOutlineIcon
             onClick={() => {
-              navAction("/messages")
+              navAction("/messages");
             }}
             className={`navIcons ${
               location.pathname == "/messages" && "bg-secondary rounded"
             } fs-2 p-1`}
           />
         </Badge>
-        {direction && <span className="mx-2 text-primary">{navLabel.msg}</span>}
       </div>
 
-      <div className={`d-flex  m-${gap}`}>
+      <div className={`d-flex`}>
         {" "}
         <AccountCircleIcon
           onClick={() => {
@@ -168,25 +156,21 @@ let NavIconContainer = ({ NavigateTo, sidebarData,setShowSidebar }) => {
               userId: loggedUserId,
             });
             navAction("/profile");
-          }
-          }
+          }}
           className={`navIcons ${
             location.pathname == "/profile" && "bg-secondary rounded"
           } fs-2 p-1`}
         />{" "}
-        {direction && (
-          <span className="mx-2 text-primary">{navLabel.profile}</span>
-        )}
       </div>
     </div>
   );
 }
 
-let AuthBtns = ({ NavigateTo, sidebar }) => {
+let AuthBtns = ({ NavigateTo}) => {
   
   let login= localStorage.getItem("pgmToken")
   return (
-    <div className={`p-2 ${!sidebar && "mobFirst"}`}>
+    <div >
       {login ? (
         <button onClick={() => {
           let confirmation = window.confirm("Are you sure you want to log Out?");
@@ -195,25 +179,25 @@ let AuthBtns = ({ NavigateTo, sidebar }) => {
             NavigateTo("/Auth/login")
           }
           
-        }} className="m-1 btn btn-danger">logout</button>
+        }} className="m-1 btn  btn-danger">logout</button>
       ) : (
-        <>
+          <div className="d-flex flex-wrap align-items-center justify-content-center">
           <button
               onClick={() => {
                
                 NavigateTo("/Auth/signup")
               }}
-            className="btn btn-primary m-1"
+            className="btn btn-sm btn-primary m-1"
           >
             signup
           </button>
           <button
             onClick={() => NavigateTo("/Auth/login")}
-            className="btn btn-warning m-1"
+            className="btn btn-sm btn-warning m-1"
           >
             Login
           </button>
-        </>
+        </div>
       )}
     </div>
   );

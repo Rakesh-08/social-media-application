@@ -109,7 +109,7 @@ const Auth = ({ login }) => {
   };
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center">
+    <div className="vh-100 d-flex align-items-center justify-content-center">
       <Stack
         direction="row"
         sx={{ justifyContent: "space-around", width: "100%", flexWrap: "wrap" }}

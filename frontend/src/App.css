@@ -25,14 +25,16 @@ body{
       .mobFirst{
         display: none!important;
       }
-      .sidebar{
-        display: block!important;
+       .mobileNavbar{
+        display: block !important
       }
+     
     }
-
-    .sidebar{
+    
+    .mobileNavbar{
       display: none;
     }
+
 
 .pointer{
   cursor: pointer;
