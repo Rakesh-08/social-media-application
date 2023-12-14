@@ -104,7 +104,7 @@ let NavIconContainer = ({ mobileView }) => {
           }}
           className={`navIcons ${
             location.pathname == "/home" && "bg-secondary rounded"
-          } fs-2 p-1`}
+          } fs-1 p-1`}
         />{" "}
       </div>
 
@@ -116,7 +116,7 @@ let NavIconContainer = ({ mobileView }) => {
           }}
           className={`navIcons ${
             location.pathname == "/users" && "bg-secondary rounded"
-          } fs-2 p-1`}
+          } fs-1 p-1`}
         />
       </div>
 
@@ -129,7 +129,7 @@ let NavIconContainer = ({ mobileView }) => {
             }}
             className={`navIcons ${
               location.pathname == "/notifications" && "bg-secondary rounded"
-            } fs-2 p-1`}
+            } fs-1 p-1`}
           />
         </Badge>{" "}
       </div>
@@ -142,7 +142,7 @@ let NavIconContainer = ({ mobileView }) => {
             }}
             className={`navIcons ${
               location.pathname == "/messages" && "bg-secondary rounded"
-            } fs-2 p-1`}
+            } fs-1 p-1`}
           />
         </Badge>
       </div>
@@ -159,7 +159,7 @@ let NavIconContainer = ({ mobileView }) => {
           }}
           className={`navIcons ${
             location.pathname == "/profile" && "bg-secondary rounded"
-          } fs-2 p-1`}
+          } fs-1 p-1`}
         />{" "}
       </div>
     </div>

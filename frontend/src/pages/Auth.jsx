@@ -235,7 +235,7 @@ const Auth = ({ login }) => {
               <div className="d-flex  flex-wrap justify-content-around align-items-center">
                 {" "}
        
-                  <button className="btn follow btn-warning mx-1">
+                  <button className="btn follow btn-warning m-2">
                     {!showSpinner && (
                       <span>{authToggle ? "submit" : "login"} </span>
                     )}

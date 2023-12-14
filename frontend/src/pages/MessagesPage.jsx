@@ -8,13 +8,13 @@ const MessagesPage = () => {
       window.scrollTo(0, 0);
     }, [pathname]);
   return (
-    <div className="min-vh-100 p-2 d-flex align-items-center justify-content-center">
-      <div className="text-uppercase display-3">
-        Messeging Service is under progress and will be available soon.... 
-        
-         </div>
+    <div className="vh-100 p-2 ">
+      <div style={{position:"absolute",top:"30%"}} className="text-uppercase display-6 text-center ">
+        Messeging Service is live now.... 
+         <span className="mx-2"><a href="https://chit-chat-with-mandal.netlify.app" target="_blank">Click here</a></span>
+      </div>
     </div>
-  )
+  );
 }
 
 export default MessagesPage
