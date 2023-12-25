@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let axiosInstance = axios.create({
-  baseURL: process.env.BASE_URL
+  baseURL: "https://photogram-app.onrender.com"
 });
 
 
