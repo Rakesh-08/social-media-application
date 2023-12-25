@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let axiosInstance = axios.create({
-  baseURL: "http://localhost:8040"
+  baseURL: process.env.BASE_URL
 });
 
 
