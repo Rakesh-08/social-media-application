@@ -27,7 +27,7 @@ const InfoDetails = ({width,user}) => {
         margin: "1em",
         padding: "1em",
       }}
-      className={width ? "sidebar" : "mobFirst"}
+      className={width ? "mobileNavbar" : "mobFirst"}
     >
       {loggedUserId == user._id && (
         <div className="d-flex justify-content-between my-2">
