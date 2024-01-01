@@ -10,12 +10,22 @@ export const postData = [
   },
 
   {
-   dummy:true,videoUrl: "/32PouIfy02Y",
+    dummy: true,
+    videoUrl: "/32PouIfy02Y",
     likes: "294",
     comments: "33",
     desc: "preview of netflix-project",
     username: "Rakesh Mandal",
     createdAt: "20-4-2023",
+  },
+  {
+    dummy: true,
+    videoUrl: "/AFf4T-Nsa4E",
+    likes: "599",
+    comments: "132",
+    desc: "CRM-Ticket support system ",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
   },
   {
     imgPost: "/resume-builder.png",
@@ -27,7 +37,8 @@ export const postData = [
   },
 
   {
-   dummy:true,videoUrl: "/WmVVWf6oBF8",
+    dummy: true,
+    videoUrl: "/WmVVWf6oBF8",
     likes: "203",
     comments: "45",
     desc: "my own youtube application",
@@ -52,7 +63,8 @@ export const postData = [
     createdAt: "10-12-2022",
   },
   {
-   dummy:true,videoUrl: "/Pk_qBTqTLs0",
+    dummy: true,
+    videoUrl: "/Pk_qBTqTLs0",
     likes: "195",
     comments: "20",
     desc: "simple calculater for arithmetic calculations",
@@ -61,7 +73,8 @@ export const postData = [
   },
 
   {
-   dummy:true,videoUrl: "/_u-4XLLgZ7M",
+    dummy: true,
+    videoUrl: "/_u-4XLLgZ7M",
     likes: "599",
     comments: "132",
     desc: "frontend counterpart for an e-commerce website",
@@ -77,16 +90,27 @@ export const postData = [
     createdAt: "20-2-2023",
   },
   {
-   dummy:true,videoUrl: "/XpoiGVBWQ08",
+    dummy: true,
+    videoUrl: "/XpoiGVBWQ08",
     likes: "599",
     comments: "132",
     desc: "counter timer",
     username: "Rakesh Mandal",
     createdAt: "20-2-2023",
   },
-  ,
   {
-   dummy:true,videoUrl: "/hK6Z-ooqqVc",
+    dummy: true,
+    videoUrl: "/fUvylznXMQc",
+    likes: "599",
+    comments: "132",
+    desc: "A Movie booking application",
+    username: "Rakesh Mandal",
+    createdAt: "20-2-2023",
+  },
+
+  {
+    dummy: true,
+    videoUrl: "/hK6Z-ooqqVc",
     likes: "599",
     comments: "132",
     desc: "Tic-tac toe game built with html,css and js",
@@ -95,7 +119,8 @@ export const postData = [
   },
   ,
   {
-   dummy:true,videoUrl: "/wxT-Be9b-eo",
+    dummy: true,
+    videoUrl: "/wxT-Be9b-eo",
     likes: "599",
     comments: "132",
     desc: "Appointment Booking appplication for patients",
