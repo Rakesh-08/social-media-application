@@ -20,7 +20,7 @@ export const postData = [
   },
   {
     dummy: true,
-    videoUrl: "/AFf4T-Nsa4E",
+    videoUrl: "/5MHqexocONk",
     likes: "599",
     comments: "132",
     desc: "CRM-Ticket support system ",

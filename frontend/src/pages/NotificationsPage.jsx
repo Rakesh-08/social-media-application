@@ -60,7 +60,7 @@ const NotificationsPage = () => {
         style={{
           background: "white",
             padding: "1em",
-            minWidth: "22rem",
+            minWidth: "23rem",
             width:"50%",
           boxShadow: "0.3rem 0.3rem 0.5em ",
         }}

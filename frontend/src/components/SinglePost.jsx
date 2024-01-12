@@ -63,8 +63,8 @@ const SinglePost = ({ data, setRefetchPost }) => {
 
   return (
     <div
-      style={{ borderRadius: "2em", boxShadow: "0.5em 0.5em 0.3em" }}
-      className="  p-2 my-2 position-relative "
+      style={{ borderRadius: "2em", boxShadow: "0.1em 0.1em 0.2em 0.2em" }}
+      className=" p-2 my-2 position-relative "
     >
       <div className="d-flex my-2 justify-content-between ">
         <div className="d-flex align-items-center">
@@ -132,7 +132,7 @@ const SinglePost = ({ data, setRefetchPost }) => {
         <iframe
           className="rounded-2"
           width="100%"
-          height="355"
+          height="300"
           src={`https://www.youtube.com/embed${data.videoUrl}?si=Yq5-Fxb0vAttMPFa`}
           title="YouTube video player"
           frameBorder="0"

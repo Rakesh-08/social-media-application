@@ -121,7 +121,7 @@ const Auth = ({ login }) => {
             width="35%"
             style={{ borderRadius: "49%", margin: " 0.2rem", maxWidth: "15em" }}
           />
-          <div className="m-3">
+          <div style={{fontFamily:"UI"}} className="m-3">
             <p className="display-4 fw-bold appName">P G M</p>
             <p className="fs-5">
               <b>Explore the World and Entertain the World</b>

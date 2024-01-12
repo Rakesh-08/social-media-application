@@ -170,30 +170,37 @@ let AuthBtns = ({ NavigateTo}) => {
   
   let login= localStorage.getItem("pgmToken")
   return (
-    <div >
+    <div>
       {login ? (
-        <button onClick={() => {
-          let confirmation = window.confirm("Are you sure you want to log Out?");
-          if (confirmation) {
-            localStorage.clear();
-            NavigateTo("/Auth/login")
-          }
-          
-        }} className="m-1 btn  btn-danger">logout</button>
+        <button
+          onClick={() => {
+            let confirmation = window.confirm(
+              "Are you sure you want to log Out?"
+            );
+            if (confirmation) {
+              localStorage.clear();
+              NavigateTo("/Auth/login");
+            }
+          }}
+          className="m-1 btn  btn-danger"
+        >
+          logout
+        </button>
       ) : (
-          <div className="d-flex flex-wrap align-items-center justify-content-center">
+        <div className="d-flex flex-wrap align-items-center justify-content-center">
           <button
-              onClick={() => {
-               
-                NavigateTo("/Auth/signup")
-              }}
+            onClick={() => {
+              NavigateTo("/Auth/signup");
+            }}
+            style={{ minWidth: "4.1em" }}
             className="btn btn-sm btn-primary m-1"
           >
             signup
           </button>
           <button
+            style={{ minWidth: "4.1em" }}
             onClick={() => NavigateTo("/Auth/login")}
-            className="btn btn-sm btn-warning m-1"
+            className="btn  btn-sm btn-warning m-1"
           >
             Login
           </button>

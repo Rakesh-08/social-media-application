@@ -12,35 +12,38 @@ const UsersPage = () => {
    }, [pathname]);
   return (
     <div className="min-vh-100 d-flex flex-column ">
-      <div className="d-flex m-2 border-bottom   justify-content-around">
-        
+      <div className="d-flex m-1 justify-content-around">
         <p
-          className={`p-2 ${
-            route == "new" && "text-primary fw-bold border-bottom border-2"
+          className={`p-1 ${
+            route == "new" &&
+            "text-warning fs-5 border-bottom border-2"
           } pointer`}
           onClick={() => setRoute("new")}
         >
           Users
         </p>
         <p
-          className={`p-2 ${
-            route == "following" && "text-primary fw-bold border-bottom border-2"
+          className={`p-1 ${
+            route == "following" &&
+            "text-warning fs-5  border-bottom border-2"
           } pointer`}
           onClick={() => setRoute("following")}
         >
           Followers
         </p>
         <p
-          className={`p-2 ${
-            route == "followers" && "text-primary fw-bold border-bottom border-2"
+          className={`p-1 ${
+            route == "followers" &&
+            "text-warning  fs-5 border-bottom border-2"
           } pointer`}
           onClick={() => setRoute("followers")}
         >
           Following
         </p>
       </div>
-      <div className="px-1"><FollowersCard query={route} userIdForFollower={id} /></div>
-      
+      <div className="px-1">
+        <FollowersCard query={route} userIdForFollower={id} />
+      </div>
     </div>
   );
 }

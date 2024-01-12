@@ -1,7 +1,7 @@
 body{
   font-family:' Arial Narrow', Arial, sans-serif;
   box-sizing: border-box;
-  background: linear-gradient(90deg,rgb(231, 156, 231) ,white  ,rgb(130, 117, 240) );
+  background: linear-gradient(90deg,rgb(231, 156, 231) ,rgb(221, 85, 214)  ,rgb(130, 117, 240) );
   overflow-x: hidden;
 
 }

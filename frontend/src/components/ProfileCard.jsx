@@ -24,7 +24,7 @@ let loggedUserId = JSON.parse(localStorage.getItem("authInfo"))?._id;
   return (
     <Card
         sx={{
-        width:"100%",
+        width:"98%",
         borderRadius: "2em",
         marginBottom: "1em",
         marginTop: "0.3em",
