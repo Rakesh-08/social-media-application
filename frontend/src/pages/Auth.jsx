@@ -114,14 +114,17 @@ const Auth = ({ login }) => {
         direction="row"
         sx={{ justifyContent: "space-around", width: "100%", flexWrap: "wrap" }}
       >
-        <Box m={2} display="flex" alignItems="center" >
+        <Box m={2} display="flex" alignItems="center">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPHRvtFUvNT9Rrpz2HE4gu05hPPg8m7DweCg&usqp=CAU"
             alt="logo"
             width="35%"
             style={{ borderRadius: "49%", margin: " 0.2rem", maxWidth: "15em" }}
           />
-          <div style={{fontFamily:"UI"}} className="m-3">
+          <div
+            style={{ fontFamily: "'Times New Roman', Times" }}
+            className="m-3"
+          >
             <p className="display-4 fw-bold appName">P G M</p>
             <p className="fs-5">
               <b>Explore the World and Entertain the World</b>
@@ -234,26 +237,22 @@ const Auth = ({ login }) => {
 
               <div className="d-flex  flex-wrap justify-content-around align-items-center">
                 {" "}
-       
-                  <button className="btn follow btn-warning m-2">
-                    {!showSpinner && (
-                      <span>{authToggle ? "submit" : "login"} </span>
-                    )}
-                    {showSpinner && (
-                      <>
-                        <span
-                          className="spinner-border text-secondary mx-1 spinner-border-sm"
-                          role="status"
-                          aria-hidden="true"
-                        ></span>
-                        ...wait
-                      </>
-                    )}
-                  </button>
-               
-                <div
-                  className="m-2 p-2 "
-                >
+                <button className="btn follow btn-warning m-2">
+                  {!showSpinner && (
+                    <span>{authToggle ? "submit" : "login"} </span>
+                  )}
+                  {showSpinner && (
+                    <>
+                      <span
+                        className="spinner-border text-secondary mx-1 spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      ...wait
+                    </>
+                  )}
+                </button>
+                <div className="m-2 p-2 ">
                   <span className="text-white border-bottom ">
                     {authToggle
                       ? "Already have an account? "
@@ -274,8 +273,15 @@ const Auth = ({ login }) => {
                     >
                       {authToggle ? "Login" : "sign up"}
                     </span>
-                  </span >
-                  {!authToggle && <p onClick={()=>setForgotPassword(true)} className="authHover w-75" >forgot password?</p>}
+                  </span>
+                  {!authToggle && (
+                    <p
+                      onClick={() => setForgotPassword(true)}
+                      className="authHover w-75"
+                    >
+                      forgot password?
+                    </p>
+                  )}
                 </div>
               </div>
               {signupSuccessMsg && (
@@ -292,7 +298,10 @@ const Auth = ({ login }) => {
             </form>
           </Card>
         </Box>
-        <ForgotPassword forgotPassword={forgotPassword} setForgotPassword={setForgotPassword} />
+        <ForgotPassword
+          forgotPassword={forgotPassword}
+          setForgotPassword={setForgotPassword}
+        />
       </Stack>
     </div>
   );
