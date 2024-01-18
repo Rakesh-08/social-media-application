@@ -20,12 +20,12 @@ const FeedSide = ({profile,user}) => {
 
 
   return (
-    <Box mx={1} py={1} sx={{ minHeight: "100vh" }}>
+    <Box  py={1} sx={{ minHeight: "100vh" }}>
 
       {(!profile||user._id && user._id == loggedUserId)&&
       <SharePostConttainer userId={user._id} setRefetchPost={setRefetchPost} />}
       {profile && (
-        <Typography sx={{ color: "darkViolet",textDecoration:"underline" }} variant="h6" m={3}>
+        <Typography sx={{ color: "blueddew",textDecoration:"underline" }} variant="h6" m={3}>
           <span className="mx-1">
             <SendIcon />
           </span>{" "}

@@ -63,7 +63,7 @@ const SinglePost = ({ data, setRefetchPost }) => {
 
   return (
     <div
-      style={{ borderRadius: "2em", boxShadow: "0.1em 0.1em 0.2em 0.2em" }}
+      style={{background:"rgb(219,318,222)",borderRadius:"3px", boxShadow: "0.1em 0.1em 0.2em 0.2em" }}
       className=" p-2 my-2 position-relative "
     >
       <div className="d-flex my-2 justify-content-between ">
@@ -132,7 +132,7 @@ const SinglePost = ({ data, setRefetchPost }) => {
         <iframe
           className="rounded-2"
           width="100%"
-          height="300"
+          height="270"
           src={`https://www.youtube.com/embed${data.videoUrl}?si=Yq5-Fxb0vAttMPFa`}
           title="YouTube video player"
           frameBorder="0"
@@ -145,7 +145,7 @@ const SinglePost = ({ data, setRefetchPost }) => {
         <div className="fw-bold mx-2">{data?.desc}</div>
       )}
 
-      <div className="d-flex border-top border-3 justify-content-between m-2 p-2">
+      <div className="d-flex border-top border-3 justify-content-between  p-2">
         <div>
           <span onClick={toggleLike} className="text-danger pointer ">
             {toggleHeartIcon ? (
@@ -166,7 +166,7 @@ const SinglePost = ({ data, setRefetchPost }) => {
           className="fs-2 share-btn text-success pointer"
         />
       </div>
-      <div className="d-flex m-2 ">
+      <div className="d-flex  ">
         <div className="mx-2  ">
           {data.likes.length}
           <span className="text-secondary "> likes</span>{" "}

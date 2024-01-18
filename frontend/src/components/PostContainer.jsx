@@ -39,7 +39,7 @@ const PostContainer = ({refetchPost,setRefetchPost,profile,user}) => {
   };
   
   return (
-    <div >
+    <div  >
 
       {posts.filter((post) => post.desc.includes(search)).map((post) => (
           <SinglePost

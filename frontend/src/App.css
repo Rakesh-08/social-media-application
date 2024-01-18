@@ -1,9 +1,9 @@
 body{
-  font-family:' Arial Narrow', Arial, sans-serif;
+  font-family:'Times New Roman', Times, serif;
   box-sizing: border-box;
-  background: linear-gradient(90deg,rgb(231, 156, 231) ,rgb(228, 124, 223)  ,rgb(130, 117, 240) );
+  background:linear-gradient(89deg,rgb(229, 120, 120),rgb(115, 115, 215));
   overflow-x: hidden;
-
+   
 }
 
 *{

@@ -12,11 +12,11 @@ const UsersPage = () => {
    }, [pathname]);
   return (
     <div className="min-vh-100 d-flex flex-column ">
-      <div className="d-flex m-1 justify-content-around">
+      <div className="d-flex mt-2 justify-content-around">
         <p
           className={`p-1 ${
             route == "new" &&
-            "text-warning fs-5 border-bottom border-2"
+            "text-white fs-5 border-bottom border-2"
           } pointer`}
           onClick={() => setRoute("new")}
         >
@@ -25,7 +25,7 @@ const UsersPage = () => {
         <p
           className={`p-1 ${
             route == "following" &&
-            "text-warning fs-5  border-bottom border-2"
+            "text-white fs-5  border-bottom border-2"
           } pointer`}
           onClick={() => setRoute("following")}
         >
@@ -34,7 +34,7 @@ const UsersPage = () => {
         <p
           className={`p-1 ${
             route == "followers" &&
-            "text-warning  fs-5 border-bottom border-2"
+            "text-white  fs-5 border-bottom border-2"
           } pointer`}
           onClick={() => setRoute("followers")}
         >
