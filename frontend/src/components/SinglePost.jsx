@@ -63,7 +63,7 @@ const SinglePost = ({ data, setRefetchPost }) => {
 
   return (
     <div
-      style={{background:"rgb(219,318,222)",borderRadius:"3px", boxShadow: "0.1em 0.1em 0.2em 0.2em" }}
+      style={{background:"rgb(219,318,222)", boxShadow: "0.1em 0.1em 0.2em 0.2em" }}
       className=" p-2 my-2 position-relative "
     >
       <div className="d-flex my-2 justify-content-between ">

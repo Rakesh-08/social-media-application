@@ -100,7 +100,7 @@ let SharePostConttainer = ({ setRefetchPost, userId }) => {
   return (
     <Card
       sx={{
-        marginBottom: "0.5em",
+        margin: "0.5em",
         padding: "0.4rem",
         display: "flex",
         background: "white",
