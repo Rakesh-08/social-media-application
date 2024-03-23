@@ -187,7 +187,7 @@ let AuthBtns = ({ NavigateTo}) => {
           logout
         </button>
       ) : (
-        <div className="d-flex flex-wrap align-items-center justify-content-center">
+        <div className="d-flex mobFirst flex-wrap align-items-center justify-content-center">
           <button
             onClick={() => {
               NavigateTo("/Auth/signup");
